@@ -1,6 +1,7 @@
 import "./globals.css";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import { Suspense } from "react";
 import { Toaster } from "react-hot-toast";
 
 export const metadata = {
@@ -14,10 +15,12 @@ export default function RootLayout({ children }) {
       <body >
         <Toaster />
         <Navbar />
-        <div className="container">
-          {children}
-        </div>
-          <Footer />
+        <Suspense>
+          <div className="container">
+            {children}
+          </div>
+        </Suspense>
+        <Footer />
       </body>
     </html>
   );
