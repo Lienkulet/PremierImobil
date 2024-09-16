@@ -182,7 +182,7 @@ const Page = () => {
         {/* Range Inputs */}
         <div className="flex flex-col gap-4 items-center">
           {/* Surface Range */}
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap md:flex-row md:flex-nowrap items-center gap-2">
             <input
               type="text"
               placeholder="Min suprafața (m2)"
@@ -199,7 +199,7 @@ const Page = () => {
           </div>
 
           {/* Price Range */}
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap md:flex-row md:flex-nowrap items-center gap-2">
             <input
               type="text"
               placeholder="Min preț (€)"
