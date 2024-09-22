@@ -1,5 +1,5 @@
 import db from "@/lib/dbconnect";
-import { Add } from "@/models/Add";
+import { Add } from "@/models/Imobile";
 
 export async function GET(req, {params: {id}}){
     await db.connect();

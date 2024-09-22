@@ -29,7 +29,7 @@ const ApartmentSlider = () => {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await fetch('/api/add'); // Adjust the endpoint based on your API
+        const response = await fetch('/api/apartamente'); // Adjust the endpoint based on your API
         const data = await response.json();
         setProperties(data.slice(0, 5)); // Store the latest 5 properties
         console.log(properties)

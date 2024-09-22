@@ -8,21 +8,21 @@ const HomeHero = () => {
 
       <div className="hidden md:flex flex-col gap-10 items-center justify-center -mt-20">
         <div className="flex flex-col md:flex-row gap-10">
-          <Link href='/imobile?type=Case' className="bg-matteBlack h-[300px] w-[300px] flex flex-col justify-center items-center gap-4">
+          <Link href='/proprietati/case' className="bg-matteBlack h-[300px] w-[300px] flex flex-col justify-center items-center gap-4">
             <Image src='/caselogo.png' alt="case" width={100} height={100} />
             <h3 className="text-2xl text-mainOrange font-light text-center">CASE</h3>
           </Link>
-          <Link href='/imobile?type=Apartament' className="bg-matteBlack h-[300px] w-[300px] flex flex-col justify-center items-center gap-4">
+          <Link href='/proprietati/apartamente' className="bg-matteBlack h-[300px] w-[300px] flex flex-col justify-center items-center gap-4">
             <Image src='/apartamente.png' alt="case" width={80} height={80} />
             <h3 className="text-2xl text-mainOrange font-light text-center">APARTAMENTE</h3>
           </Link>
         </div>
         <div className="flex flex-col md:flex-row gap-10">
-          <Link href='/imobile?type=comercial' className="bg-matteBlack h-[300px] w-[300px] flex flex-col justify-center items-center gap-4">
+          <Link href='/proprietati/comercial' className="bg-matteBlack h-[300px] w-[300px] flex flex-col justify-center items-center gap-4">
             <Image src='/BUSINESS.png' alt="case" width={100} height={100} />
             <h3 className="text-2xl text-mainOrange font-light text-center">SPAȚII COMERCIALE</h3>
           </Link>
-          <Link href='/imobile?type=Terenuri' className="bg-matteBlack h-[300px] w-[300px] flex flex-col justify-center items-center gap-4">
+          <Link href='/proprietati/terenuri' className="bg-matteBlack h-[300px] w-[300px] flex flex-col justify-center items-center gap-4">
             <Image src='/landloo.png' alt="case" width={100} height={100} />
             <h3 className="text-2xl text-mainOrange font-light text-center">TERENURI</h3>
           </Link>

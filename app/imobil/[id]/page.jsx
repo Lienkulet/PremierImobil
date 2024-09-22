@@ -1,39 +1,76 @@
 'use client';
 import ImobilSlider from "@/components/ImobilSlider";
 import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation"; // Use the correct hook for search params
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import ClipLoader from "react-spinners/ClipLoader"; // Import the spinner
 
-const Imobil = (ctx) => {
-    const [property, setProperty] = useState();
+const Imobil = ({ params }) => {
+    const [property, setProperty] = useState(null);
     const [isMobile, setIsMobile] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track if the user is logged in
-    const [loading, setLoading] = useState(true); // Loading state
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const router = useRouter();
-    // Fetch the property details
+    const searchParams = useSearchParams(); // Use the useSearchParams hook
+    const type = searchParams.get('type'); // Get the 'type' parameter from the search params
+    const { id } = params; // Get the 'id' from the dynamic route
+
+    // Fetch the property details based on type and id
     useEffect(() => {
-        setLoading(true); // Start loading
+        // Ensure that both `id` and `type` exist before running the effect
+        if (!id || !type) return;
 
         async function fetchProperty() {
-            const res = await fetch(`/api/add/${ctx.params.id}`)
-            const propertyy = await res.json()
-            setProperty(propertyy);
+            setLoading(true); // Start loading
+
+            try {
+                // Determine the API endpoint based on the property type
+                let apiEndpoint = '';
+                switch (type) {
+                    case 'apartamente':
+                        apiEndpoint = `/api/apartamente/${id}`;
+                        break;
+                    case 'case':
+                        apiEndpoint = `/api/case/${id}`;
+                        break;
+                    case 'comercial':
+                        apiEndpoint = `/api/comercial/${id}`;
+                        break;
+                    case 'terenuri':
+                        apiEndpoint = `/api/terenuri/${id}`;
+                        break;
+                    default:
+                        toast.error('Invalid property type');
+                        return;
+                }
+
+                const res = await fetch(apiEndpoint);
+                if (!res.ok) {
+                    throw new Error('Failed to fetch property data');
+                }
+
+                const propertyData = await res.json();
+                setProperty(propertyData);
+            } catch (error) {
+                console.error(error);
+                toast.error('An error occurred while fetching the property data');
+            } finally {
+                setLoading(false); // Stop loading after fetching is done
+            }
         }
+
         fetchProperty();
-        setLoading(false); // Stop loading after fetching is done
-    }, []);
+    }, [id, type]); // Re-run if `id` or `type` changes
 
     // Check if user is logged in by looking for a token
     useEffect(() => {
-        const token = localStorage.getItem('token'); // Check for the JWT token in localStorage
+        const token = localStorage.getItem('token');
         if (token) {
             setIsLoggedIn(true); // Set user as logged in if token exists
         } else {
-            setIsLoggedIn(false); // Otherwise, set user as not logged in
+            setIsLoggedIn(false);
         }
     }, []);
 
@@ -50,28 +87,6 @@ const Imobil = (ctx) => {
         return () => window.removeEventListener("resize", handleResize); // Cleanup on unmount
     }, []);
 
-  
-    const handleDelete = async () => {
-        const confirmed = confirm("Sigur doriți să ștergeți aceast anunț?");
-        if (confirmed) {
-            try {
-                const res = await fetch(`/api/add/${ctx.params.id}`, {
-                    method: 'DELETE',
-                });
-    
-                if (res.ok) {
-                    toast.success("Anunt sters cu succes");
-                    router.push('/');
-                } else {
-                    const errorData = await res.json();
-                    toast.error(`Error: ${errorData}`);
-                }
-            } catch (error) {
-                toast.error(`An error occurred: ${error.message}`);
-            }
-        }
-    };
-
     if (loading) {
         return (
             <div className="flex justify-center items-center h-screen">
@@ -79,21 +94,13 @@ const Imobil = (ctx) => {
             </div>
         );
     }
+
     if (!property) {
         return <div className="flex justify-center items-center h-screen">
             <ClipLoader color="#BB8D3F" loading={loading} size={150} />
         </div>
     }
-    var settings = {
-        dots: true,
-        infinite: false,
-        speed: 500,
-        slidesToShow: isMobile ? 1 : 5,
-        slidesToScroll: 1,
-        swipeToSlide: true,
-        arrows: false
-    };
-
+    
     const googleMapUrl = `https://www.google.com/maps?q=${encodeURIComponent(property.address)}&output=embed`;
 
     return (
@@ -108,19 +115,27 @@ const Imobil = (ctx) => {
                             <h1 className="text-4xl font-bold text-mainOrange">{property.name}</h1>
                             <h4 className="text-xl font-normal text-textGrey md:ml-4">{property.address}</h4>
                         </div>
-                        <div className="flex  flex-col md:flex-row gap-8 md:ml-4">
-                            <p className='font-normal text-xl text-mainOrange gap-2 mt-4 flex flex-row items-center'>
-                                <Image src='/bed.svg' alt='left' width={28} height={24} />
-                                {property.rooms} camere
-                            </p>
-                            <p className='font-normal text-xl text-mainOrange gap-2 mt-4 flex flex-row items-center'>
-                                <Image src='/bath.svg' alt='left' width={28} height={24} />
-                                {property.balcony} băi
-                            </p>
-                            <p className='font-normal text-xl text-mainOrange gap-2 mt-4 flex flex-row items-center'>
-                                <Image src='/garage.svg' alt='left' width={28} height={24} />
-                                Parcare {property.parking}
-                            </p>
+
+                        {/* Conditionally Render Property Details */}
+                        <div className="flex flex-col md:flex-row gap-8 md:ml-4">
+                            {type !== 'terenuri' && (
+                                <>
+                                    <p className='font-normal text-xl text-mainOrange gap-2 mt-4 flex flex-row items-center'>
+                                        <Image src='/bed.svg' alt='left' width={28} height={24} />
+                                        {property.rooms} camere
+                                    </p>
+                                    <p className='font-normal text-xl text-mainOrange gap-2 mt-4 flex flex-row items-center'>
+                                        <Image src='/bath.svg' alt='left' width={28} height={24} />
+                                        {property.baths} băi
+                                    </p>
+                                </>
+                            )}
+                            {type !== 'terenuri' && (
+                                <p className='font-normal text-xl text-mainOrange gap-2 mt-4 flex flex-row items-center'>
+                                    <Image src='/garage.svg' alt='left' width={28} height={24} />
+                                    Parcare {property.parking}
+                                </p>
+                            )}
                         </div>
                     </div>
                     <div className="flex flex-col md:items-end items-start md:mt-0 mt-4">
@@ -134,7 +149,6 @@ const Imobil = (ctx) => {
                                 >
                                     Link 999
                                 </a>
-                                {/* <Link href={`/imobil/edit/${property._id}`} className="text-xl font-medium text-mainOrange hover:underline duration-1000 ease-linear">Edit</Link> */}
                                 <button className="text-xl font-medium text-red-700 hover:underline duration-1000 ease-linear"
                                     onClick={e => handleDelete(e)}
                                 >Delete</button>
@@ -154,17 +168,25 @@ const Imobil = (ctx) => {
                     <div className="max-w-[1000px] text-white font-medium pr-8 flex flex-col md:flex-row w-full justify-between md:gap-24">
                         <div>
                             <h4 className="flex flex-row items-center gap-4">Sectorul: <span className="font-light">{property.region}</span> </h4>
-                            <h4 className="flex flex-row items-center gap-4">Etajul <span className="font-light">{property.floor} din {property.floors}</span></h4>
-                            <h4 className="flex flex-row items-center gap-4">Tip Incalzire: <span className="font-light">{property.heatingType}</span></h4>
-                            <h4 className="flex flex-row items-center gap-4">Stare apartament: <span className="font-light">{property.propertyCondition}</span></h4>
-                            <h4 className="flex flex-row items-center gap-4">Fond Locativ: <span className="font-light">{property.locativeFont}</span></h4>
+                            {type !== 'terenuri' && (
+                                <>
+                                    <h4 className="flex flex-row items-center gap-4">Etajul <span className="font-light">{property.floor} din {property.floors}</span></h4>
+                                    <h4 className="flex flex-row items-center gap-4">Tip Incalzire: <span className="font-light">{property.heatingType}</span></h4>
+                                    <h4 className="flex flex-row items-center gap-4">Stare apartament: <span className="font-light">{property.propertyCondition}</span></h4>
+                                    <h4 className="flex flex-row items-center gap-4">Fond Locativ: <span className="font-light">{property.locativeFont}</span></h4>
+                                </>
+                            )}
                         </div>
                         <div>
                             <h4 className="flex flex-row items-center gap-4">Suprafata: <span className="font-light">{property.supraface}m2</span></h4>
-                            <h4 className="flex flex-row items-center gap-4">Nr Camere: <span className="font-light">{property.rooms}</span></h4>
-                            <h4 className="flex flex-row items-center gap-4">Nr Grup Sanitar: <span className="font-light">{property.baths}</span></h4>
-                            <h4 className="flex flex-row items-center gap-4">Nr Balcon/Lodja: <span className="font-light">{property.balcony}</span></h4>
-                            <h4 className="flex flex-row items-center gap-4">Parcare: <span className="font-light">{property.parking}</span></h4>
+                            {type !== 'terenuri' && (
+                                <>
+                                    <h4 className="flex flex-row items-center gap-4">Nr Camere: <span className="font-light">{property.rooms}</span></h4>
+                                    <h4 className="flex flex-row items-center gap-4">Nr Grup Sanitar: <span className="font-light">{property.baths}</span></h4>
+                                    <h4 className="flex flex-row items-center gap-4">Nr Balcon/Lodja: <span className="font-light">{property.balcony}</span></h4>
+                                    <h4 className="flex flex-row items-center gap-4">Parcare: <span className="font-light">{property.parking}</span></h4>
+                                </>
+                            )}
                         </div>
                     </div>
                     <div className="w-full my-12 h-[600px] ">
@@ -182,7 +204,7 @@ const Imobil = (ctx) => {
                 </div>
             </aside>
         </section>
-    )
+    );
 }
 
 export default Imobil;
