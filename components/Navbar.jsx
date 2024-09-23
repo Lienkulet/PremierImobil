@@ -45,7 +45,7 @@ const Navbar = () => {
             <div className="flex flex-row items-center justify-center gap-4">
                 {/* Conditional rendering based on login state */}
                 {session?.user ? (
-                    <div className='flex flex-row items-center gap-4'>
+                    <div className='hidden md:flex flex-row items-center gap-4'>
                         <Link href={'/dashboard'}
                             className='text-white hover:text-mainOrange duration-1000 font-normal text-xl'>
                             Dashboard
@@ -58,7 +58,7 @@ const Navbar = () => {
                     </div>
                 ) : (
                     <button onClick={() => {signIn()}}
-                     className='flex flex-row items-center gap-2 justify-center bg-mainOrange text-white text-lg font-normal px-[24px] py-[15px] rounded-lg'>
+                     className='hidden md:flex flex-row items-center gap-2 justify-center bg-mainOrange text-white text-lg font-normal px-[24px] py-[15px] rounded-lg'>
                         <Image
                             src='/singIn.svg'
                             alt='SingIn Img'

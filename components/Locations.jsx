@@ -37,11 +37,11 @@ const ApartmentSlider = () => {
             <div className="slider-container">
                 <Slider {...settingsDesktop}>
                     <div className="relative w-fit">
-                        <img src="telecentru.png" className="h-[450px] md:h-[500px] w-[400px] rounded-xl" />
+                        <img src="telecentru.webp" className="h-[450px] md:h-[500px] w-[400px] rounded-xl" />
                         <h4 className="text-white font-semibold text-2xl text-center absolute bottom-8 left-1/3">Telecentru</h4>
                     </div>
                     <div className="relative">
-                        <img src="centru.png" className="h-[450px] md:h-[500px w-[400px] rounded-xl" />
+                        <img src="centru.jpg" className="h-[450px] md:h-[500px] w-[400px] rounded-xl" />
                         <h4 className="text-white font-semibold text-2xl text-center absolute bottom-8 left-1/3">Centru</h4>
                     </div>
                     <div className="flex flex-col items-center justify-center relative">
@@ -49,15 +49,15 @@ const ApartmentSlider = () => {
                         <h4 className="text-white font-semibold text-2xl text-center absolute bottom-8 left-1/3">Râșcani</h4>
                     </div>
                     <div className="relative">
-                        <img src="ciocana.png" className="h-[450px] md:h-[500px] w-[400px] rounded-xl" />
+                        <img src="ciocana.jpg" className="h-[450px] md:h-[500px] w-[400px] rounded-xl" />
                         <h4 className="text-white font-semibold text-2xl text-center absolute bottom-8 left-1/3">Ciocana</h4>
                     </div>
                     <div className="relative">
-                        <img src="buiucani.png" className="h-[450px] md:h-[500px] w-[400px] rounded-xl" />
+                        <img src="buiucani.jpg" className="h-[450px] md:h-[500px] w-[400px] rounded-xl" />
                         <h4 className="text-white font-semibold text-2xl text-center absolute bottom-8 left-1/3">Buiucani</h4>
                     </div>
                     <div className="relative">
-                        <img src="botanica.png" className="h-[450px] md:h-[500px] w-[400px] rounded-xl" />
+                        <img src="botanica.jpg" className="h-[450px] md:h-[500px] w-[400px] rounded-xl" />
                         <h4 className="text-white font-semibold text-2xl text-center absolute bottom-8 left-1/3">Botanica</h4>
                     </div>
                 </Slider>

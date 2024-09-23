@@ -1,11 +1,12 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-const TerenCard = ({ property }) => {
-    const { _id, name, desc, address, region, sector, destination, price, supraface, images } = property
+const CaseCard = ({ property }) => {
+    const { _id, name, desc, address, link, floor, floors, locativeFont, rooms, baths, balcony, parking,
+        type, price, supraface, images } = property
     return (
         <div
-            className='flex flex-col w-[350px] md:h-[530px] h-[600px] md:w-[400px] bg-matteBlack border-solid border-2 p-4 border-lightGrey rounded-xl'>
+            className='flex flex-col w-[350px] md:h-[610px] h-[700px] md:w-[400px] bg-matteBlack border-solid border-2 p-4 border-lightGrey rounded-xl'>
             <img src={`${images[0]}`} alt="" className='h-[260px] w-full rounded-xl' />
             <div className='p-2'>
                 <div>
@@ -18,7 +19,18 @@ const TerenCard = ({ property }) => {
                 <div className='flex md:flex-row flex-col justify-between mt-2 mb-5'>
                     <div>
                         <p className='font-normal text-sm text-white gap-2 mt-4 flex flex-row items-center'>
-                             {destination}
+                            <Image src='/bed.svg' alt='left' width={15} height={15} />
+                            {rooms} camere
+                        </p>
+                        <p className='font-normal text-sm text-white gap-2 mt-4 flex flex-row items-center'>
+                            <Image src='/bath.svg' alt='left' width={15} height={15} />
+                            {baths} băi
+                        </p>
+                    </div>
+                    <div>
+                        <p className='font-normal text-sm text-white gap-2 mt-4 flex flex-row items-center'>
+                            <Image src='/garage.svg' alt='left' width={15} height={15} />
+                            Parcare {parking}
                         </p>
                         <p className='font-normal text-sm text-white gap-2 mt-4 flex flex-row items-center'>
                             <Image src='/space.svg' alt='left' width={15} height={15} />
@@ -31,7 +43,7 @@ const TerenCard = ({ property }) => {
                         <h5 className='text-mainOrange text-sm font-light'>Vânzare</h5>
                         <h3 className='text-white font-semibold text-2xl'>{price}€</h3>
                     </div>
-                    <Link href={`/imobil/${_id}?type=terenuri`}
+                    <Link href={`/imobil/${_id}?type=case`}
                         className='bg-mainOrange flex items-center justify-center rounded-xl w-full max-w-[70px]'>
                         <Image src='/leftarrow.svg' alt='left' width={20} height={20} />
                     </Link>
@@ -41,4 +53,4 @@ const TerenCard = ({ property }) => {
     )
 }
 
-export default TerenCard
+export default CaseCard

@@ -7,6 +7,7 @@ const CaseSchema = new Schema({
     link: String,
     floors: Number,
     region: String,
+    sector: String,
     propertyCondition: String,
     locativeFont: String,
     rooms: Number,

@@ -1,3 +1,5 @@
+import AgentCard from "@/components/AgentCard"
+import AgentSlider from "@/components/AgentSlider"
 import Numbers from "@/components/Numbers"
 import Questions from "@/components/Questions"
 import Testimonial from "@/components/Testimonial"
@@ -57,7 +59,7 @@ const About = () => {
         </div>
         {/* AGENTI  */}
         <div>
-
+          <AgentSlider />
         </div>
         {/* Va vom ajuta  */}
         <div className="flex flex-col my-32">

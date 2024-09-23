@@ -1,12 +1,12 @@
 'use client';
 import Slider from "react-slick";
-import ApartmentCard from "./ApartmentCard";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
+import AgentCard from "./AgentCard";
 
-const ApartmentSlider = () => {
+const AgentSlider = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true); // Loading state
@@ -29,9 +29,9 @@ const ApartmentSlider = () => {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await fetch('/api/apartamente'); // Adjust the endpoint based on your API
+        const response = await fetch('/api/agent');
         const data = await response.json();
-        setProperties(data.slice(0, 5)); // Store the latest 5 properties
+        setProperties(data); 
         console.log(properties)
       } catch (error) {
         console.error('Error fetching properties:', error);
@@ -54,18 +54,18 @@ const ApartmentSlider = () => {
 
   return (
     (
-      properties.length === 0 ? <div className="flex justify-center items-center h-screen">
+      loading ? <div className="flex justify-center items-center h-screen">
         <ClipLoader color="#BB8D3F" loading={loading} size={150} />
       </div>
         :
         <section className="py-12">
-          <img src="/Features.png" className="max-w-[600px] w-full md:ml-4 md:mt-4" />
+            <h1 className="font-bold text-5xl text-center text-mainOrange mb-5">Agenții Noștri</h1>
 
-          <div className="slider-container md:-mt-[270px] -mt-40">
+          <div className="slider-container mt-12">
             <Slider {...settings}>
               {properties?.map((property, index) => (
                 <div key={index}>
-                  <ApartmentCard property={property} />
+                  <AgentCard property={property} />
                 </div>
               ))}
             </Slider>
@@ -75,4 +75,4 @@ const ApartmentSlider = () => {
   );
 };
 
-export default ApartmentSlider;
+export default AgentSlider;

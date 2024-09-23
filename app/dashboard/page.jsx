@@ -10,23 +10,24 @@ const Dashboard = () => {
     const router = useRouter();
     const { data: session, status } = useSession();
     const [formDisplay, setFormDisplay] = useState(1); // Default formDisplay set to 1
-
     // State variables for property creation
     const [name, setName] = useState('');
+    const [propertyCondition, setPropertyCondition] = useState('');
     const [description, setDesc] = useState('');
     const [address, setAddress] = useState('');
     const [photos, setPhotos] = useState([]); // Store multiple photos
     const [link, setLink] = useState('');
     const [floor, setFloor] = useState(0);
     const [floors, setFloors] = useState(0);
-    const [locativeFont, setLocativeFont] = useState('');
+    const [locativeFont, setLocativeFont] = useState('Bloc Nou');
     const [rooms, setRooms] = useState(0);
     const [baths, setBaths] = useState(0);
     const [balcony, setBalcony] = useState(0);
-    const [parking, setParking] = useState('');
+    const [parking, setParking] = useState('Subterana');
     const [type, setType] = useState('Apartament');
     const [price, setPrice] = useState(0);
     const [supraface, setSupraface] = useState(0);
+    const [heatingType, setheatingType] = useState("");
 
     // State variables for agent creation
     const [agentName, setAgentName] = useState('');
@@ -137,13 +138,14 @@ const Dashboard = () => {
     };
 
     // Function to handle form submission for property creation
-    const handlePropertySubmit = async (e) => {
+    const handlePropertySubmit = async (e, val) => {
         e.preventDefault();
-    
         if (!name || !description || !address || !price || !supraface || photos.length === 0) {
             toast.error("All fields and at least one image are required");
             return;
         }
+
+        const toastId = toast.loading('Creating property...');
     
         try {
             const images = await uploadPropertyImages(); // Get all image URLs
@@ -158,7 +160,16 @@ const Dashboard = () => {
                 supraface,
                 images, // Send array of image URLs
                 region,
-                sector
+                sector,
+                floor,      // Ensure these attributes are included
+                floors,
+                locativeFont,
+                propertyCondition,
+                heatingType,
+                rooms,
+                baths,
+                balcony,
+                parking,
             };
     
             let apiEndpoint = '';
@@ -167,41 +178,15 @@ const Dashboard = () => {
             switch (formDisplay) {
                 case 1: // Apartamente
                     apiEndpoint = '/api/apartamente';
-                    propertyData = {
-                        ...propertyData,
-                        floor,
-                        floors,
-                        locativeFont,
-                        rooms,
-                        baths,
-                        balcony,
-                        parking,
-                    };
                     break;
                 case 2: // Case
                     apiEndpoint = '/api/case';
-                    propertyData = {
-                        ...propertyData,
-                        floors,
-                        rooms,
-                        baths,
-                        balcony,
-                        parking,
-                    };
                     break;
                 case 3: // Spatii Comerciale
                     apiEndpoint = '/api/comercial';
-                    propertyData = {
-                        ...propertyData,
-                        destination: 'comercial', // Add destination or any additional fields
-                    };
                     break;
                 case 4: // Terenuri
                     apiEndpoint = '/api/terenuri';
-                    propertyData = {
-                        ...propertyData,
-                        destination: 'construction', // Add fields related to the land type
-                    };
                     break;
                 default:
                     throw new Error("Invalid property type");
@@ -212,7 +197,7 @@ const Dashboard = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(propertyData),
+                body: JSON.stringify(propertyData),  // Send the full property data object
             });
     
             if (!res.ok) {
@@ -220,13 +205,19 @@ const Dashboard = () => {
             }
     
             const property = await res.json();
-            toast.success('Anunt creat cu success');
-            router.push(`/imobil/${property?._id}`);
+            // Update the loading toast to success
+            toast.success('Property created successfully!', {
+                id: toastId,  // Pass the same toastId to update the loading toast
+            });    
+            router.push(`/imobil/${property?._id}?type=${val}`);
         } catch (error) {
             console.log(error);
-            toast.error('An error occurred while creating the property');
+            toast.error('An error occurred while creating the property', {
+                id: toastId,  // Pass the same toastId to update the loading toast
+            });
         }
     };
+    
     
 
     return (
@@ -309,8 +300,8 @@ const Dashboard = () => {
 
             {/* Conditionally render the appropriate form */}
             {formDisplay === 1 && (
-                <form onSubmit={handlePropertySubmit}>
-                    <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-mainOrange">
+                <form onSubmit={(e) => {handlePropertySubmit(e, 'apartamente')} }>
+                <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-mainOrange">
                         <div className="flex flex-col items-start justify-start gap-2">
                             <h4 className="text-mainOrange text-lg">Adaugă Titlu</h4>
                             <input
@@ -382,7 +373,18 @@ const Dashboard = () => {
                                     className="w-[200px] bg-lightGrey p-2 rounded-xl text-mainOrange"
                                 />
                             </div>
-
+                            <div className="w-full flex flex-row items-center justify-start gap-2">
+                                <h4 className="w-fit text-mainOrange text-lg">Stare Imobil</h4>
+                                <select
+                                    value={propertyCondition}
+                                    onChange={(e) => setPropertyCondition(e.target.value)}
+                                    className="w-full bg-lightGrey p-3 rounded-xl text-mainOrange"
+                                >
+                                    <option value="Reparație euro">Reparație euro</option>
+                                    <option value="Reparație mediu">Reparație mediu</option>
+                                    <option value="Fără reparație/Variantă albă">Fără reparație/Variantă albă</option>
+                                </select>
+                            </div>
                         </div>
 
                         <div className="bg-matteBlack flex flex-col p-4 gap-4 w-[500px] rounded-xl border border-solid border-mainOrange">
@@ -417,14 +419,14 @@ const Dashboard = () => {
                                 <h4 className="text-mainOrange text-lg">Font Locativ</h4>
                                 <button
                                     type='button'
-                                    onClick={(e) => setLocativeFont('Construcţii Noi')}
-                                    className={`p-3 rounded-2xl duration-300 ease-in ${locativeFont === 'Construcţii Noi' ? 'text-matteBlack bg-mainOrange' : 'text-mainOrange bg-lightGrey'} `}
-                                >Construcţii Noi</button>
+                                    onClick={(e) => setLocativeFont('Bloc Nou')}
+                                    className={`p-3 rounded-2xl duration-300 ease-in ${locativeFont === 'Bloc Nou' ? 'text-matteBlack bg-mainOrange' : 'text-mainOrange bg-lightGrey'} `}
+                                >Bloc Nou</button>
                                 <button
                                     type='button'
-                                    onClick={(e) => setLocativeFont('Secundare')}
-                                    className={`p-3 rounded-2xl duration-300 ease-in ${locativeFont === 'Secundare' ? 'text-matteBlack bg-mainOrange' : 'text-mainOrange bg-lightGrey'} `}
-                                >Secundare</button>
+                                    onClick={(e) => setLocativeFont('Bloc Vechi')}
+                                    className={`p-3 rounded-2xl duration-300 ease-in ${locativeFont === 'Bloc Vechi' ? 'text-matteBlack bg-mainOrange' : 'text-mainOrange bg-lightGrey'} `}
+                                >Bloc Vechi</button>
                             </div>
                         </div>
                         <div className="bg-matteBlack flex flex-col p-4 gap-4 w-[500px] rounded-xl border border-solid border-mainOrange">
@@ -480,12 +482,12 @@ const Dashboard = () => {
 
                                     <h4 className="text-mainOrange text-lg">Încălzire</h4>
                                     <select
-                                        value={region}
-                                        onChange={(e) => { setRegion(e.target.value); setSector(''); }}
+                                        value={heatingType}
+                                        onChange={(e) => { setheatingType(e.target.value); }}
                                         className="w-full bg-lightGrey p-3 rounded-xl text-mainOrange"
                                     >
-                                        <option value="Chişinău">Autonomă</option>
-                                        <option value="Suburbii">Centralizată</option>
+                                        <option value="Autonomă">Autonomă</option>
+                                        <option value="Centralizată">Centralizată</option>
                                     </select>
                                 </div>
 
@@ -524,7 +526,7 @@ const Dashboard = () => {
             )}
 
             {formDisplay === 2 && (
-                <form onSubmit={handlePropertySubmit}>
+                <form onSubmit={(e) => {handlePropertySubmit(e, 'case')} }>
                     <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-mainOrange">
                         <div className="flex flex-col items-start justify-start gap-2">
                             <h4 className="text-mainOrange text-lg">Adaugă Titlu</h4>
@@ -635,12 +637,13 @@ const Dashboard = () => {
                             <div className="w-full flex flex-row items-center justify-start gap-2">
                                 <h4 className="w-fit text-mainOrange text-lg">Stare Imobil</h4>
                                 <select
-                                    value={region}
+                                    value={propertyCondition}
+                                    onChange={(e) => setPropertyCondition(e.target.value)}
                                     className="w-full bg-lightGrey p-3 rounded-xl text-mainOrange"
                                 >
-                                    <option value="euro">Reparație euro</option>
-                                    <option value="mediu">Reparație mediu</option>
-                                    <option value="alb">Fără reparație/Variantă albă</option>
+                                    <option value="Reparație euro">Reparație euro</option>
+                                    <option value="Reparație mediu">Reparație mediu</option>
+                                    <option value="Fără reparație/Variantă albă">Fără reparație/Variantă albă</option>
                                 </select>
                             </div>
                             <div className='flex flex-row items-center justify-start gap-6'>
@@ -679,8 +682,8 @@ const Dashboard = () => {
             )}
 
             {formDisplay === 3 && (
-                <form onSubmit={handlePropertySubmit}>
-                    <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-mainOrange">
+                <form onSubmit={(e) => {handlePropertySubmit(e, 'comercial')} }>
+                <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-mainOrange">
                         <div className="flex flex-col items-start justify-start gap-2">
                             <h4 className="text-mainOrange text-lg">Adaugă Titlu</h4>
                             <input
@@ -795,8 +798,8 @@ const Dashboard = () => {
             )}
 
             {formDisplay === 4 && (
-                <form onSubmit={handlePropertySubmit}>
-                    <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-mainOrange">
+                <form onSubmit={(e) => {handlePropertySubmit(e, 'terenuri')} }>
+                <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-mainOrange">
                         <div className="flex flex-col items-start justify-start gap-2">
                             <h4 className="text-mainOrange text-lg">Adaugă Titlu</h4>
                             <input

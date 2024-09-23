@@ -10,13 +10,16 @@ const Page = () => {
   const [filteredProperties, setFilteredProperties] = useState([]);
   const [type, setType] = useState('Apartamente');
   const router = useRouter();
-  const [loading, setLoading] = useState(true); // Loading state
+  const [loading, setLoading] = useState(true);
+
+  // Initial filters state
   const [filters, setFilters] = useState({
-    type: 'Apartamente',  // Fixed typo
+    type: 'Apartamente',
     rooms: null,
     status: null,
     heatingType: null,
     region: null,
+    sector: null,
     propertyCondition: null,
     areaMin: null,
     areaMax: null,
@@ -24,10 +27,16 @@ const Page = () => {
     priceMax: null
   });
 
+  // Mapping of regions to sectors
+  const sectorsByRegion = {
+    'Chişinău': ['Buiucani', 'Centru', 'Botanica', 'Telecentru', 'Ciocana', 'Râșcani'],
+    'Suburbii': ['Anenii Noi', 'Truşeni', 'Durlesti', 'Băcioi', 'Bubuieci']
+  };
+
   // Fetch properties from the API
   useEffect(() => {
     const fetchProperties = async () => {
-      setLoading(true);  // Start loading when fetching data
+      setLoading(true);
       try {
         const response = await fetch(`/api/apartamente`);
         if (!response.ok) {
@@ -39,7 +48,7 @@ const Page = () => {
       } catch (error) {
         console.error('Error fetching properties:', error);
       } finally {
-        setLoading(false);  // Stop loading after fetching is complete
+        setLoading(false);
       }
     };
 
@@ -50,20 +59,20 @@ const Page = () => {
   const handleFilterChange = (filterName, value) => {
     setFilters(prev => ({
       ...prev,
-      [filterName]: value ? value : null
+      [filterName]: value || null
     }));
   };
 
   // Apply filters when filters or properties change
   useEffect(() => {
     const applyFilters = () => {
-      setLoading(true); // Show loading during filtering
+      setLoading(true);
       let result = properties.filter(property => {
-        return (!filters.type || property.type === filters.type) &&
-          (!filters.rooms || property.rooms.toString() === filters.rooms) &&
+        return  (!filters.rooms || property.rooms.toString() === filters.rooms) &&
           (!filters.status || property.locativeFont === filters.status) &&
           (!filters.heatingType || property.heatingType === filters.heatingType) &&
           (!filters.region || property.region === filters.region) &&
+          (!filters.sector || property.sector === filters.sector) &&
           (!filters.propertyCondition || property.propertyCondition === filters.propertyCondition) &&
           (!filters.areaMin || property.supraface >= parseInt(filters.areaMin)) &&
           (!filters.areaMax || property.supraface <= parseInt(filters.areaMax)) &&
@@ -72,7 +81,7 @@ const Page = () => {
       });
 
       setFilteredProperties(result);
-      setLoading(false);  // Stop loading after filtering is complete
+      setLoading(false);
     };
 
     applyFilters();
@@ -92,16 +101,20 @@ const Page = () => {
           <h1 className="text-white text-4xl font-bold">Proprietăți - Apartamente</h1>
           {/* Dropdowns for various attributes */}
           <div className="flex flex-wrap gap-2">
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-fit min-w-[128px] h-[50px]"
-              onChange={(e) => { handleFilterChange('type', e.target.value); handleTypeChange(e.target.value); }}>
-              <option value="">Tip Proprietate</option>
+            {/* Property Type Filter */}
+            <select className="bg-gray-800 text-white p-2 rounded-lg w-[128px] h-[50px]"
+              onChange={(e) => {
+                handleFilterChange('type', e.target.value);
+                handleTypeChange(e.target.value);
+              }}>
               <option value="Apartamente">Apartamente</option>
               <option value="Case">Case</option>
               <option value="Comercial">Spații Comerciale</option>
               <option value="Terenuri">Terenuri</option>
             </select>
 
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-fit min-w-[128px] h-[50px]"
+            {/* Rooms Filter */}
+            <select className="bg-gray-800 text-white p-2 rounded-lg w-[128px] h-[50px]"
               onChange={(e) => handleFilterChange('rooms', e.target.value)}>
               <option value="">Nr. camere</option>
               <option value="1">1 Cameră</option>
@@ -109,43 +122,58 @@ const Page = () => {
               <option value="3">3 Camere</option>
             </select>
 
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-fit min-w-[128px] h-[50px]"
+            {/* Property Status Filter */}
+            <select className="bg-gray-800 text-white p-2 rounded-lg w-[128px] h-[50px]"
               onChange={(e) => handleFilterChange('status', e.target.value)}>
               <option value="">Fond Locativ</option>
-              <option value="Construcţii Noi">Construcţii Noi</option>
-              <option value="Secundar">Secundar</option>
+              <option value="Bloc Nou">Bloc Nou</option>
+              <option value="Bloc Vechi">Bloc Vechi</option>
             </select>
 
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-fit min-w-[128px] h-[50px]"
+            {/* Property Condition Filter */}
+            <select className="bg-gray-800 text-white p-2 rounded-lg w-[128px] h-[50px]"
               onChange={(e) => handleFilterChange('propertyCondition', e.target.value)}>
               <option value="">Stare Imobil</option>
-              <option value="Renovat">Renovat</option>
-              <option value="Nerenovat">Nerenovat</option>
+              <option value="Reparație euro">Reparație euro</option>
+              <option value="Reparație mediu">Reparație mediu</option>
+              <option value="Fără reparație/Variantă albă">Fără reparație/Variantă albă</option>
             </select>
 
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-fit min-w-[128px] h-[50px]"
+            {/* Heating Type Filter */}
+            <select className="bg-gray-800 text-white p-2 rounded-lg w-[128px] h-[50px]"
               onChange={(e) => handleFilterChange('heatingType', e.target.value)}>
               <option value="">Tip Încălzire</option>
               <option value="Centralizată">Centralizată</option>
               <option value="Autonomă">Autonomă</option>
             </select>
 
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-fit min-w-[128px] h-[50px]"
-              onChange={(e) => handleFilterChange('region', e.target.value)}>
+            {/* Region Filter */}
+            <select className="bg-gray-800 text-white p-2 rounded-lg w-[128px] h-[50px]"
+              onChange={(e) => {
+                handleFilterChange('region', e.target.value);
+                handleFilterChange('sector', ''); // Reset sector when region changes
+              }}>
               <option value="">Regiune</option>
-              <option value="Buiucani">Buiucani</option>
-              <option value="Botanica">Botanica</option>
-              <option value="Centru">Centru</option>
-              <option value="Telecentru">Telecentru</option>
-              <option value="Ciocana">Ciocana</option>
-              <option value="Râșcani">Râșcani</option>
+              <option value="Chişinău">Chişinău</option>
+              <option value="Suburbii">Suburbii</option>
+            </select>
+
+            {/* Sector Filter */}
+            <select className="bg-gray-800 text-white p-2 rounded-lg w-[128px] h-[50px]"
+              value={filters.sector}
+              onChange={(e) => handleFilterChange('sector', e.target.value)}
+              disabled={!filters.region}>
+              <option value="">Selectează Sector</option>
+              {filters.region && sectorsByRegion[filters.region]?.map((sec) => (
+                <option key={sec} value={sec}>{sec}</option>
+              ))}
             </select>
           </div>
         </div>
 
         {/* Range Inputs */}
         <div className="flex flex-col gap-4 items-end justify-end">
-          {/* Surface Range */}
+          {/* Surface Area Range */}
           <div className="flex flex-wrap md:flex-row md:flex-nowrap items-center gap-2">
             <input
               type="text"
