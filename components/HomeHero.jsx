@@ -6,25 +6,25 @@ const HomeHero = () => {
     <section>
       <img src="/homehero.png" className="hidden md:flex" />
 
-      <div className="hidden md:flex flex-col gap-10 items-center justify-center -mt-20">
+      <div className="hidden md:flex flex-col gap-5 items-center justify-center -mt-64">
         <div className="flex flex-col md:flex-row gap-10">
-          <Link href='/proprietati/case' className="bg-matteBlack h-[300px] w-[300px] flex flex-col justify-center items-center gap-4">
-            <Image src='/caselogo.png' alt="case" width={100} height={100} />
-            <h3 className="text-2xl text-mainOrange font-light text-center">CASE</h3>
+          <Link href='/proprietati/case' className="bg-matteBlack duration-100 hover:shadow-lg hover:shadow-white h-[200px] w-[200px] flex flex-col justify-center items-center gap-4">
+            <Image src='/caselogo.png' alt="case" width={70} height={70} />
+            <h3 className="text-xl text-mainOrange font-light text-center">CASE</h3>
           </Link>
-          <Link href='/proprietati/apartamente' className="bg-matteBlack h-[300px] w-[300px] flex flex-col justify-center items-center gap-4">
-            <Image src='/apartamente.png' alt="case" width={80} height={80} />
-            <h3 className="text-2xl text-mainOrange font-light text-center">APARTAMENTE</h3>
+          <Link href='/proprietati/apartamente' className="bg-matteBlack duration-100 hover:shadow-lg hover:shadow-white h-[200px] w-[200px] flex flex-col justify-center items-center gap-4">
+            <Image src='/apartamente.png' alt="case" width={40} height={40} />
+            <h3 className="text-xl text-mainOrange font-light text-center">APARTAMENTE</h3>
           </Link>
         </div>
         <div className="flex flex-col md:flex-row gap-10">
-          <Link href='/proprietati/comercial' className="bg-matteBlack h-[300px] w-[300px] flex flex-col justify-center items-center gap-4">
-            <Image src='/BUSINESS.png' alt="case" width={100} height={100} />
-            <h3 className="text-2xl text-mainOrange font-light text-center">SPAȚII COMERCIALE</h3>
+          <Link href='/proprietati/comercial' className="bg-matteBlack duration-100 hover:shadow-lg hover:shadow-white h-[200px] w-[200px] flex flex-col justify-center items-center gap-4">
+            <Image src='/BUSINESS.png' alt="case" width={40} height={40} />
+            <h3 className="text-xl text-mainOrange font-light text-center">SPAȚII COMERCIALE</h3>
           </Link>
-          <Link href='/proprietati/terenuri' className="bg-matteBlack h-[300px] w-[300px] flex flex-col justify-center items-center gap-4">
-            <Image src='/landloo.png' alt="case" width={100} height={100} />
-            <h3 className="text-2xl text-mainOrange font-light text-center">TERENURI</h3>
+          <Link href='/proprietati/terenuri' className="bg-matteBlack duration-100 hover:shadow-lg hover:shadow-white h-[200px] w-[200px] flex flex-col justify-center items-center gap-4">
+            <Image src='/landloo.png' alt="case" width={40} height={40} />
+            <h3 className="text-xl text-mainOrange font-light text-center">TERENURI</h3>
           </Link>
         </div>
       </div>

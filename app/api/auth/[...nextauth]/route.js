@@ -20,10 +20,10 @@ const handler = NextAuth({
                                 
                 const user = await User.findOne({ email })
                 let type = user.type;
+                console.log(password)
                 if(!user){
                     throw new Error("Invalid input")
                 }
-
                 const comparePass = await bcrypt.compare(password, user.password)
 
                 if(!comparePass){

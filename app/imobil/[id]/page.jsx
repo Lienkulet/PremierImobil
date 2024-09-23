@@ -192,7 +192,7 @@ const Imobil = ({ params }) => {
                                     rel="noopener noreferrer"
                                     className="text-xl font-medium text-mainOrange hover:underline duration-1000 ease-linear"
                                 >
-                                    Link 999
+                                    Link
                                 </a>
                                 <button className="text-xl font-medium text-red-700 hover:underline duration-1000 ease-linear"
                                     onClick={e => handleDelete(e)}

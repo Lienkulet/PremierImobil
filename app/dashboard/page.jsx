@@ -44,7 +44,7 @@ const Dashboard = () => {
         'Suburbii': ['Anenii Noi', 'Truşeni', 'Durlesti', 'Băcioi', 'Bubuieci'],
     };
     if (status === 'unauthenticated') {
-        return <h1 className="h-screen flex items-center justify-center text-mainOrange text-5xl">Acces Interzis</h1>
+        return <h1 className="h-screen flex items-center justify-center text-white text-5xl">Acces Interzis</h1>
     }
 
     // Function to upload agent photo to Cloudinary
@@ -225,74 +225,74 @@ const Dashboard = () => {
             {/* CREATE AGENT (visible for admin users) */}
             {session?.user.type === 'admin' ?
                 <form onSubmit={handleAgentSubmit}>
-                    <h2 className="text-mainOrange text-3xl mb-4">Creare Agent</h2>
+                    <h2 className="text-white text-3xl mb-4">Creare Agent</h2>
 
-                    <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-mainOrange">
+                    <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-white">
                         {/* Form fields for agent creation */}
                         <div className="flex flex-col items-start justify-start gap-2">
-                            <h4 className="text-mainOrange text-lg">Nume</h4>
+                            <h4 className="text-white text-lg">Nume</h4>
                             <input
                                 type="text"
                                 value={agentName}
                                 onChange={(e) => setAgentName(e.target.value)}
                                 placeholder="Nume agent"
-                                className="w-full bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                className="w-full bg-lightGrey p-2 rounded-xl text-white"
                             />
                         </div>
 
                         <div className="flex flex-col items-start justify-start gap-2">
-                            <h4 className="text-mainOrange text-lg">Email</h4>
+                            <h4 className="text-white text-lg">Email</h4>
                             <input
                                 type="text"
                                 value={agentEmail}
                                 onChange={(e) => setAgentEmail(e.target.value)}
                                 placeholder="exemplu@gmail.com"
-                                className="w-full bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                className="w-full bg-lightGrey p-2 rounded-xl text-white"
                             />
                         </div>
                         <div className="flex flex-col items-start justify-start gap-2">
-                            <h4 className="text-mainOrange text-lg">Parola</h4>
+                            <h4 className="text-white text-lg">Parola</h4>
                             <input
                                 type="password"
                                 value={agentPass}
                                 onChange={(e) => setAgentPass(e.target.value)}
                                 placeholder="Introdu parola"
-                                className="w-full bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                className="w-full bg-lightGrey p-2 rounded-xl text-white"
                             />
                         </div>
                         <div className="flex flex-col items-start justify-start gap-2">
-                            <h4 className="text-mainOrange text-lg">Adaugă Poză</h4>
+                            <h4 className="text-white text-lg">Adaugă Poză</h4>
                             <input
                                 type="file"
                                 onChange={(e) => setAgentPhoto(e.target.files[0])} // Handle single file selection
-                                className="bg-lightGrey p-3 rounded-2xl text-mainOrange w-full"
+                                className="bg-lightGrey p-3 rounded-2xl text-white w-full"
                             />
                         </div>
                     </div>
 
-                    <button type="submit" className="w-full bg-mainOrange p-3 rounded-xl text-white mt-4">Adaugă</button>
+                    <button type="submit" className="w-full bg-white p-3 rounded-xl text-white mt-4">Adaugă</button>
                 </form>
                 :
                 <></>
             }
             <div className='flex flex-row gap-4 pt-10'>
                 <button
-                    className={`w-40 h-10 duration-300 ease-in ${formDisplay === 1 ? 'bg-mainOrange text-white' : 'bg-matteBlack border border-solid border-mainOrange text-mainOrange'} rounded-xl font-normal`}
+                    className={`w-40 h-10 duration-300 ease-in ${formDisplay === 1 ? 'bg-white text-white' : 'bg-matteBlack border border-solid border-white text-white'} rounded-xl font-normal`}
                     onClick={() => setFormDisplay(1)}>
                     Apartamente
                 </button>
                 <button
-                    className={`w-40 h-10 duration-300 ease-in ${formDisplay === 2 ? 'bg-mainOrange text-white' : 'bg-matteBlack border border-solid border-mainOrange text-mainOrange'} rounded-xl font-normal`}
+                    className={`w-40 h-10 duration-300 ease-in ${formDisplay === 2 ? 'bg-white text-white' : 'bg-matteBlack border border-solid border-white text-white'} rounded-xl font-normal`}
                     onClick={() => setFormDisplay(2)}>
                     Case
                 </button>
                 <button
-                    className={`w-40 h-10 duration-300 ease-in ${formDisplay === 3 ? 'bg-mainOrange text-white' : 'bg-matteBlack border border-solid border-mainOrange text-mainOrange'} rounded-xl font-normal`}
+                    className={`w-40 h-10 duration-300 ease-in ${formDisplay === 3 ? 'bg-white text-white' : 'bg-matteBlack border border-solid border-white text-white'} rounded-xl font-normal`}
                     onClick={() => setFormDisplay(3)}>
                     Spatii Comerciale
                 </button>
                 <button
-                    className={`w-40 h-10 duration-300 ease-in ${formDisplay === 4 ? 'bg-mainOrange text-white' : 'bg-matteBlack border border-solid border-mainOrange text-mainOrange'} rounded-xl font-normal`}
+                    className={`w-40 h-10 duration-300 ease-in ${formDisplay === 4 ? 'bg-white text-white' : 'bg-matteBlack border border-solid border-white text-white'} rounded-xl font-normal`}
                     onClick={() => setFormDisplay(4)}>
                     Terenuri
                 </button>
@@ -301,84 +301,84 @@ const Dashboard = () => {
             {/* Conditionally render the appropriate form */}
             {formDisplay === 1 && (
                 <form onSubmit={(e) => {handlePropertySubmit(e, 'apartamente')} }>
-                <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-mainOrange">
+                <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-white">
                         <div className="flex flex-col items-start justify-start gap-2">
-                            <h4 className="text-mainOrange text-lg">Adaugă Titlu</h4>
+                            <h4 className="text-white text-lg">Adaugă Titlu</h4>
                             <input
                                 type="text"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 placeholder="Apartament cu 2 camere"
-                                className="w-full bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                className="w-full bg-lightGrey p-2 rounded-xl text-white"
                             />
                         </div>
                         <div className="flex flex-col items-start justify-start gap-2">
-                            <h4 className="text-mainOrange text-lg">Adaugă Descriere</h4>
+                            <h4 className="text-white text-lg">Adaugă Descriere</h4>
                             <textarea
                                 value={description}
                                 onChange={(e) => setDesc(e.target.value)}
                                 placeholder="Apartament cu 2 camere in zona de lux..."
-                                className="w-full h-[100px] bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                className="w-full h-[100px] bg-lightGrey p-2 rounded-xl text-white"
                             />
                         </div>
                         <div className="flex flex-col items-start justify-start gap-2">
-                            <h4 className="text-mainOrange text-lg">Strada</h4>
+                            <h4 className="text-white text-lg">Strada</h4>
                             <input
                                 type="text"
                                 value={address}
                                 onChange={(e) => setAddress(e.target.value)}
                                 placeholder="str. Stefan cel Mare"
-                                className="w-full bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                className="w-full bg-lightGrey p-2 rounded-xl text-white"
                             />
                         </div>
                         <div className="flex flex-col items-start justify-start gap-2">
-                            <h4 className="text-mainOrange text-lg">Link</h4>
+                            <h4 className="text-white text-lg">Link</h4>
                             <input
                                 type="text"
                                 value={link}
                                 onChange={(e) => setLink(e.target.value)}
                                 placeholder="Enter Link"
-                                className="w-full bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                className="w-full bg-lightGrey p-2 rounded-xl text-white"
                             />
                         </div>
                         <div className="flex flex-col items-start justify-start gap-2">
-                            <h4 className="text-mainOrange text-lg">Adaugă Imagini</h4>
+                            <h4 className="text-white text-lg">Adaugă Imagini</h4>
                             <input
                                 type="file"
                                 multiple
                                 onChange={(e) => setPhotos([...e.target.files])} // Handle multiple file selection
-                                className="bg-lightGrey p-3 rounded-2xl text-mainOrange w-full"
+                                className="bg-lightGrey p-3 rounded-2xl text-white w-full"
                             />
                         </div>
                     </div>
                     <div className="flex flex-row gap-4 mt-4">
-                        <div className="flex flex-col gap-4 bg-matteBlack p-4 h-[200px] w-[500px] rounded-xl border border-solid border-mainOrange">
+                        <div className="flex flex-col gap-4 bg-matteBlack p-4 h-[200px] w-[500px] rounded-xl border border-solid border-white">
                             <div className="flex flex-row items-center justify-start gap-2 ">
-                                <h4 className="text-mainOrange text-lg">Suprafata Totală</h4>
+                                <h4 className="text-white text-lg">Suprafata Totală</h4>
                                 <input
                                     type="number"
                                     value={supraface}
                                     onChange={(e) => setSupraface(Number(e.target.value))}
-                                    className="w-[200px] bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                    className="w-[200px] bg-lightGrey p-2 rounded-xl text-white"
                                 />
-                                <h4 className="text-mainOrange text-lg">m2</h4>
+                                <h4 className="text-white text-lg">m2</h4>
                             </div>
 
                             <div className="flex flex-row items-center justify-start gap-2 ">
-                                <h4 className="text-mainOrange text-lg">Pret</h4>
+                                <h4 className="text-white text-lg">Pret</h4>
                                 <input
                                     type="number"
                                     value={price}
                                     onChange={(e) => setPrice(Number(e.target.value))}
-                                    className="w-[200px] bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                    className="w-[200px] bg-lightGrey p-2 rounded-xl text-white"
                                 />
                             </div>
                             <div className="w-full flex flex-row items-center justify-start gap-2">
-                                <h4 className="w-fit text-mainOrange text-lg">Stare Imobil</h4>
+                                <h4 className="w-fit text-white text-lg">Stare Imobil</h4>
                                 <select
                                     value={propertyCondition}
                                     onChange={(e) => setPropertyCondition(e.target.value)}
-                                    className="w-full bg-lightGrey p-3 rounded-xl text-mainOrange"
+                                    className="w-full bg-lightGrey p-3 rounded-xl text-white"
                                 >
                                     <option value="Reparație euro">Reparație euro</option>
                                     <option value="Reparație mediu">Reparație mediu</option>
@@ -387,14 +387,14 @@ const Dashboard = () => {
                             </div>
                         </div>
 
-                        <div className="bg-matteBlack flex flex-col p-4 gap-4 w-[500px] rounded-xl border border-solid border-mainOrange">
+                        <div className="bg-matteBlack flex flex-col p-4 gap-4 w-[500px] rounded-xl border border-solid border-white">
                             {/* Regiune  */}
                             <div className="flex flex-row items-center justify-center gap-2">
-                                <h4 className="text-mainOrange text-lg">Regiune</h4>
+                                <h4 className="text-white text-lg">Regiune</h4>
                                 <select
                                     value={region}
                                     onChange={(e) => { setRegion(e.target.value); setSector(''); }}
-                                    className="w-full bg-lightGrey p-3 rounded-xl text-mainOrange"
+                                    className="w-full bg-lightGrey p-3 rounded-xl text-white"
                                 >
                                     <option value="Chişinău">Chişinău</option>
                                     <option value="Suburbii">Suburbii</option>
@@ -402,11 +402,11 @@ const Dashboard = () => {
                             </div>
 
                             <div className="flex flex-row items-center justify-center gap-2">
-                                <h4 className="text-mainOrange text-lg">Sector/Suburbie</h4>
+                                <h4 className="text-white text-lg">Sector/Suburbie</h4>
                                 <select
                                     value={sector}
                                     onChange={(e) => setSector(e.target.value)}
-                                    className="w-full bg-lightGrey p-3 rounded-xl text-mainOrange"
+                                    className="w-full bg-lightGrey p-3 rounded-xl text-white"
                                 >
                                     <option value="">Selectează Sector/Suburbie</option>
                                     {sectorsByRegion[region].map((sec) => (
@@ -416,75 +416,75 @@ const Dashboard = () => {
                             </div>
 
                             <div className="flex flex-row items-center justify-start gap-3 ">
-                                <h4 className="text-mainOrange text-lg">Font Locativ</h4>
+                                <h4 className="text-white text-lg">Font Locativ</h4>
                                 <button
                                     type='button'
                                     onClick={(e) => setLocativeFont('Bloc Nou')}
-                                    className={`p-3 rounded-2xl duration-300 ease-in ${locativeFont === 'Bloc Nou' ? 'text-matteBlack bg-mainOrange' : 'text-mainOrange bg-lightGrey'} `}
+                                    className={`p-3 rounded-2xl duration-300 ease-in ${locativeFont === 'Bloc Nou' ? 'text-matteBlack bg-white' : 'text-white bg-lightGrey'} `}
                                 >Bloc Nou</button>
                                 <button
                                     type='button'
                                     onClick={(e) => setLocativeFont('Bloc Vechi')}
-                                    className={`p-3 rounded-2xl duration-300 ease-in ${locativeFont === 'Bloc Vechi' ? 'text-matteBlack bg-mainOrange' : 'text-mainOrange bg-lightGrey'} `}
+                                    className={`p-3 rounded-2xl duration-300 ease-in ${locativeFont === 'Bloc Vechi' ? 'text-matteBlack bg-white' : 'text-white bg-lightGrey'} `}
                                 >Bloc Vechi</button>
                             </div>
                         </div>
-                        <div className="bg-matteBlack flex flex-col p-4 gap-4 w-[500px] rounded-xl border border-solid border-mainOrange">
+                        <div className="bg-matteBlack flex flex-col p-4 gap-4 w-[500px] rounded-xl border border-solid border-white">
                             <div className='flex flex-row items-center justify-start gap-6'>
                                 <div className="flex flex-row items-center justify-start gap-2 ">
-                                    <h4 className="text-mainOrange text-lg">Nr. Camere</h4>
+                                    <h4 className="text-white text-lg">Nr. Camere</h4>
                                     <input
                                         type="number"
                                         value={rooms}
                                         onChange={(e) => setRooms(Number(e.target.value))}
-                                        className="w-[50px] bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                        className="w-[50px] bg-lightGrey p-2 rounded-xl text-white"
                                     />
                                 </div>
                                 <div className="flex flex-row items-center justify-start gap-2 ">
-                                    <h4 className="text-mainOrange text-lg">Băi</h4>
+                                    <h4 className="text-white text-lg">Băi</h4>
                                     <input
                                         type="number"
                                         value={baths}
                                         onChange={(e) => setBaths(Number(e.target.value))}
-                                        className="w-[50px] bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                        className="w-[50px] bg-lightGrey p-2 rounded-xl text-white"
                                     />
                                 </div>
                                 <div className="flex flex-row items-center justify-start gap-2 ">
-                                    <h4 className="text-mainOrange text-lg">Balcoane</h4>
+                                    <h4 className="text-white text-lg">Balcoane</h4>
                                     <input
                                         type="number"
                                         value={balcony}
                                         onChange={(e) => setBalcony(Number(e.target.value))}
-                                        className="w-[50px] bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                        className="w-[50px] bg-lightGrey p-2 rounded-xl text-white"
                                     />
                                 </div>
                             </div>
                             <div className='flex flex-row items-center justify-start gap-6 '>
                                 <div className="flex flex-row items-center justify-start gap-2 ">
-                                    <h4 className="text-mainOrange text-lg">Nr. Nivele</h4>
+                                    <h4 className="text-white text-lg">Nr. Nivele</h4>
                                     <input
                                         type="number"
                                         value={floors}
                                         onChange={(e) => setFloors(Number(e.target.value))}
-                                        className="w-[50px] bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                        className="w-[50px] bg-lightGrey p-2 rounded-xl text-white"
                                     />
                                 </div>
                                 <div className="flex flex-row items-center justify-start gap-2 ">
-                                    <h4 className="text-mainOrange text-lg">Nivel</h4>
+                                    <h4 className="text-white text-lg">Nivel</h4>
                                     <input
                                         type="number"
                                         value={floor}
                                         onChange={(e) => setFloor(Number(e.target.value))}
-                                        className="w-[50px] bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                        className="w-[50px] bg-lightGrey p-2 rounded-xl text-white"
                                     />
                                 </div>
                                 <div className="flex flex-row items-center justify-center gap-2">
 
-                                    <h4 className="text-mainOrange text-lg">Încălzire</h4>
+                                    <h4 className="text-white text-lg">Încălzire</h4>
                                     <select
                                         value={heatingType}
                                         onChange={(e) => { setheatingType(e.target.value); }}
-                                        className="w-full bg-lightGrey p-3 rounded-xl text-mainOrange"
+                                        className="w-full bg-lightGrey p-3 rounded-xl text-white"
                                     >
                                         <option value="Autonomă">Autonomă</option>
                                         <option value="Centralizată">Centralizată</option>
@@ -496,25 +496,25 @@ const Dashboard = () => {
 
 
                             <div className="flex flex-row items-center justify-start gap-3">
-                                <h4 className="text-mainOrange text-lg">Parcare</h4>
+                                <h4 className="text-white text-lg">Parcare</h4>
                                 <button
                                     type="button"
                                     onClick={() => setParking('Subterana')}
-                                    className={`p-3 rounded-2xl duration-300 ease-in ${parking === 'Subterana' ? 'text-matteBlack bg-mainOrange' : 'text-mainOrange bg-lightGrey'}`}
+                                    className={`p-3 rounded-2xl duration-300 ease-in ${parking === 'Subterana' ? 'text-matteBlack bg-white' : 'text-white bg-lightGrey'}`}
                                 >
                                     Subterana
                                 </button>
                                 <button
                                     type="button"
                                     onClick={() => setParking('Curte')}
-                                    className={`p-3 rounded-2xl duration-300 ease-in ${parking === 'Curte' ? 'text-matteBlack bg-mainOrange' : 'text-mainOrange bg-lightGrey'}`}
+                                    className={`p-3 rounded-2xl duration-300 ease-in ${parking === 'Curte' ? 'text-matteBlack bg-white' : 'text-white bg-lightGrey'}`}
                                 >
                                     Curte
                                 </button>
                                 <button
                                     type="button"
                                     onClick={() => setParking('Garaj')}
-                                    className={`p-3 rounded-2xl duration-300 ease-in ${parking === 'Garaj' ? 'text-matteBlack bg-mainOrange font-semibold' : 'text-mainOrange bg-lightGrey'}`}
+                                    className={`p-3 rounded-2xl duration-300 ease-in ${parking === 'Garaj' ? 'text-matteBlack bg-white font-semibold' : 'text-white bg-lightGrey'}`}
                                 >
                                     Garaj
                                 </button>
@@ -527,89 +527,89 @@ const Dashboard = () => {
 
             {formDisplay === 2 && (
                 <form onSubmit={(e) => {handlePropertySubmit(e, 'case')} }>
-                    <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-mainOrange">
+                    <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-white">
                         <div className="flex flex-col items-start justify-start gap-2">
-                            <h4 className="text-mainOrange text-lg">Adaugă Titlu</h4>
+                            <h4 className="text-white text-lg">Adaugă Titlu</h4>
                             <input
                                 type="text"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 placeholder="Apartament cu 2 camere"
-                                className="w-full bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                className="w-full bg-lightGrey p-2 rounded-xl text-white"
                             />
                         </div>
                         <div className="flex flex-col items-start justify-start gap-2">
-                            <h4 className="text-mainOrange text-lg">Adaugă Descriere</h4>
+                            <h4 className="text-white text-lg">Adaugă Descriere</h4>
                             <textarea
                                 value={description}
                                 onChange={(e) => setDesc(e.target.value)}
                                 placeholder="Apartament cu 2 camere in zona de lux..."
-                                className="w-full h-[100px] bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                className="w-full h-[100px] bg-lightGrey p-2 rounded-xl text-white"
                             />
                         </div>
                         <div className="flex flex-col items-start justify-start gap-2">
-                            <h4 className="text-mainOrange text-lg">Strada</h4>
+                            <h4 className="text-white text-lg">Strada</h4>
                             <input
                                 type="text"
                                 value={address}
                                 onChange={(e) => setAddress(e.target.value)}
                                 placeholder="str. Stefan cel Mare"
-                                className="w-full bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                className="w-full bg-lightGrey p-2 rounded-xl text-white"
                             />
                         </div>
                         <div className="flex flex-col items-start justify-start gap-2">
-                            <h4 className="text-mainOrange text-lg">Link</h4>
+                            <h4 className="text-white text-lg">Link</h4>
                             <input
                                 type="text"
                                 value={link}
                                 onChange={(e) => setLink(e.target.value)}
                                 placeholder="Enter Link"
-                                className="w-full bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                className="w-full bg-lightGrey p-2 rounded-xl text-white"
                             />
                         </div>
                         <div className="flex flex-col items-start justify-start gap-2">
-                            <h4 className="text-mainOrange text-lg">Adaugă Imagini</h4>
+                            <h4 className="text-white text-lg">Adaugă Imagini</h4>
                             <input
                                 type="file"
                                 multiple
                                 onChange={(e) => setPhotos([...e.target.files])} // Handle multiple file selection
-                                className="bg-lightGrey p-3 rounded-2xl text-mainOrange w-full"
+                                className="bg-lightGrey p-3 rounded-2xl text-white w-full"
                             />
                         </div>
                     </div>
                     <div className="flex flex-row gap-4 mt-4">
-                        <div className="flex flex-col gap-4 bg-matteBlack p-4  w-[500px] rounded-xl border border-solid border-mainOrange">
+                        <div className="flex flex-col gap-4 bg-matteBlack p-4  w-[500px] rounded-xl border border-solid border-white">
                             <div className="flex flex-row items-center justify-start gap-2 ">
-                                <h4 className="text-mainOrange text-lg">Suprafata Totală</h4>
+                                <h4 className="text-white text-lg">Suprafata Totală</h4>
                                 <input
                                     type="number"
                                     value={supraface}
                                     onChange={(e) => setSupraface(Number(e.target.value))}
-                                    className="w-[200px] bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                    className="w-[200px] bg-lightGrey p-2 rounded-xl text-white"
                                 />
-                                <h4 className="text-mainOrange text-lg">m2</h4>
+                                <h4 className="text-white text-lg">m2</h4>
                             </div>
 
                             <div className="flex flex-row items-center justify-start gap-2 ">
-                                <h4 className="text-mainOrange text-lg">Pret</h4>
+                                <h4 className="text-white text-lg">Pret</h4>
                                 <input
                                     type="number"
                                     value={price}
                                     onChange={(e) => setPrice(Number(e.target.value))}
-                                    className="w-[200px] bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                    className="w-[200px] bg-lightGrey p-2 rounded-xl text-white"
                                 />
                             </div>
 
                         </div>
 
-                        <div className="bg-matteBlack flex flex-col p-4 gap-4 w-[500px] rounded-xl border border-solid border-mainOrange">
+                        <div className="bg-matteBlack flex flex-col p-4 gap-4 w-[500px] rounded-xl border border-solid border-white">
                             {/* Regiune  */}
                             <div className="flex flex-row items-center justify-center gap-2">
-                                <h4 className="text-mainOrange text-lg">Regiune</h4>
+                                <h4 className="text-white text-lg">Regiune</h4>
                                 <select
                                     value={region}
                                     onChange={(e) => { setRegion(e.target.value); setSector(''); }}
-                                    className="w-full bg-lightGrey p-3 rounded-xl text-mainOrange"
+                                    className="w-full bg-lightGrey p-3 rounded-xl text-white"
                                 >
                                     <option value="Chişinău">Chişinău</option>
                                     <option value="Suburbii">Suburbii</option>
@@ -617,11 +617,11 @@ const Dashboard = () => {
                             </div>
 
                             <div className="flex flex-row items-center justify-center gap-2">
-                                <h4 className="text-mainOrange text-lg">Sector/Suburbie</h4>
+                                <h4 className="text-white text-lg">Sector/Suburbie</h4>
                                 <select
                                     value={sector}
                                     onChange={(e) => setSector(e.target.value)}
-                                    className="w-full bg-lightGrey p-3 rounded-xl text-mainOrange"
+                                    className="w-full bg-lightGrey p-3 rounded-xl text-white"
                                 >
                                     <option value="">Selectează Sector/Suburbie</option>
                                     {sectorsByRegion[region].map((sec) => (
@@ -632,14 +632,14 @@ const Dashboard = () => {
 
 
                         </div>
-                        <div className="bg-matteBlack flex flex-col p-4 gap-4 w-[500px] rounded-xl border border-solid border-mainOrange">
+                        <div className="bg-matteBlack flex flex-col p-4 gap-4 w-[500px] rounded-xl border border-solid border-white">
 
                             <div className="w-full flex flex-row items-center justify-start gap-2">
-                                <h4 className="w-fit text-mainOrange text-lg">Stare Imobil</h4>
+                                <h4 className="w-fit text-white text-lg">Stare Imobil</h4>
                                 <select
                                     value={propertyCondition}
                                     onChange={(e) => setPropertyCondition(e.target.value)}
-                                    className="w-full bg-lightGrey p-3 rounded-xl text-mainOrange"
+                                    className="w-full bg-lightGrey p-3 rounded-xl text-white"
                                 >
                                     <option value="Reparație euro">Reparație euro</option>
                                     <option value="Reparație mediu">Reparație mediu</option>
@@ -648,96 +648,96 @@ const Dashboard = () => {
                             </div>
                             <div className='flex flex-row items-center justify-start gap-6'>
                                 <div className="flex flex-row items-center justify-start gap-2 ">
-                                    <h4 className="text-mainOrange text-lg">Nr. Camere</h4>
+                                    <h4 className="text-white text-lg">Nr. Camere</h4>
                                     <input
                                         type="number"
                                         value={rooms}
                                         onChange={(e) => setRooms(Number(e.target.value))}
-                                        className="w-[50px] bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                        className="w-[50px] bg-lightGrey p-2 rounded-xl text-white"
                                     />
                                 </div>
                                 <div className="flex flex-row items-center justify-start gap-2 ">
-                                    <h4 className="text-mainOrange text-lg">Băi</h4>
+                                    <h4 className="text-white text-lg">Băi</h4>
                                     <input
                                         type="number"
                                         value={baths}
                                         onChange={(e) => setBaths(Number(e.target.value))}
-                                        className="w-[50px] bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                        className="w-[50px] bg-lightGrey p-2 rounded-xl text-white"
                                     />
                                 </div>
                                 <div className="flex flex-row items-center justify-start gap-2 ">
-                                    <h4 className="text-mainOrange text-lg">Nr. Nivele</h4>
+                                    <h4 className="text-white text-lg">Nr. Nivele</h4>
                                     <input
                                         type="number"
                                         value={floors}
                                         onChange={(e) => setFloors(Number(e.target.value))}
-                                        className="w-[50px] bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                        className="w-[50px] bg-lightGrey p-2 rounded-xl text-white"
                                     />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <button type="submit" className="bg-mainOrange w-full p-3 rounded-xl text-white mt-4">Adaugă</button>
+                    <button type="submit" className="bg-white w-full p-3 rounded-xl text-white mt-4">Adaugă</button>
                 </form>
             )}
 
             {formDisplay === 3 && (
                 <form onSubmit={(e) => {handlePropertySubmit(e, 'comercial')} }>
-                <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-mainOrange">
+                <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-white">
                         <div className="flex flex-col items-start justify-start gap-2">
-                            <h4 className="text-mainOrange text-lg">Adaugă Titlu</h4>
+                            <h4 className="text-white text-lg">Adaugă Titlu</h4>
                             <input
                                 type="text"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 placeholder="Apartament cu 2 camere"
-                                className="w-full bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                className="w-full bg-lightGrey p-2 rounded-xl text-white"
                             />
                         </div>
                         <div className="flex flex-col items-start justify-start gap-2">
-                            <h4 className="text-mainOrange text-lg">Adaugă Descriere</h4>
+                            <h4 className="text-white text-lg">Adaugă Descriere</h4>
                             <textarea
                                 value={description}
                                 onChange={(e) => setDesc(e.target.value)}
                                 placeholder="Apartament cu 2 camere in zona de lux..."
-                                className="w-full h-[100px] bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                className="w-full h-[100px] bg-lightGrey p-2 rounded-xl text-white"
                             />
                         </div>
                         <div className="flex flex-col items-start justify-start gap-2">
-                            <h4 className="text-mainOrange text-lg">Strada</h4>
+                            <h4 className="text-white text-lg">Strada</h4>
                             <input
                                 type="text"
                                 value={address}
                                 onChange={(e) => setAddress(e.target.value)}
                                 placeholder="str. Stefan cel Mare"
-                                className="w-full bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                className="w-full bg-lightGrey p-2 rounded-xl text-white"
                             />
                         </div>
                         <div className="flex flex-col items-start justify-start gap-2">
-                            <h4 className="text-mainOrange text-lg">Link</h4>
+                            <h4 className="text-white text-lg">Link</h4>
                             <input
                                 type="text"
                                 value={link}
                                 onChange={(e) => setLink(e.target.value)}
                                 placeholder="Enter Link"
-                                className="w-full bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                className="w-full bg-lightGrey p-2 rounded-xl text-white"
                             />
                         </div>
                         <div className="flex flex-col items-start justify-start gap-2">
-                            <h4 className="text-mainOrange text-lg">Adaugă Imagini</h4>
+                            <h4 className="text-white text-lg">Adaugă Imagini</h4>
                             <input
                                 type="file"
                                 multiple
                                 onChange={(e) => setPhotos([...e.target.files])} // Handle multiple file selection
-                                className="bg-lightGrey p-3 rounded-2xl text-mainOrange w-full"
+                                className="bg-lightGrey p-3 rounded-2xl text-white w-full"
                             />
                         </div>
                         {/* Destinatie  */}
                         <div className="flex flex-row items-center justify-center gap-2">
-                            <h4 className="text-mainOrange text-lg">Destinatie</h4>
+                            <h4 className="text-white text-lg">Destinatie</h4>
                             <select
                                 value={region}
-                                className="w-full bg-lightGrey p-3 rounded-xl text-mainOrange"
+                                className="w-full bg-lightGrey p-3 rounded-xl text-white"
                             >
                                 <option value="Comercial">Comercial</option>
                                 <option value="Birouri">Birouri</option>
@@ -745,11 +745,11 @@ const Dashboard = () => {
                             </select>
                         </div>
                         <div className="flex flex-row items-center justify-center gap-2">
-                            <h4 className="text-mainOrange text-lg">Regiune</h4>
+                            <h4 className="text-white text-lg">Regiune</h4>
                             <select
                                 value={region}
                                 onChange={(e) => { setRegion(e.target.value); setSector(''); }}
-                                className="w-full bg-lightGrey p-3 rounded-xl text-mainOrange"
+                                className="w-full bg-lightGrey p-3 rounded-xl text-white"
                             >
                                 <option value="Chişinău">Chişinău</option>
                                 <option value="Suburbii">Suburbii</option>
@@ -757,11 +757,11 @@ const Dashboard = () => {
                         </div>
 
                         <div className="flex flex-row items-center justify-center gap-2">
-                            <h4 className="text-mainOrange text-lg">Sector/Suburbie</h4>
+                            <h4 className="text-white text-lg">Sector/Suburbie</h4>
                             <select
                                 value={sector}
                                 onChange={(e) => setSector(e.target.value)}
-                                className="w-full bg-lightGrey p-3 rounded-xl text-mainOrange"
+                                className="w-full bg-lightGrey p-3 rounded-xl text-white"
                             >
                                 <option value="">Selectează Sector/Suburbie</option>
                                 {sectorsByRegion[region].map((sec) => (
@@ -772,88 +772,88 @@ const Dashboard = () => {
 
 
                         <div className="flex flex-row items-center justify-start gap-2 ">
-                            <h4 className="text-mainOrange text-lg">Suprafata Totală</h4>
+                            <h4 className="text-white text-lg">Suprafata Totală</h4>
                             <input
                                 type="number"
                                 value={supraface}
                                 onChange={(e) => setSupraface(Number(e.target.value))}
-                                className="w-[200px] bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                className="w-[200px] bg-lightGrey p-2 rounded-xl text-white"
                             />
-                            <h4 className="text-mainOrange text-lg">m2</h4>
+                            <h4 className="text-white text-lg">m2</h4>
                         </div>
 
                         <div className="flex flex-row items-center justify-start gap-2 ">
-                            <h4 className="text-mainOrange text-lg">Pret</h4>
+                            <h4 className="text-white text-lg">Pret</h4>
                             <input
                                 type="number"
                                 value={price}
                                 onChange={(e) => setPrice(Number(e.target.value))}
-                                className="w-[200px] bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                className="w-[200px] bg-lightGrey p-2 rounded-xl text-white"
                             />
                         </div>
                     </div>
 
-                    <button type="submit" className="bg-mainOrange w-full p-3 rounded-xl text-white mt-4">Adaugă</button>
+                    <button type="submit" className="bg-white w-full p-3 rounded-xl text-white mt-4">Adaugă</button>
                 </form>
             )}
 
             {formDisplay === 4 && (
                 <form onSubmit={(e) => {handlePropertySubmit(e, 'terenuri')} }>
-                <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-mainOrange">
+                <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-white">
                         <div className="flex flex-col items-start justify-start gap-2">
-                            <h4 className="text-mainOrange text-lg">Adaugă Titlu</h4>
+                            <h4 className="text-white text-lg">Adaugă Titlu</h4>
                             <input
                                 type="text"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 placeholder="Apartament cu 2 camere"
-                                className="w-full bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                className="w-full bg-lightGrey p-2 rounded-xl text-white"
                             />
                         </div>
                         <div className="flex flex-col items-start justify-start gap-2">
-                            <h4 className="text-mainOrange text-lg">Adaugă Descriere</h4>
+                            <h4 className="text-white text-lg">Adaugă Descriere</h4>
                             <textarea
                                 value={description}
                                 onChange={(e) => setDesc(e.target.value)}
                                 placeholder="Apartament cu 2 camere in zona de lux..."
-                                className="w-full h-[100px] bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                className="w-full h-[100px] bg-lightGrey p-2 rounded-xl text-white"
                             />
                         </div>
                         <div className="flex flex-col items-start justify-start gap-2">
-                            <h4 className="text-mainOrange text-lg">Strada</h4>
+                            <h4 className="text-white text-lg">Strada</h4>
                             <input
                                 type="text"
                                 value={address}
                                 onChange={(e) => setAddress(e.target.value)}
                                 placeholder="str. Stefan cel Mare"
-                                className="w-full bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                className="w-full bg-lightGrey p-2 rounded-xl text-white"
                             />
                         </div>
                         <div className="flex flex-col items-start justify-start gap-2">
-                            <h4 className="text-mainOrange text-lg">Link</h4>
+                            <h4 className="text-white text-lg">Link</h4>
                             <input
                                 type="text"
                                 value={link}
                                 onChange={(e) => setLink(e.target.value)}
                                 placeholder="Enter Link"
-                                className="w-full bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                className="w-full bg-lightGrey p-2 rounded-xl text-white"
                             />
                         </div>
                         <div className="flex flex-col items-start justify-start gap-2">
-                            <h4 className="text-mainOrange text-lg">Adaugă Imagini</h4>
+                            <h4 className="text-white text-lg">Adaugă Imagini</h4>
                             <input
                                 type="file"
                                 multiple
                                 onChange={(e) => setPhotos([...e.target.files])} // Handle multiple file selection
-                                className="bg-lightGrey p-3 rounded-2xl text-mainOrange w-full"
+                                className="bg-lightGrey p-3 rounded-2xl text-white w-full"
                             />
                         </div>
                         {/* Destinatie  */}
                         <div className="flex flex-row items-center justify-center gap-2">
-                            <h4 className="text-mainOrange text-lg">Destinatie</h4>
+                            <h4 className="text-white text-lg">Destinatie</h4>
                             <select
                                 value={region}
-                                className="w-full bg-lightGrey p-3 rounded-xl text-mainOrange"
+                                className="w-full bg-lightGrey p-3 rounded-xl text-white"
                             >
                                 <option value="Comercial">Construcție</option>
                                 <option value="Birouri">Agricol</option>
@@ -862,11 +862,11 @@ const Dashboard = () => {
                         </div>
                         {/* Regiune  */}
                         <div className="flex flex-row items-center justify-center gap-2">
-                            <h4 className="text-mainOrange text-lg">Regiune</h4>
+                            <h4 className="text-white text-lg">Regiune</h4>
                             <select
                                 value={region}
                                 onChange={(e) => { setRegion(e.target.value); setSector(''); }}
-                                className="w-full bg-lightGrey p-3 rounded-xl text-mainOrange"
+                                className="w-full bg-lightGrey p-3 rounded-xl text-white"
                             >
                                 <option value="Chişinău">Chişinău</option>
                                 <option value="Suburbii">Suburbii</option>
@@ -874,11 +874,11 @@ const Dashboard = () => {
                         </div>
 
                         <div className="flex flex-row items-center justify-center gap-2">
-                            <h4 className="text-mainOrange text-lg">Sector/Suburbie</h4>
+                            <h4 className="text-white text-lg">Sector/Suburbie</h4>
                             <select
                                 value={sector}
                                 onChange={(e) => setSector(e.target.value)}
-                                className="w-full bg-lightGrey p-3 rounded-xl text-mainOrange"
+                                className="w-full bg-lightGrey p-3 rounded-xl text-white"
                             >
                                 <option value="">Selectează Sector/Suburbie</option>
                                 {sectorsByRegion[region].map((sec) => (
@@ -889,28 +889,28 @@ const Dashboard = () => {
 
 
                         <div className="flex flex-row items-center justify-start gap-2 ">
-                            <h4 className="text-mainOrange text-lg">Suprafata Totală</h4>
+                            <h4 className="text-white text-lg">Suprafata Totală</h4>
                             <input
                                 type="number"
                                 value={supraface}
                                 onChange={(e) => setSupraface(Number(e.target.value))}
-                                className="w-[200px] bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                className="w-[200px] bg-lightGrey p-2 rounded-xl text-white"
                             />
-                            <h4 className="text-mainOrange text-lg">ari</h4>
+                            <h4 className="text-white text-lg">ari</h4>
                         </div>
 
                         <div className="flex flex-row items-center justify-start gap-2 ">
-                            <h4 className="text-mainOrange text-lg">Pret</h4>
+                            <h4 className="text-white text-lg">Pret</h4>
                             <input
                                 type="number"
                                 value={price}
                                 onChange={(e) => setPrice(Number(e.target.value))}
-                                className="w-[200px] bg-lightGrey p-2 rounded-xl text-mainOrange"
+                                className="w-[200px] bg-lightGrey p-2 rounded-xl text-white"
                             />
                         </div>
                     </div>
 
-                    <button type="submit" className="bg-mainOrange w-full p-3 rounded-xl text-white mt-4">Adaugă</button>
+                    <button type="submit" className="bg-white w-full p-3 rounded-xl text-white mt-4">Adaugă</button>
                 </form>
             )}
         </section>

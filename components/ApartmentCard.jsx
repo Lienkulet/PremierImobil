@@ -6,7 +6,7 @@ const ApartmentCard = ({ property }) => {
         type, price, supraface, images } = property
     return (
         <div
-            className='flex flex-col w-[350px] md:h-[560px] h-[650px] md:w-[400px] bg-matteBlack border-solid border-2 p-4 border-lightGrey rounded-xl'>
+            className='flex flex-col w-[150px] md:h-[560px] h-[650px] md:w-[300px] bg-matteBlack border-solid border-2 p-4 border-lightGrey rounded-xl'>
             <img src={`${images[0]}`} alt="" className='min-h-[260px] maxh-[260px] w-full rounded-xl' />
             <div className='p-2'>
                 <div>

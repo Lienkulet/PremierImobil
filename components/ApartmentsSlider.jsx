@@ -46,7 +46,7 @@ const ApartmentSlider = () => {
     dots: true,
     infinite: false,
     speed: 500,
-    slidesToShow: isMobile ? 1 : 3,
+    slidesToShow: isMobile ? 1 : 4,
     slidesToScroll: 1,
     swipeToSlide: true,
     arrows: false

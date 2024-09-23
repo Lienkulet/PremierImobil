@@ -38,7 +38,10 @@ const ImobilSlider = ({ img }) => {
     return (
         <section className="py-4">
             {/* Main image */}
-            <img src={selectedImage} alt="Main" className="w-full md:h-[600px] h-[350px] mb-4 bg-contain bg-no-repeat rounded-xl" />
+            <div className="flex w-full items-center justify-center">
+
+            <img src={selectedImage} alt="Main" className="w-1/2 md:h-[600px] h-[350px] mb-4 bg-contain bg-no-repeat rounded-xl self-center" />
+            </div>
             {/* Slider for thumbnails */}
             {
                 isMobile || img.length > 6 ?
