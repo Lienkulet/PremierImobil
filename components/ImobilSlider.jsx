@@ -4,7 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useEffect, useState } from "react";
 
-const ImobilSlider = ({ img }) => {
+const ImobilSlider = ({ img, category }) => {
     const [isMobile, setIsMobile] = useState(false);
     const [selectedImage, setSelectedImage] = useState(img[0]); // Default to the first image
 
@@ -31,20 +31,29 @@ const ImobilSlider = ({ img }) => {
         slidesToShow: Math.min(isMobile ? 1 : 5, img.length), // Adjust slidesToShow based on the number of images
         slidesToScroll: 1,
         swipeToSlide: true,
-        arrows: isMobile? false : true,
-
+        arrows: isMobile ? false : true,
     };
 
     return (
         <section className="py-4">
-            {/* Main image */}
+            {/* Main image with category badge */}
             <div className="flex w-full items-center justify-center">
+                <div className="relative w-1/2">
+                    <img
+                        src={selectedImage}
+                        alt="Main"
+                        className="w-full md:h-[600px] h-[350px] mb-4 bg-contain bg-no-repeat rounded-xl"
+                    />
 
-            <img src={selectedImage} alt="Main" className="w-1/2 md:h-[600px] h-[350px] mb-4 bg-contain bg-no-repeat rounded-xl self-center" />
+                    {/* Category displayed in the top-right corner */}
+                    <div className="absolute top-4 right-4 text-mainOrange px-4 py-2 rounded-lg font-semibold text-xl">
+                        {category}
+                    </div>
+                </div>
             </div>
+
             {/* Slider for thumbnails */}
-            {
-                isMobile || img.length > 6 ?
+            {isMobile || img.length > 6 ? (
                 <div className="slider-container">
                     <Slider {...settings}>
                         {img.map((image, index) => (
@@ -58,20 +67,19 @@ const ImobilSlider = ({ img }) => {
                         ))}
                     </Slider>
                 </div>
-                :
+            ) : (
                 <div className="flex flex-row gap-2">
-                     {img.map((image, index) => (
-                            <div key={index} onClick={() => setSelectedImage(image)}>
-                                <img
-                                    src={image}
-                                    alt={`Thumbnail ${index}`}
-                                    className="w-[290px] h-[200px] cursor-pointer rounded-xl"
-                                />
-                            </div>
-                        ))}
+                    {img.map((image, index) => (
+                        <div key={index} onClick={() => setSelectedImage(image)}>
+                            <img
+                                src={image}
+                                alt={`Thumbnail ${index}`}
+                                className="w-[290px] h-[200px] cursor-pointer rounded-xl"
+                            />
+                        </div>
+                    ))}
                 </div>
-            }
-
+            )}
         </section>
     );
 };

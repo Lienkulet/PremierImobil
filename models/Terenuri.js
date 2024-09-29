@@ -5,13 +5,17 @@ const TerenuriSchema = new Schema({
     description: String,
     address: {type: String, required: true},
     link: String,
+    linkName: String,
     region: String,
     sector: String,
     destination: String,
     type: String,
     price: Number,
     supraface: Number,
-    images: [{type: String}]
+    category: String,
+    tipAnunt: String,
+    images: [{type: String}],
+    agentId: { type: Schema.Types.ObjectId, ref: 'User', required: true }
 }, {
     timestamps: true
 })

@@ -13,36 +13,36 @@ const Footer = () => {
                                 <Image src='/locationicon.svg' alt="location icon" width={8} height={10} />
                                 Oficiul
                             </p>
-                            <p className="text-textGrey ml-6 mb-[25px]">
-                                Chișinău, Centru, bd. Iuri Gagarin 10</p>
+                            <a href='https://maps.app.goo.gl/95TtKK7tWFVfDVE88' target="_blank" className="text-textGrey ml-6 mb-[25px]">
+                                Chișinău, Centru, bd. Iuri Gagarin 10</a>
                         </div>
-                        <p className="flex flex-row items-center mb-[25px] text-textGrey gap-2 text-base font-normal">
+                        <Link href="tel:+37378992014" className="flex flex-row items-center mb-[25px] text-textGrey gap-2 text-base font-normal">
                             <Image src='/phoneicon.svg'  alt='phone' width={12} height={12} />
-                            +373 78 99 20 14</p>
-                        <p className="flex flex-row items-center text-textGrey gap-2 text-base font-normal">
+                            +373 78 99 20 14</Link>
+                        <Link href="mailto:informationoffice365@gmail.com" className="flex flex-row items-center text-textGrey gap-2 text-base font-normal">
                             <Image src='/emailicon.svg'  alt='email' width={15} height={10} />
-                            informationoffice365@gmail.com</p>
+                            informationoffice365@gmail.com</Link>
                     </div>
                     <div className="flex-col md:flex hidden">
                         <h3 className="text-white text-lg font-semibold mb-[33px]">Legături Rapide</h3>
                         <nav className="flex flex-col gap-2">
-                            <h5 className="text-base font-normal text-textGrey">Despre noi</h5>
+                            <Link href={'/about'} className="text-base font-normal text-textGrey">Despre noi</Link>
                             <h5 className="text-base font-normal text-textGrey">Termeni și condiții</h5>
                             <h5 className="text-base font-normal text-textGrey">Ghid</h5>
                             <h5 className="text-base font-normal text-textGrey">Centru de suport</h5>
-                            <h5 className="text-base font-normal text-textGrey">Blog</h5>
-                            <h5 className="text-base font-normal text-textGrey">Contact</h5>
+                            <Link href={'/blog'} className="text-base font-normal text-textGrey">Blog</Link>
+                            <Link href={'/contact'} className="text-base font-normal text-textGrey">Contact</Link>
                             <h5 className="text-base font-normal text-textGrey">Politica de confidențialitate</h5>
                         </nav>
                     </div>
                     <div className="flex-col md:flex hidden">
                         <h3 className="text-white text-lg font-semibold mb-[33px]">Descoperă</h3>
                         <nav className="flex flex-col gap-1">
-                            <h5 className="text-base font-normal text-textGrey">Buiucani</h5>
-                            <h5 className="text-base font-normal text-textGrey">Ciocana</h5>
-                            <h5 className="text-base font-normal text-textGrey">Botanica</h5>
-                            <h5 className="text-base font-normal text-textGrey">Centru</h5>
-                            <h5 className="text-base font-normal text-textGrey">Râșcani</h5>
+                            <Link href='/proprietati/apartamente'  className="text-base font-normal text-textGrey">Buiucani</Link>
+                            <Link href='/proprietati/apartamente' className="text-base font-normal text-textGrey">Ciocana</Link>
+                            <Link href='/proprietati/apartamente' className="text-base font-normal text-textGrey">Botanica</Link>
+                            <Link href='/proprietati/apartamente' className="text-base font-normal text-textGrey">Centru</Link>
+                            <Link href='/proprietati/apartamente' className="text-base font-normal text-textGrey">Râșcani</Link>
                         </nav>
                     </div>
                     <div className="flex-col md:flex hidden">

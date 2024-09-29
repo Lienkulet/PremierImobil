@@ -3,7 +3,7 @@ import { useSession } from 'next-auth/react';
 import toast from 'react-hot-toast';
 
 const AgentCard = ({ property }) => {
-    const { name, photoUrl, _id } = property;
+    const { name, photoUrl, phoneNr, _id } = property;
     const { data: session } = useSession(); // Get session data
 
     // Function to handle delete action
@@ -31,7 +31,7 @@ const AgentCard = ({ property }) => {
     console.log(session?.user?.type);
 
     return (
-        <article className="w-[370px] h-[500px] bg-matteBlack flex flex-col items-center gap-10 text-mainOrange rounded-2xl">
+        <article className={`w-[370px] ${session?.user?.type === 'admin' ? 'h-[550px]': 'h-[500px]'}  bg-matteBlack flex flex-col items-center gap-10 text-mainOrange rounded-2xl `}>
             <img
                 src={photoUrl !== '' ? `${photoUrl}` : '/agentbg.png'}
                 className={`w-full h-[360px] bg-grey ${photoUrl !== '' ? `rounded-full` : 'rounded-t-2xl'}`}
@@ -39,6 +39,7 @@ const AgentCard = ({ property }) => {
             <div className="flex flex-col items-center gap-2">
                 <h2 className="text-2xl font-semibold">{name}</h2>
                 <h6 className="text-base font-medium">Agent Imobiliar</h6>
+                <h6 className="text-base font-medium">{phoneNr}</h6>
                    {/* Show delete button if the user is an admin */}
             {session?.user?.type === 'admin' && (
                 <button

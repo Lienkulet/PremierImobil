@@ -1,113 +1,129 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import {signIn, signOut, useSession} from 'next-auth/react'
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 const Navbar = () => {
     const [menu, setMenu] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // Track user login state
     const router = useRouter();
-    const {data: session} = useSession();
+    const { data: session } = useSession(); // Get user session info
 
     const handleMenu = (e) => {
         e.preventDefault();
         setMenu(!menu);
     };
 
+    const handleCloseMenu = () => {
+        setMenu(false);
+    };
+
     return (
-        <nav className='w-full md:px-[56px] py-[33px] flex flex-row md:items-center md:justify-between justify-between relative'>
-            <div className='flex flex-row justify-between gap-[60px] pl-6'>
-                <Link href='/' className='text-mainOrange font-bold text-2xl w-fit'>
+        <nav className='w-full px-4 md:px-[56px] py-[33px] flex items-center justify-between relative'>
+            {/* Logo */}
+            <div className='flex flex-row justify-between items-center w-full md:w-auto'>
+                <Link href='/' className='text-mainOrange font-bold text-2xl' onClick={handleCloseMenu}>
                     PremierImobil
                 </Link>
-                <Link href='/' className='text-white hover:text-mainOrange duration-1000 hidden md:flex font-normal text-xl w-fit'>
+                <button className="md:hidden" onClick={handleMenu}>
+                    <Image src='/navburger.svg' alt='navburger' width={40} height={40} />
+                </button>
+            </div>
+
+            {/* Desktop Links */}
+            <div className='hidden md:flex md:flex-row items-center gap-6'>
+                <Link href='/' className='text-white hover:text-mainOrange duration-500 text-xl'>
                     Acasă
                 </Link>
-                <Link href='/proprietati/apartamente' className='text-white hover:text-mainOrange duration-1000 hidden md:flex font-normal text-xl w-fit'>
+                <Link href='/proprietati/apartamente' className='text-white hover:text-mainOrange duration-500 text-xl'>
                     Imobile
                 </Link>
-                <Link href='/about' className='text-white hover:text-mainOrange duration-1000 hidden md:flex font-normal text-xl w-fit'>
+                <Link href='/about' className='text-white hover:text-mainOrange duration-500 text-xl'>
                     Despre Noi
                 </Link>
-                <Link href='/contact' className='text-white hover:text-mainOrange duration-1000 hidden md:flex font-normal text-xl w-fit'>
+                <Link href='/contact' className='text-white hover:text-mainOrange duration-500 text-xl'>
                     Contacte
                 </Link>
-                <Link href='/blog' className='text-white hover:text-mainOrange duration-1000 hidden md:flex font-normal text-xl w-fit'>
+                <Link href='/blog' className='text-white hover:text-mainOrange duration-500 text-xl'>
                     Blog
                 </Link>
-                <Link href='/recomandate'
-                    className='text-white hover:text-mainOrange duration-1000 hidden md:flex font-normal text-xl w-fit'>
+                <Link href='/recomandate' className='text-white hover:text-mainOrange duration-500 text-xl'>
                     Imobile Recomandate
                 </Link>
             </div>
-            <div className="flex flex-row items-center justify-center gap-4">
-                {/* Conditional rendering based on login state */}
+
+            {/* Desktop Auth Buttons */}
+            <div className="hidden md:flex flex-row items-center gap-4">
                 {session?.user ? (
-                    <div className='hidden md:flex flex-row items-center gap-4'>
-                        <Link href={'/dashboard'}
-                            className='text-white hover:text-mainOrange duration-1000 font-normal text-xl'>
+                    <>
+                        <Link href='/dashboard' className='text-white hover:text-mainOrange duration-500 text-xl'>
                             Dashboard
                         </Link>
-                        <button
-                            onClick={() => signOut()}
-                            className='text-white hover:text-mainOrange duration-1000 font-normal text-xl'>
+                        <button onClick={() => signOut()} className='text-white hover:text-mainOrange duration-500 text-xl'>
                             Sign out
                         </button>
-                    </div>
+                    </>
                 ) : (
-                    <button onClick={() => {signIn()}}
-                     className='hidden md:flex flex-row items-center gap-2 justify-center bg-mainOrange text-white text-lg font-normal px-[24px] py-[15px] rounded-lg'>
-                        <Image
-                            src='/singIn.svg'
-                            alt='SingIn Img'
-                            width={16}
-                            height={16}
-                        />
+                    <button onClick={() => signIn()} className='bg-mainOrange text-white text-lg px-6 py-2 rounded-lg'>
                         Sign In
                     </button>
                 )}
-                <button>
-                    <Image src='/navburger.svg' alt='navburger' width={40} height={40} onClick={handleMenu} className='flex md:hidden' />
-                </button>
             </div>
-            <div className={`md:hidden ${menu ? 'flex' : 'hidden'} duration-1000 ease-in-out flex-col gap-4 pl-6 pt-6 pb-6 absolute top-20 w-full z-10 bg-matteBlack`}>
+
+            {/* Mobile Menu */}
+            <div className={`md:hidden ${menu ? 'flex' : 'hidden'} duration-500 flex-col gap-4 pl-6 pt-6 pb-6 absolute top-20 w-full z-10 bg-matteBlack`}>
                 <h3 className='text-white text-xl font-medium'>Vânzare</h3>
-                <Link href='/proprietati/apartamente' className='text-mainOrange duration-1000 font-normal text-xl w-fit'>
+                <Link href='/proprietati/apartamente' className='text-mainOrange text-xl' onClick={handleCloseMenu}>
                     Apartamente
                 </Link>
-                <Link href='/proprietati/comercial' className='text-mainOrange duration-1000 font-normal text-xl w-fit'>
+                <Link href='/proprietati/comercial' className='text-mainOrange text-xl' onClick={handleCloseMenu}>
                     Spații Comerciale
                 </Link>
-                <Link href='/proprietati/case' className='text-mainOrange duration-1000 font-normal text-xl w-fit'>
+                <Link href='/proprietati/case' className='text-mainOrange text-xl' onClick={handleCloseMenu}>
                     Case
                 </Link>
-                <Link href='/proprietati/terenuri' className='text-mainOrange duration-1000 font-normal text-xl w-fit'>
+                <Link href='/proprietati/terenuri' className='text-mainOrange text-xl' onClick={handleCloseMenu}>
                     Terenuri
                 </Link>
                 <h3 className='text-white text-xl font-medium'>Pagini</h3>
-                <Link href='/' className='text-mainOrange duration-1000 font-normal text-xl w-fit'>
+                <Link href='/' className='text-mainOrange text-xl' onClick={handleCloseMenu}>
                     Acasă
                 </Link>
-                <Link href='/proprietati/apartamente' className='text-mainOrange duration-1000 font-normal text-xl w-fit'>
+                <Link href='/proprietati/apartamente' className='text-mainOrange text-xl' onClick={handleCloseMenu}>
                     Imobile
                 </Link>
-                <Link href='/about' className='text-mainOrange duration-1000 font-normal text-xl w-fit'>
+                <Link href='/about' className='text-mainOrange text-xl' onClick={handleCloseMenu}>
                     Despre Noi
                 </Link>
-                <Link href='/contact' className='text-mainOrange duration-1000 font-normal text-xl w-fit'>
+                <Link href='/contact' className='text-mainOrange text-xl' onClick={handleCloseMenu}>
                     Contacte
                 </Link>
-                <Link href='/blog' className='text-mainOrange duration-1000 font-normal text-xl w-fit'>
+                <Link href='/blog' className='text-mainOrange text-xl' onClick={handleCloseMenu}>
                     Blog
                 </Link>
-                <Link href='/recomandate' className='text-mainOrange duration-1000 font-normal text-xl w-fit'>
+                <Link href='/recomandate' className='text-mainOrange text-xl' onClick={handleCloseMenu}>
                     Imobile Recomandate
                 </Link>
+
+                {/* Conditionally render Login or Dashboard in mobile view */}
+                {session?.user ? (
+                    <>
+                        <Link href='/dashboard' className='text-white hover:text-mainOrange duration-500 text-xl w-full text-center' onClick={handleCloseMenu}>
+                            Dashboard
+                        </Link>
+                        <button onClick={() => signOut()} className='text-white hover:text-mainOrange duration-500 text-xl'>
+                            Sign out
+                        </button>
+                    </>
+                ) : (
+                    <Link href='/login' className='text-mainOrange text-xl' onClick={handleCloseMenu}>
+                        Login
+                    </Link>
+                )}
             </div>
         </nav>
     );
-}
+};
 
 export default Navbar;

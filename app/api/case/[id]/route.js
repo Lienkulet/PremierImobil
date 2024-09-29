@@ -5,7 +5,7 @@ export async function GET(req, {params: {id}}){
     await db.connect();
 
     try {
-        const newCase = await Case.findById(id);
+        const newCase = await Case.findById(id).populate('agentId');
 
         return new Response(JSON.stringify(newCase), {status: 200});
     } catch (error) {

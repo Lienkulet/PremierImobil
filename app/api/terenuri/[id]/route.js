@@ -5,7 +5,7 @@ export async function GET(req, {params: {id}}){
     await db.connect();
 
     try {
-        const add = await Terenuri.findById(id);
+        const add = await Terenuri.findById(id).populate('agentId');
 
         return new Response(JSON.stringify(add), {status: 200});
     } catch (error) {

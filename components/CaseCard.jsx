@@ -6,11 +6,11 @@ const CaseCard = ({ property }) => {
         type, price, supraface, images } = property
     return (
         <div
-            className='flex flex-col w-[350px] md:h-[610px] h-[700px] md:w-[400px] bg-matteBlack border-solid border-2 p-4 border-lightGrey rounded-xl'>
+            className='flex flex-col w-[350px] md:h-[610px] h-[700px] md:w-[300px] bg-matteBlack border-solid border-2 p-4 border-lightGrey rounded-xl'>
             <img src={`${images[0]}`} alt="" className='h-[260px] w-full rounded-xl' />
             <div className='p-2'>
                 <div>
-                    <h3 className='text-white text-2xl font-semibold'>{name}</h3>
+                    <h3 className='text-white text-xl font-semibold'>{name}</h3>
                     <p className='font-normal text-sm text-textGrey gap-2 mt-4 flex flex-row items-center'>
                         <Image src='/locationicon.svg' alt='left' width={15} height={15} />
                         {address}
@@ -43,10 +43,6 @@ const CaseCard = ({ property }) => {
                         <h5 className='text-mainOrange text-sm font-light'>Vânzare</h5>
                         <h3 className='text-white font-semibold text-2xl'>{price}€</h3>
                     </div>
-                    <Link href={`/imobil/${_id}?type=case`}
-                        className='bg-mainOrange flex items-center justify-center rounded-xl w-full max-w-[70px]'>
-                        <Image src='/leftarrow.svg' alt='left' width={20} height={20} />
-                    </Link>
                 </div>
             </div>
         </div>

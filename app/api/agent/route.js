@@ -20,7 +20,7 @@ export async function POST(req){
     try {
         await db.connect()
 
-        const {name, password: pass,email, photoUrl} = await req.json()
+        const {name, password: pass,email, phoneNr,photoUrl} = await req.json()
 
         const isExisting = await User.findOne({email});
             console.log(email, photoUrl);
@@ -31,7 +31,7 @@ export async function POST(req){
 
         const hashedPassword = await bcrypt.hash(pass, 10)
 
-        const newUser = await User.create({name,password: hashedPassword,  email, type: 'agent', photoUrl})
+        const newUser = await User.create({name,password: hashedPassword,  email, type: 'admin', photoUrl, phoneNr})
 
         return new Response(JSON.stringify(newUser), {status: 201})
     } catch (error) {

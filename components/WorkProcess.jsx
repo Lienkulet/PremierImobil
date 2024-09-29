@@ -1,7 +1,7 @@
 
 const WorkProcess = () => {
     return (
-        <section className="flex flex-col items-center justify-center gap-12 md:my-72">
+        <section className="hidden md:flex flex-col items-center justify-center gap-12 md:my-72">
             <h1 className="text-white font-bold text-5xl">Procesul de lucru</h1>
             <div className="hidden md:flex flex-wrap items-center justify-start md:gap-8 gap-4 gap-y-4">
                 <div className="flex flex-col items-center justify-center gap-4">
