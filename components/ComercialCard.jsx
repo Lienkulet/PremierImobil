@@ -4,8 +4,8 @@ import Link from 'next/link'
 const ComercialCard = ({ property }) => {
     const { _id, name, desc, address, region, sector, destination, price, supraface, images } = property
     return (
-        <div
-            className='flex flex-col w-[350px] h-[500px] md:w-[400px] bg-matteBlack border-solid border-2 p-4 border-lightGrey rounded-xl'>
+        <Link href={`/imobil/${_id}?type=comercial`}
+        className='flex flex-col w-[350px] h-[500px] md:w-[400px] bg-matteBlack border-solid border-2 p-4 border-lightGrey rounded-xl'>
             <img src={`${images[0]}`} alt="" className='h-[260px] w-full rounded-xl' />
             <div className='p-2'>
                 <div>
@@ -31,13 +31,9 @@ const ComercialCard = ({ property }) => {
                         <h5 className='text-mainOrange text-sm font-light'>Vânzare</h5>
                         <h3 className='text-white font-semibold text-2xl'>{price}€</h3>
                     </div>
-                    <Link href={`/imobil/${_id}?type=comercial`}
-                        className='bg-mainOrange flex items-center justify-center rounded-xl w-full max-w-[70px]'>
-                        <Image src='/leftarrow.svg' alt='left' width={20} height={20} />
-                    </Link>
                 </div>
             </div>
-        </div>
+        </Link>
     )
 }
 

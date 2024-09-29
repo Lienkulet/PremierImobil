@@ -4,7 +4,7 @@ import Link from 'next/link'
 const TerenCard = ({ property }) => {
     const { _id, name, desc, address, region, sector, destination, price, supraface, images } = property
     return (
-        <div
+        <Link href={`/imobil/${_id}?type=terenuri`}
             className='flex flex-col w-[350px] md:h-[530px] h-[600px] md:w-[400px] bg-matteBlack border-solid border-2 p-4 border-lightGrey rounded-xl'>
             <img src={`${images[0]}`} alt="" className='h-[260px] w-full rounded-xl' />
             <div className='p-2'>
@@ -18,7 +18,7 @@ const TerenCard = ({ property }) => {
                 <div className='flex md:flex-row flex-col justify-between mt-2 mb-5'>
                     <div>
                         <p className='font-normal text-sm text-white gap-2 mt-4 flex flex-row items-center'>
-                             {destination}
+                            {destination}
                         </p>
                         <p className='font-normal text-sm text-white gap-2 mt-4 flex flex-row items-center'>
                             <Image src='/space.svg' alt='left' width={15} height={15} />
@@ -31,13 +31,9 @@ const TerenCard = ({ property }) => {
                         <h5 className='text-mainOrange text-sm font-light'>Vânzare</h5>
                         <h3 className='text-white font-semibold text-2xl'>{price}€</h3>
                     </div>
-                    <Link href={`/imobil/${_id}?type=terenuri`}
-                        className='bg-mainOrange flex items-center justify-center rounded-xl w-full max-w-[70px]'>
-                        <Image src='/leftarrow.svg' alt='left' width={20} height={20} />
-                    </Link>
                 </div>
             </div>
-        </div>
+        </Link>
     )
 }
 

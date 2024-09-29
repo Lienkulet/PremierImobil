@@ -5,8 +5,8 @@ const CaseCard = ({ property }) => {
     const { _id, name, desc, address, link, floor, floors, locativeFont, rooms, baths, balcony, parking,
         type, price, supraface, images } = property
     return (
-        <div
-            className='flex flex-col w-[350px] md:h-[610px] h-[700px] md:w-[300px] bg-matteBlack border-solid border-2 p-4 border-lightGrey rounded-xl'>
+        <Link href={`/imobil/${_id}?type=case`}
+        className='flex flex-col w-[350px] md:h-[610px] h-[700px] md:w-[300px] bg-matteBlack border-solid border-2 p-4 border-lightGrey rounded-xl'>
             <img src={`${images[0]}`} alt="" className='h-[260px] w-full rounded-xl' />
             <div className='p-2'>
                 <div>
@@ -45,7 +45,7 @@ const CaseCard = ({ property }) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </Link>
     )
 }
 
