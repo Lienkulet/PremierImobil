@@ -6,8 +6,8 @@ const CaseCard = ({ property }) => {
         type, price, supraface, images } = property
     return (
         <Link href={`/imobil/${_id}?type=case`}
-        className='flex flex-col w-[350px] md:h-[610px] h-[700px] md:w-[300px] bg-matteBlack border-solid border-2 p-4 border-lightGrey rounded-xl'>
-            <img src={`${images[0]}`} alt="" className='h-[260px] w-full rounded-xl' />
+        className='flex flex-col w-[300px] md:w-[300px] h-[600px] md:h-[650px] bg-matteBlack border-solid border-2 p-4 border-lightGrey rounded-xl duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-white transition-transform'>
+        <img src={`${images[0]}`} alt="" className='h-[260px] w-full rounded-xl' />
             <div className='p-2'>
                 <div>
                     <h3 className='text-white text-xl font-semibold'>{name}</h3>
