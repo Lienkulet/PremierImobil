@@ -6,7 +6,7 @@ const HomeHero = () => {
     <section>
       <div className="relative z-10">
         <img src="/headerimg2.png" className="hidden md:flex" />
-        <div className="absolute top-10 w-full flex items-center justify-center">
+        <div className="absolute top-20 w-full flex items-center justify-center">
           <h1 className="text-white text-center max-w-[700px] text-6xl font-bold ">Găsiți-vă casa <span className="text-mainOrange">visurilor</span>  astăzi !</h1>
         </div>
       </div>
