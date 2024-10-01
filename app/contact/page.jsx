@@ -5,7 +5,10 @@ import { useState } from 'react'
 
 const Contact = () => {
   const [radio, setRadio] = useState('apartamente');
-  const [phone, setPhone] = useState('+373 69 946 741'); // Add state for the phone input
+  const [phone, setPhone] = useState('+373 69 946 741');
+  const [email, setEmail] = useState('example@gmail.com');
+  const [name, setName] = useState('John');
+  const [surname, setSurName] = useState('Doe');
 
   let handleRadio = (name) => {
     if(name === 'casa') setRadio('casa');
@@ -63,19 +66,22 @@ const Contact = () => {
               <label className='flex flex-col gap-2'>
                 <h4 className='font-medium text-sm text-textGrey'>Numele</h4>
                 <input type="text" placeholder='Ion' className='pb-2 bg-transparent focus:border-b-1 focus:border-white outline-none
-                 text-white placeholder:text-textGrey border-b-[1px] border-solid borger-textGray md:w-[200px] w-full' />
+                 text-white placeholder:text-textGrey border-b-[1px] border-solid borger-textGray md:w-[200px] w-full'
+                 value={name} onChange={e => setName(e.target.value)} />
               </label>
               <label className='flex flex-col gap-2'>
                 <h4 className='font-medium text-sm text-textGrey'>Prenumele</h4>
                 <input type="text" placeholder='Doe' className='pb-2 bg-transparent focus:border-b-1 focus:border-white outline-none
-                 text-white placeholder:text-textGrey border-b-[1px] border-solid borger-textGray md:w-[200px] w-full' />
+                 text-white placeholder:text-textGrey border-b-[1px] border-solid borger-textGray md:w-[200px] w-full'
+                 value={surname} onChange={e => setSurName(e.target.value)} />
               </label>
             </label>
             <label className='flex md:flex-row md:mt-10 mt-2 flex-col justify-between gap-2 md:gap-10 w-full'>
               <label className='flex flex-col gap-2'>
                 <h4 className='font-medium text-sm text-textGrey'>Email</h4>
                 <input type="email" placeholder='example@gmail.com' className='pb-2 bg-transparent focus:border-b-1 focus:border-white outline-none text-white 
-                placeholder:text-textGrey border-b-[1px] border-solid borger-textGray md:w-[200px] w-full' />
+                placeholder:text-textGrey border-b-[1px] border-solid borger-textGray md:w-[200px] w-full' 
+                value={email} onChange={e => setEmail(e.target.value)}/>
               </label>
               <label className='flex flex-col gap-2'>
                 <h4 className='font-medium text-sm text-textGrey'>Telefon</h4>
