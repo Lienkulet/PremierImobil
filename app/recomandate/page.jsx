@@ -8,7 +8,7 @@ const Recomandate = () => {
   useEffect(() => {
   const fetchProperties = async () => {
     try {
-      const response = await fetch('/api/add'); // Adjust the endpoint based on your API
+      const response = await fetch('/api/recomandate'); // Adjust the endpoint based on your API
       const data = await response.json();
       setProperties(data); // Store the latest 5 properties
     } catch (error) {
@@ -18,6 +18,7 @@ const Recomandate = () => {
 
   fetchProperties(); // Call the function to fetch properties on component mount
 }, []);
+
 return (
   <section>
     <div className="container">

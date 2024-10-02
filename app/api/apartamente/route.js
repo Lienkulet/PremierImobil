@@ -17,7 +17,7 @@ export async function POST(req){
 
     try {
         const body = await req.json();
-
+        console.log(body)
         const newAdd = await Add.create(body);
     
         return new Response(JSON.stringify(newAdd), {status: 200});

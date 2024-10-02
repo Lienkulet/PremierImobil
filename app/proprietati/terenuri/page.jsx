@@ -23,9 +23,15 @@ const Terenuri = () => {
 
   // Mapping of regions to sectors
   const sectorsByRegion = {
-    'Chişinău': ['Buiucani', 'Centru', 'Botanica', 'Telecentru', 'Ciocana', 'Râșcani'],
-    'Suburbii': ['Anenii Noi', 'Truşeni', 'Durlesti', 'Băcioi', 'Bubuieci']
-  };
+    'Chişinău': ['Buiucani', 'Centru', 'Botanica', 'Telecentru', "Poșta Veche"],
+    'Suburbii': [
+        'Anenii Noi', 'Truşeni', 'Durlesti', 'Băcioi', 'Bubuieci', 'Ciorescu',
+        'Codru', 'Cricova', 'Dumbrava', 'Ialoveni', 'Măgdăceşti', 'Stăuceni',
+        'Tohatin', 'Vadul lui Vodă', 'Cojuşna', 'Budeşti', 'Sîngera', 'Cruzesti',
+        'Străşeni', 'Orhei', 'Ghidighici', 'Grătieşti', 'Vatra', 'Coloniţa',
+        'Cheltuitori', 'Cahul', 'Peresecina'
+    ]
+};
 
   // Fetch properties from API based on type
   useEffect(() => {

@@ -14,9 +14,9 @@ const Dashboard = () => {
     const [formDisplay, setFormDisplay] = useState(1); // Default formDisplay set to 1
     const [passwordForm, setPasswordForm] = useState(""); // 'create' or 'update'
 
-      // State for the list of agents
-      const [agents, setAgents] = useState([]);
-      const [selectedAgent, setSelectedAgent] = useState('');
+    // State for the list of agents
+    const [agents, setAgents] = useState([]);
+    const [selectedAgent, setSelectedAgent] = useState('');
 
     // State variables for property creation
     const [name, setName] = useState('');
@@ -87,10 +87,16 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
     const [sector, setSector] = useState('');
     // Available sectors based on the selected region
     const sectorsByRegion = {
-        'Chişinău': ['Buiucani', 'Centru', 'Botanica', 'Telecentru'],
-        'Suburbii': ['Anenii Noi', 'Truşeni', 'Durlesti', 'Băcioi', 'Bubuieci'],
+        'Chişinău': ['Buiucani', 'Centru', 'Botanica', 'Telecentru', "Poșta Veche"],
+        'Suburbii': [
+            'Anenii Noi', 'Truşeni', 'Durlesti', 'Băcioi', 'Bubuieci', 'Ciorescu',
+            'Codru', 'Cricova', 'Dumbrava', 'Ialoveni', 'Măgdăceşti', 'Stăuceni',
+            'Tohatin', 'Vadul lui Vodă', 'Cojuşna', 'Budeşti', 'Sîngera', 'Cruzesti',
+            'Străşeni', 'Orhei', 'Ghidighici', 'Grătieşti', 'Vatra', 'Coloniţa',
+            'Cheltuitori', 'Cahul', 'Peresecina'
+        ]
     };
-   
+
 
     const s3 = new AWS.S3({
         accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,
@@ -98,8 +104,8 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
         region: process.env.NEXT_PUBLIC_AWS_REGION,
     });
 
-      // Fetch the list of agents on component mount
-      useEffect(() => {
+    // Fetch the list of agents on component mount
+    useEffect(() => {
         const fetchAgents = async () => {
             try {
                 const res = await fetch('/api/agent');
@@ -116,14 +122,14 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
     // Function to upload agent photo 
     const uploadAgentPhoto = async () => {
         if (!agentPhoto) return '';
-    
+
         const params = {
             Bucket: process.env.NEXT_PUBLIC_AWS_S3_BUCKET_NAME,
-            Key: `agent-photos/${Date.now()}-${agentPhoto.name}`, 
+            Key: `agent-photos/${Date.now()}-${agentPhoto.name}`,
             Body: agentPhoto,
             ContentType: agentPhoto.type,
         };
-    
+
         try {
             const data = await s3.upload(params).promise();
             return data.Location;
@@ -156,7 +162,7 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                     email: agentEmail,
                     phoneNr: agentPhone,
                     password: agentPass,
-                    photoUrl: uploadedPhotoUrl, 
+                    photoUrl: uploadedPhotoUrl,
                 }),
             });
 
@@ -179,17 +185,17 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
     // Function to upload multiple property images to Cloudinary
     const uploadPropertyImages = async () => {
         if (photos.length === 0) return [];
-    
+
         const imageUrls = [];
-    
+
         for (let i = 0; i < photos.length; i++) {
             const params = {
                 Bucket: process.env.NEXT_PUBLIC_AWS_S3_BUCKET_NAME,
-                Key: `property-photos/${Date.now()}-${photos[i].name}`, 
+                Key: `property-photos/${Date.now()}-${photos[i].name}`,
                 Body: photos[i],
                 ContentType: photos[i].type,
             };
-    
+
             try {
                 const data = await s3.upload(params).promise();
                 imageUrls.push(data.Location); // Add the uploaded image URL to array
@@ -197,10 +203,10 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                 console.log("Error uploading property image to S3:", error);
             }
         }
-    
-        return imageUrls; 
+
+        return imageUrls;
     };
-    
+
 
     // Function to handle form submission for property creation
     const handlePropertySubmit = async (e, val) => {
@@ -213,7 +219,7 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
         }
 
         const toastId = toast.loading('Creating property...');
-    
+
         try {
             const images = await uploadPropertyImages(); // Get all image URLs
             // Define a common object to hold the property details
@@ -226,10 +232,10 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                 supraface,
                 category,
                 tipAnunt,
-                images, 
+                images,
                 region,
                 sector,
-                floor,     
+                floor,
                 floors,
                 locativeFont,
                 propertyCondition,
@@ -241,7 +247,7 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                 agentId: selectedAgent,
                 recomandate
             };
-    
+
             let apiEndpoint = '';
             let namee = '';
 
@@ -249,27 +255,27 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
             switch (formDisplay) {
                 case 1: // Apartamente
                     apiEndpoint = '/api/apartamente';
-                    namee=`Apartament cu ${rooms} camere, ${address}, ${region}, ${sector}`
+                    namee = `Apartament cu ${rooms}, ${address}, ${region}, ${sector}`
                     break;
                 case 2: // Case
                     apiEndpoint = '/api/case';
-                    namee=`Casă cu ${floors} nivele, ${address}, ${region}, ${sector}`
+                    namee = `Casă cu ${floors} nivele, ${address}, ${region}, ${sector}`
                     break;
                 case 3: // Spatii Comerciale
                     apiEndpoint = '/api/comercial';
-                    namee=`Spaţiu Comercial, ${address}, ${region}, ${sector}`
+                    namee = `Spaţiu Comercial, ${address}, ${region}, ${sector}`
                     break;
                 case 4: // Terenuri
                     apiEndpoint = '/api/terenuri';
-                    namee=`Teren, ${address}, ${region}, ${sector}`
+                    namee = `Teren, ${address}, ${region}, ${sector}`
                     break;
                 default:
                     throw new Error("Invalid property type");
             }
 
             setName(namee);
-            propertyData.name = name;
-            console.log(recomandate + ' ' + propertyData.name)
+            propertyData.name = namee;
+            console.log(propertyData.recomandate + ' ' + propertyData.name)
             const res = await fetch(apiEndpoint, {
                 method: 'POST',
                 headers: {
@@ -277,26 +283,26 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                 },
                 body: JSON.stringify(propertyData),  // Send the full property data object
             });
-    
+
             if (!res.ok) {
                 throw new Error("Error occurred");
             }
-    
+
             const property = await res.json();
             // Update the loading toast to success
             toast.success('Property created successfully!', {
-                id: toastId, 
-            });    
+                id: toastId,
+            });
             router.push(`/imobil/${property?._id}?type=${val}`);
         } catch (error) {
             console.log(error);
             toast.error('A apărut o eroare la crearea proprietății', {
-                id: toastId,  
+                id: toastId,
             });
         }
     };
-    
-    
+
+
     if (status === 'unauthenticated') {
         return <h1 className="h-screen flex items-center justify-center text-white text-5xl">Acces Interzis</h1>
     }
@@ -304,16 +310,16 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
         <section className="flex flex-col gap-4 pb-12">
             {/* CREATE AGENT (visible for admin users) */}
             {session?.user.type === 'admin' ?
-            <div className='w-full'>
+                <div className='w-full'>
                     <div className="flex flex-col md:flex-row items-start justify-start gap-4 pt-4 py-4">
                         <button
-                            className={`md:w-40 h-12 duration-300 ease-in ${passwordForm === "create"? 'bg-mainOrange' : 'bg-matteBlack'} border border-solid border-white  text-white rounded-xl font-normal`}
+                            className={`md:w-40 h-12 duration-300 ease-in ${passwordForm === "create" ? 'bg-mainOrange' : 'bg-matteBlack'} border border-solid border-white  text-white rounded-xl font-normal`}
                             onClick={() => setPasswordForm("create")}
                         >
                             Creare Agent
                         </button>
                         <button
-                            className={`md:w-40 h-12 duration-300 ease-in ${passwordForm === "update"? 'bg-mainOrange' : 'bg-matteBlack'} border border-solid border-white text-white rounded-xl font-normal`}
+                            className={`md:w-40 h-12 duration-300 ease-in ${passwordForm === "update" ? 'bg-mainOrange' : 'bg-matteBlack'} border border-solid border-white text-white rounded-xl font-normal`}
                             onClick={() => setPasswordForm("update")}
                         >
                             Schimbare Parola
@@ -322,69 +328,69 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
 
                     {/* Conditionally render the password forms */}
                     {passwordForm === "update" && <PasswordUpdateForm />}
-                    {passwordForm === "create" && 
-                     <form onSubmit={handleAgentSubmit}> 
-                     <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-white">
-                         {/* Form fields for agent creation */}
-                         <div className="flex flex-col items-start justify-start gap-2">
-                             <h4 className="text-white text-lg">Nume</h4>
-                             <input
-                                 type="text"
-                                 value={agentName}
-                                 onChange={(e) => setAgentName(e.target.value)}
-                                 placeholder="Nume agent"
-                                 className="w-full bg-lightGrey p-2 rounded-xl text-white"
-                             />
-                         </div>
- 
-                         <div className="flex flex-col items-start justify-start gap-2">
-                             <h4 className="text-white text-lg">Email</h4>
-                             <input
-                                 type="text"
-                                 value={agentEmail}
-                                 onChange={(e) => setAgentEmail(e.target.value)}
-                                 placeholder="exemplu@gmail.com"
-                                 className="w-full bg-lightGrey p-2 rounded-xl text-white"
-                             />
-                         </div>
-                         <div className="flex flex-col items-start justify-start gap-2">
-                             <h4 className="text-white text-lg">Telefon</h4>
-                             <input
-                                 type="text"
-                                 value={agentPhone}
-                                 onChange={(e) => setAgentPhone(e.target.value)}
-                                 placeholder="078789732"
-                                 className="w-full bg-lightGrey p-2 rounded-xl text-white"
-                             />
-                         </div>
-                         <div className="flex flex-col items-start justify-start gap-2">
-                             <h4 className="text-white text-lg">Parola</h4>
-                             <input
-                                 type="password"
-                                 value={agentPass}
-                                 onChange={(e) => setAgentPass(e.target.value)}
-                                 placeholder="Introdu parola"
-                                 className="w-full bg-lightGrey p-2 rounded-xl text-white"
-                             />
-                         </div>
-                         <div className="flex flex-col items-start justify-start gap-2">
-                             <h4 className="text-white text-lg">Adaugă Poză</h4>
-                             <input
-                                 type="file"
-                                 onChange={(e) => setAgentPhoto(e.target.files[0])} // Handle single file selection
-                                 className="bg-lightGrey p-3 rounded-2xl text-white w-full"
-                             />
-                         </div>
-                     </div>
- 
-                     <button type="submit" className="w-full bg-mainOrange p-3 rounded-xl text-white mt-4">Adaugă</button>
-                 </form>}
+                    {passwordForm === "create" &&
+                        <form onSubmit={handleAgentSubmit}>
+                            <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-white">
+                                {/* Form fields for agent creation */}
+                                <div className="flex flex-col items-start justify-start gap-2">
+                                    <h4 className="text-white text-lg">Nume</h4>
+                                    <input
+                                        type="text"
+                                        value={agentName}
+                                        onChange={(e) => setAgentName(e.target.value)}
+                                        placeholder="Nume agent"
+                                        className="w-full bg-lightGrey p-2 rounded-xl text-white"
+                                    />
+                                </div>
 
-            </div>
-               
-                 :
-                <></> 
-            } 
+                                <div className="flex flex-col items-start justify-start gap-2">
+                                    <h4 className="text-white text-lg">Email</h4>
+                                    <input
+                                        type="text"
+                                        value={agentEmail}
+                                        onChange={(e) => setAgentEmail(e.target.value)}
+                                        placeholder="exemplu@gmail.com"
+                                        className="w-full bg-lightGrey p-2 rounded-xl text-white"
+                                    />
+                                </div>
+                                <div className="flex flex-col items-start justify-start gap-2">
+                                    <h4 className="text-white text-lg">Telefon</h4>
+                                    <input
+                                        type="text"
+                                        value={agentPhone}
+                                        onChange={(e) => setAgentPhone(e.target.value)}
+                                        placeholder="078789732"
+                                        className="w-full bg-lightGrey p-2 rounded-xl text-white"
+                                    />
+                                </div>
+                                <div className="flex flex-col items-start justify-start gap-2">
+                                    <h4 className="text-white text-lg">Parola</h4>
+                                    <input
+                                        type="password"
+                                        value={agentPass}
+                                        onChange={(e) => setAgentPass(e.target.value)}
+                                        placeholder="Introdu parola"
+                                        className="w-full bg-lightGrey p-2 rounded-xl text-white"
+                                    />
+                                </div>
+                                <div className="flex flex-col items-start justify-start gap-2">
+                                    <h4 className="text-white text-lg">Adaugă Poză</h4>
+                                    <input
+                                        type="file"
+                                        onChange={(e) => setAgentPhoto(e.target.files[0])} // Handle single file selection
+                                        className="bg-lightGrey p-3 rounded-2xl text-white w-full"
+                                    />
+                                </div>
+                            </div>
+
+                            <button type="submit" className="w-full bg-mainOrange p-3 rounded-xl text-white mt-4">Adaugă</button>
+                        </form>}
+
+                </div>
+
+                :
+                <></>
+            }
             <div className='flex flex-col md:flex-row items-center justify-center gap-4 pt-10'>
                 <button
                     className={`md:w-40 h-12 duration-300 ease-in ${formDisplay === 1 ? 'bg-mainOrange text-white' : 'bg-matteBlack border border-solid border-white text-white'} rounded-xl font-normal`}
@@ -406,8 +412,8 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                     onClick={() => setFormDisplay(4)}>
                     Terenuri
                 </button>
-                 {/* Dropdown to select agent */}
-                 <select
+                {/* Dropdown to select agent */}
+                <select
                     value={selectedAgent}
                     onChange={(e) => setSelectedAgent(e.target.value)}
                     className="w-full bg-matteBlack border border-solid border-white p-3 rounded-xl text-white"
@@ -419,7 +425,7 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                 </select>
                 <select
                     value={recomandate}
-                    onChange={(e) => {setrecomandate(e.target.value === 'true' ? true : false); console.log(recomandate)}}
+                    onChange={(e) => { setrecomandate(e.target.value === 'true' ? true : false); console.log(recomandate) }}
                     className="w-fit bg-matteBlack border border-solid border-white p-3 rounded-xl text-white"
                 >
                     <option value="">Adauga Recomandate</option>
@@ -430,8 +436,8 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
 
             {/* Conditionally render the appropriate form */}
             {formDisplay === 1 && (
-                <form onSubmit={(e) => {handlePropertySubmit(e, 'apartamente')} }>
-                <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-white">
+                <form onSubmit={(e) => { handlePropertySubmit(e, 'apartamente') }}>
+                    <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-white">
                         <div className="flex flex-col items-start justify-start gap-2">
                             <h4 className="text-white text-lg">Adaugă Descriere</h4>
                             <textarea
@@ -452,7 +458,7 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                             />
                         </div>
                         <div className="flex flex-col items-start justify-start gap-2">
-                        <h4 className="text-white text-lg">Nume Link</h4>
+                            <h4 className="text-white text-lg">Nume Link</h4>
                             <input
                                 type="text"
                                 value={linkName}
@@ -479,19 +485,19 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                             />
                         </div>
                         <div className="flex flex-col md:flex-row items-start justify-start gap-2">
-                            <select 
-                             value={category}
-                             onChange={(e) => setCategory(e.target.value)}
-                             className="w-full bg-lightGrey p-3 rounded-xl text-white"
+                            <select
+                                value={category}
+                                onChange={(e) => setCategory(e.target.value)}
+                                className="w-full bg-lightGrey p-3 rounded-xl text-white"
                             >
                                 <option value="Exclusive">Exclusive</option>
                                 <option value="Rezervat">Rezervat</option>
                                 <option value="Vândut">Vândut</option>
                             </select>
-                            <select 
-                             value={tipAnunt}
-                             onChange={(e) => setTipAnunt(e.target.value)}
-                             className="w-full bg-lightGrey p-3 rounded-xl text-white"
+                            <select
+                                value={tipAnunt}
+                                onChange={(e) => setTipAnunt(e.target.value)}
+                                className="w-full bg-lightGrey p-3 rounded-xl text-white"
                             >
                                 <option value="Chirie">Chirie</option>
                                 <option value="Vânzare">Vânzare</option>
@@ -505,6 +511,7 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                                 <input
                                     type="number"
                                     value={supraface}
+                                    min='1'
                                     onChange={(e) => setSupraface(Number(e.target.value))}
                                     className="w-[200px] bg-lightGrey p-2 rounded-xl text-white"
                                 />
@@ -516,6 +523,7 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                                 <input
                                     type="number"
                                     value={price}
+                                    min='1'
                                     onChange={(e) => setPrice(Number(e.target.value))}
                                     className="w-[200px] bg-lightGrey p-2 rounded-xl text-white"
                                 />
@@ -571,23 +579,27 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                                 >Bloc Nou</button>
                                 <button
                                     type='button'
-                                    onClick={(e) => setLocativeFont('Bloc Vechi')}
-                                    className={`p-3 rounded-2xl duration-300 ease-in ${locativeFont === 'Bloc Vechi' ? 'text-matteBlack bg-white' : 'text-white bg-lightGrey'} `}
-                                >Bloc Vechi</button>
+                                    onClick={(e) => setLocativeFont('Bloc Secundar')}
+                                    className={`p-3 rounded-2xl duration-300 ease-in ${locativeFont === 'Bloc Secundar' ? 'text-matteBlack bg-white' : 'text-white bg-lightGrey'} `}
+                                >Bloc Secundar</button>
                             </div>
                         </div>
                         <div className="bg-matteBlack flex flex-col p-4 gap-4 md:w-[500px] rounded-xl border border-solid border-white">
-                            <div className='flex flex-row items-center justify-start md:gap-6'>
                                 <div className="flex flex-row items-center justify-start gap-2 ">
-                                    <h4 className="text-white text-lg">Nr. Camere</h4>
-                                    <input
-                                        type="number"
+                                <select className="w-full bg-lightGrey p-3 rounded-xl text-white"
                                         value={rooms}
-                                        min='1'
-                                        onChange={(e) => setRooms(Number(e.target.value))}
-                                        className="w-[50px] bg-lightGrey p-2 rounded-xl text-white"
-                                    />
-                                </div>
+                                        onChange={(e) => setRooms(e.target.value)}>
+                                        <option value="">Nr. camere</option>
+                                        <option value="1">1 Cameră</option>
+                                        <option value="1+living">1 Cameră+Living</option>
+                                        <option value="2">2 Camere</option>
+                                        <option value="2+living">2 Camere+Living</option>
+                                        <option value="3">3 Camere</option>
+                                        <option value="3+living">3 Camere+Living</option>
+                                        <option value="4">4 Camere</option>
+                                        <option value="4+living">4 Camere+Living</option>
+                                        <option value="5+">5+ Camere</option>
+                                    </select>
                                 <div className="flex flex-row items-center justify-start gap-2 ">
                                     <h4 className="text-white text-lg">Băi</h4>
                                     <input
@@ -678,7 +690,7 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
             )}
 
             {formDisplay === 2 && (
-                <form onSubmit={(e) => {handlePropertySubmit(e, 'case')} }>
+                <form onSubmit={(e) => { handlePropertySubmit(e, 'case') }}>
                     <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-white">
                         <div className="flex flex-col items-start justify-start gap-2">
                             <h4 className="text-white text-lg">Adaugă Descriere</h4>
@@ -700,7 +712,7 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                             />
                         </div>
                         <div className="flex flex-col items-start justify-start gap-2">
-                        <h4 className="text-white text-lg">Nume Link</h4>
+                            <h4 className="text-white text-lg">Nume Link</h4>
                             <input
                                 type="text"
                                 value={linkName}
@@ -727,19 +739,19 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                             />
                         </div>
                         <div className="flex flex-col md:flex-row items-start justify-start gap-2">
-                            <select 
-                             value={category}
-                             onChange={(e) => setCategory(e.target.value)}
-                             className="w-full bg-lightGrey p-3 rounded-xl text-white"
+                            <select
+                                value={category}
+                                onChange={(e) => setCategory(e.target.value)}
+                                className="w-full bg-lightGrey p-3 rounded-xl text-white"
                             >
                                 <option value="Exclusive">Exclusive</option>
                                 <option value="Rezervat">Rezervat</option>
                                 <option value="Vândut">Vândut</option>
                             </select>
-                            <select 
-                             value={tipAnunt}
-                             onChange={(e) => setTipAnunt(e.target.value)}
-                             className="w-full bg-lightGrey p-3 rounded-xl text-white"
+                            <select
+                                value={tipAnunt}
+                                onChange={(e) => setTipAnunt(e.target.value)}
+                                className="w-full bg-lightGrey p-3 rounded-xl text-white"
                             >
                                 <option value="Chirie">Chirie</option>
                                 <option value="Vânzare">Vânzare</option>
@@ -753,6 +765,7 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                                 <input
                                     type="number"
                                     value={supraface}
+                                    min='1'
                                     onChange={(e) => setSupraface(Number(e.target.value))}
                                     className="w-[200px] bg-lightGrey p-2 rounded-xl text-white"
                                 />
@@ -764,6 +777,7 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                                 <input
                                     type="number"
                                     value={price}
+                                    min='1'
                                     onChange={(e) => setPrice(Number(e.target.value))}
                                     className="w-[200px] bg-lightGrey p-2 rounded-xl text-white"
                                 />
@@ -855,8 +869,8 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
             )}
 
             {formDisplay === 3 && (
-                <form onSubmit={(e) => {handlePropertySubmit(e, 'comercial')} }>
-                <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-white">
+                <form onSubmit={(e) => { handlePropertySubmit(e, 'comercial') }}>
+                    <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-white">
                         <div className="flex flex-col items-start justify-start gap-2">
                             <h4 className="text-white text-lg">Adaugă Descriere</h4>
                             <textarea
@@ -877,7 +891,7 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                             />
                         </div>
                         <div className="flex flex-col items-start justify-start gap-2">
-                        <h4 className="text-white text-lg">Nume Link</h4>
+                            <h4 className="text-white text-lg">Nume Link</h4>
                             <input
                                 type="text"
                                 value={linkName}
@@ -904,19 +918,19 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                             />
                         </div>
                         <div className="flex flex-col md:flex-row items-start justify-start gap-2">
-                            <select 
-                             value={category}
-                             onChange={(e) => setCategory(e.target.value)}
-                             className="w-full bg-lightGrey p-3 rounded-xl text-white"
+                            <select
+                                value={category}
+                                onChange={(e) => setCategory(e.target.value)}
+                                className="w-full bg-lightGrey p-3 rounded-xl text-white"
                             >
                                 <option value="Exclusive">Exclusive</option>
                                 <option value="Rezervat">Rezervat</option>
                                 <option value="Vândut">Vândut</option>
                             </select>
-                            <select 
-                             value={tipAnunt}
-                             onChange={(e) => setTipAnunt(e.target.value)}
-                             className="w-full bg-lightGrey p-3 rounded-xl text-white"
+                            <select
+                                value={tipAnunt}
+                                onChange={(e) => setTipAnunt(e.target.value)}
+                                className="w-full bg-lightGrey p-3 rounded-xl text-white"
                             >
                                 <option value="Chirie">Chirie</option>
                                 <option value="Vânzare">Vânzare</option>
@@ -991,8 +1005,8 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
             )}
 
             {formDisplay === 4 && (
-                <form onSubmit={(e) => {handlePropertySubmit(e, 'terenuri')} }>
-                <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-white">
+                <form onSubmit={(e) => { handlePropertySubmit(e, 'terenuri') }}>
+                    <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-white">
                         <div className="flex flex-col items-start justify-start gap-2">
                             <h4 className="text-white text-lg">Adaugă Descriere</h4>
                             <textarea
@@ -1013,7 +1027,7 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                             />
                         </div>
                         <div className="flex flex-col items-start justify-start gap-2">
-                        <h4 className="text-white text-lg">Nume Link</h4>
+                            <h4 className="text-white text-lg">Nume Link</h4>
                             <input
                                 type="text"
                                 value={linkName}
@@ -1040,19 +1054,19 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                             />
                         </div>
                         <div className="flex flex-col md:flex-row items-start justify-start gap-2">
-                            <select 
-                             value={category}
-                             onChange={(e) => setCategory(e.target.value)}
-                             className="w-full bg-lightGrey p-3 rounded-xl text-white"
+                            <select
+                                value={category}
+                                onChange={(e) => setCategory(e.target.value)}
+                                className="w-full bg-lightGrey p-3 rounded-xl text-white"
                             >
                                 <option value="Exclusive">Exclusive</option>
                                 <option value="Rezervat">Rezervat</option>
                                 <option value="Vândut">Vândut</option>
                             </select>
-                            <select 
-                             value={tipAnunt}
-                             onChange={(e) => setTipAnunt(e.target.value)}
-                             className="w-full bg-lightGrey p-3 rounded-xl text-white"
+                            <select
+                                value={tipAnunt}
+                                onChange={(e) => setTipAnunt(e.target.value)}
+                                className="w-full bg-lightGrey p-3 rounded-xl text-white"
                             >
                                 <option value="Chirie">Chirie</option>
                                 <option value="Vânzare">Vânzare</option>

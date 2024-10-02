@@ -29,9 +29,15 @@ const Page = () => {
 
   // Mapping of regions to sectors
   const sectorsByRegion = {
-    'Chişinău': ['Buiucani', 'Centru', 'Botanica', 'Telecentru', 'Ciocana', 'Râșcani'],
-    'Suburbii': ['Anenii Noi', 'Truşeni', 'Durlesti', 'Băcioi', 'Bubuieci']
-  };
+    'Chişinău': ['Buiucani', 'Centru', 'Botanica', 'Telecentru', "Poșta Veche"],
+    'Suburbii': [
+        'Anenii Noi', 'Truşeni', 'Durlesti', 'Băcioi', 'Bubuieci', 'Ciorescu',
+        'Codru', 'Cricova', 'Dumbrava', 'Ialoveni', 'Măgdăceşti', 'Stăuceni',
+        'Tohatin', 'Vadul lui Vodă', 'Cojuşna', 'Budeşti', 'Sîngera', 'Cruzesti',
+        'Străşeni', 'Orhei', 'Ghidighici', 'Grătieşti', 'Vatra', 'Coloniţa',
+        'Cheltuitori', 'Cahul', 'Peresecina'
+    ]
+};
 
   // Fetch properties from the API
   useEffect(() => {
@@ -118,16 +124,23 @@ const Page = () => {
               onChange={(e) => handleFilterChange('rooms', e.target.value)}>
               <option value="">Nr. camere</option>
               <option value="1">1 Cameră</option>
+              <option value="1+living">1 Cameră+Living</option>
               <option value="2">2 Camere</option>
+              <option value="2+living">2 Camere+Living</option>
               <option value="3">3 Camere</option>
+              <option value="3+living">3 Camere+Living</option>
+              <option value="4">4 Camere</option>
+              <option value="4+living">4 Camere+Living</option>
+              <option value="5+">5+ Camere</option>
             </select>
+
 
             {/* Property Status Filter */}
             <select className="bg-gray-800 text-white p-2 rounded-lg w-[128px] h-[50px]"
               onChange={(e) => handleFilterChange('status', e.target.value)}>
               <option value="">Fond Locativ</option>
               <option value="Bloc Nou">Bloc Nou</option>
-              <option value="Bloc Vechi">Bloc Vechi</option>
+              <option value="Bloc Secundar">Bloc Secundar</option>
             </select>
 
             {/* Property Condition Filter */}
