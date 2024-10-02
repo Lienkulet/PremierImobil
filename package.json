@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "aws-sdk": "^2.1691.0",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",

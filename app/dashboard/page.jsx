@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import PasswordUpdateForm from '@/components/PasswordUpdateForm';
+import AWS from 'aws-sdk';
 
 const Dashboard = () => {
     const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUD_NAME;
@@ -72,6 +73,7 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
     const [supraface, setSupraface] = useState(1);
     const [heatingType, setheatingType] = useState("Autonomă");
     const [destination, setDestination] = useState("Autonomă");
+    const [recomandate, setrecomandate] = useState(false);
 
     // State variables for agent creation
     const [agentName, setAgentName] = useState('');
@@ -90,6 +92,12 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
     };
    
 
+    const s3 = new AWS.S3({
+        accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY,
+        region: process.env.NEXT_PUBLIC_AWS_REGION,
+    });
+
       // Fetch the list of agents on component mount
       useEffect(() => {
         const fetchAgents = async () => {
@@ -105,24 +113,22 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
         fetchAgents();
     }, []);
 
-    // Function to upload agent photo to Cloudinary
+    // Function to upload agent photo 
     const uploadAgentPhoto = async () => {
         if (!agentPhoto) return '';
-
-        const formData = new FormData();
-        formData.append("file", agentPhoto);
-        formData.append("upload_preset", UPLOAD_PRESET);
-
+    
+        const params = {
+            Bucket: process.env.NEXT_PUBLIC_AWS_S3_BUCKET_NAME,
+            Key: `agent-photos/${Date.now()}-${agentPhoto.name}`, 
+            Body: agentPhoto,
+            ContentType: agentPhoto.type,
+        };
+    
         try {
-            const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload?upload_preset=${UPLOAD_PRESET}`, {
-                method: "POST",
-                body: formData,
-            });
-
-            const data = await res.json();
-            return data.secure_url; // Return the uploaded image URL
+            const data = await s3.upload(params).promise();
+            return data.Location;
         } catch (error) {
-            console.error("Error uploading agent photo:", error);
+            console.error("Error uploading agent photo to S3:", error);
             return '';
         }
     };
@@ -173,36 +179,36 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
     // Function to upload multiple property images to Cloudinary
     const uploadPropertyImages = async () => {
         if (photos.length === 0) return [];
-
+    
         const imageUrls = [];
-
+    
         for (let i = 0; i < photos.length; i++) {
-            const formData = new FormData();
-            formData.append("file", photos[i]);
-            formData.append("upload_preset", UPLOAD_PRESET);
-
+            const params = {
+                Bucket: process.env.NEXT_PUBLIC_AWS_S3_BUCKET_NAME,
+                Key: `property-photos/${Date.now()}-${photos[i].name}`, 
+                Body: photos[i],
+                ContentType: photos[i].type,
+            };
+    
             try {
-                const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload?upload_preset=${UPLOAD_PRESET}`, {
-                    method: "POST",
-                    body: formData,
-                });
-
-                const data = await res.json();
-                imageUrls.push(data.secure_url); // Add the uploaded image URL to array
+                const data = await s3.upload(params).promise();
+                imageUrls.push(data.Location); // Add the uploaded image URL to array
             } catch (error) {
-                console.log(error);
+                console.log("Error uploading property image to S3:", error);
             }
         }
-
-        return imageUrls; // Return the array of uploaded image URLs
+    
+        return imageUrls; 
     };
+    
 
     // Function to handle form submission for property creation
     const handlePropertySubmit = async (e, val) => {
         e.preventDefault();
-        if (!selectedAgent || !description || !address || !price || !supraface || photos.length === 0) {
+        console.log(recomandate)
+        if (!selectedAgent || !recomandate || !description || !address || !price || !supraface || photos.length === 0) {
             toast.error("Toate câmpurile și cel puțin o imagine sunt obligatorii");
-            console.log(selectedAgent,' ',description,' ',address, ' ', price, ' ',supraface,' ',photos.length)
+            // console.log(selectedAgent,' ',description,' ',address, ' ', price, ' ',supraface,' ',photos.length)
             return;
         }
 
@@ -220,10 +226,10 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                 supraface,
                 category,
                 tipAnunt,
-                images, // Send array of image URLs
+                images, 
                 region,
                 sector,
-                floor,      // Ensure these attributes are included
+                floor,     
                 floors,
                 locativeFont,
                 propertyCondition,
@@ -233,6 +239,7 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                 balcony,
                 parking,
                 agentId: selectedAgent,
+                recomandate
             };
     
             let apiEndpoint = '';
@@ -262,6 +269,7 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
 
             setName(namee);
             propertyData.name = name;
+            console.log(recomandate + ' ' + propertyData.name)
             const res = await fetch(apiEndpoint, {
                 method: 'POST',
                 headers: {
@@ -277,13 +285,13 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
             const property = await res.json();
             // Update the loading toast to success
             toast.success('Property created successfully!', {
-                id: toastId,  // Pass the same toastId to update the loading toast
+                id: toastId, 
             });    
             router.push(`/imobil/${property?._id}?type=${val}`);
         } catch (error) {
             console.log(error);
             toast.error('A apărut o eroare la crearea proprietății', {
-                id: toastId,  // Pass the same toastId to update the loading toast
+                id: toastId,  
             });
         }
     };
@@ -408,6 +416,15 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                     {agents.map((agent) => (
                         <option key={agent._id} value={agent._id}>{agent.name}</option>
                     ))}
+                </select>
+                <select
+                    value={recomandate}
+                    onChange={(e) => {setrecomandate(e.target.value === 'true' ? true : false); console.log(recomandate)}}
+                    className="w-fit bg-matteBlack border border-solid border-white p-3 rounded-xl text-white"
+                >
+                    <option value="">Adauga Recomandate</option>
+                    <option key='true' value='true'>Da</option>
+                    <option key='false' value='false'>Nu</option>
                 </select>
             </div>
 

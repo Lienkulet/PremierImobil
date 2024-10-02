@@ -18,7 +18,8 @@ const CaseSchema = new Schema({
     category: String,
     tipAnunt: String,
     images: [{type: String}],
-    agentId: { type: Schema.Types.ObjectId, ref: 'User', required: true }
+    agentId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    recomandate: Boolean
 }, {
     timestamps: true
 })
