@@ -314,13 +314,13 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                 <div className='w-full'>
                     <div className="flex flex-col md:flex-row items-start justify-start gap-4 pt-4 py-4">
                         <button
-                            className={`md:w-40 h-12 duration-300 ease-in ${passwordForm === "create" ? 'bg-mainOrange' : 'bg-matteBlack'} border border-solid border-white  text-white rounded-xl font-normal`}
+                            className={`w-full md:w-40 h-12 duration-300 ease-in ${passwordForm === "create" ? 'bg-mainOrange' : 'bg-matteBlack'} border border-solid border-white  text-white rounded-xl font-normal`}
                             onClick={() => setPasswordForm("create")}
                         >
                             Creare Agent
                         </button>
                         <button
-                            className={`md:w-40 h-12 duration-300 ease-in ${passwordForm === "update" ? 'bg-mainOrange' : 'bg-matteBlack'} border border-solid border-white text-white rounded-xl font-normal`}
+                            className={`w-full md:w-40 h-12 duration-300 ease-in ${passwordForm === "update" ? 'bg-mainOrange' : 'bg-matteBlack'} border border-solid border-white text-white rounded-xl font-normal`}
                             onClick={() => setPasswordForm("update")}
                         >
                             Schimbare Parola
@@ -394,22 +394,22 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
             }
             <div className='flex flex-col md:flex-row items-center justify-center gap-4 pt-10'>
                 <button
-                    className={`md:w-40 h-12 duration-300 ease-in ${formDisplay === 1 ? 'bg-mainOrange text-white' : 'bg-matteBlack border border-solid border-white text-white'} rounded-xl font-normal`}
+                    className={`w-full md:w-40 h-12 duration-300 ease-in ${formDisplay === 1 ? 'bg-mainOrange text-white' : 'bg-matteBlack border border-solid border-white text-white'} rounded-xl font-normal`}
                     onClick={() => setFormDisplay(1)}>
                     Apartamente
                 </button>
                 <button
-                    className={`md:w-40 h-12 duration-300 ease-in ${formDisplay === 2 ? 'bg-mainOrange text-white' : 'bg-matteBlack border border-solid border-white text-white'} rounded-xl font-normal`}
+                    className={`w-full md:w-40 h-12 duration-300 ease-in ${formDisplay === 2 ? 'bg-mainOrange text-white' : 'bg-matteBlack border border-solid border-white text-white'} rounded-xl font-normal`}
                     onClick={() => setFormDisplay(2)}>
                     Case
                 </button>
                 <button
-                    className={`md:w-40 h-12 duration-300 ease-in ${formDisplay === 3 ? 'bg-mainOrange text-white' : 'bg-matteBlack border border-solid border-white text-white'} rounded-xl font-normal`}
+                    className={`w-full md:w-40 h-12 duration-300 ease-in ${formDisplay === 3 ? 'bg-mainOrange text-white' : 'bg-matteBlack border border-solid border-white text-white'} rounded-xl font-normal`}
                     onClick={() => setFormDisplay(3)}>
                     Spatii Comerciale
                 </button>
                 <button
-                    className={`md:w-40 h-12 duration-300 ease-in ${formDisplay === 4 ? 'bg-mainOrange text-white' : 'bg-matteBlack border border-solid border-white text-white'} rounded-xl font-normal`}
+                    className={`w-full md:w-40 h-12 duration-300 ease-in ${formDisplay === 4 ? 'bg-mainOrange text-white' : 'bg-matteBlack border border-solid border-white text-white'} rounded-xl font-normal`}
                     onClick={() => setFormDisplay(4)}>
                     Terenuri
                 </button>
@@ -427,7 +427,7 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                 <select
                     value={recomandate}
                     onChange={(e) => { setrecomandate(e.target.value === 'true' ? true : false); console.log(recomandate) }}
-                    className="w-fit bg-matteBlack border border-solid border-white p-3 rounded-xl text-white"
+                    className="w-full md:w-fit bg-matteBlack border border-solid border-white p-3 rounded-xl text-white"
                 >
                     <option value="">Adauga Recomandate</option>
                     <option key='true' value='true'>Da</option>
