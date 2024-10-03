@@ -160,7 +160,7 @@ const Imobil = ({ params }) => {
                         </div>
                     </div>
                     <div className="flex flex-col md:items-end items-start md:mt-0 mt-4">
-                        {session?.user && (
+                        {session?.user && (session?.user.type === 'admin' || session?.user.id === property.agentId) && (
                             <div className="flex flex-row gap-4">
                                 <a
                                     href={property.link.startsWith('http') ? property.link : `https://${property.link}`}

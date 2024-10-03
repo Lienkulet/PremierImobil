@@ -15,16 +15,16 @@ const Page = () => {
   // Initial filters state
   const [filters, setFilters] = useState({
     type: 'Apartamente',
-    rooms: null,
-    status: null,
-    heatingType: null,
-    region: null,
-    sector: null,
-    propertyCondition: null,
-    areaMin: null,
-    areaMax: null,
+    rooms: '',
+    status: '',
+    heatingType: '',
+    region: '',
+    sector: '',
+    propertyCondition: '',
+    areaMin: '',
+    areaMax: '',
     priceMin: 0,
-    priceMax: null
+    priceMax: ''
   });
 
   // Mapping of regions to sectors
@@ -65,7 +65,7 @@ const Page = () => {
   const handleFilterChange = (filterName, value) => {
     setFilters(prev => ({
       ...prev,
-      [filterName]: value || null
+      [filterName]: value || ''
     }));
   };
 

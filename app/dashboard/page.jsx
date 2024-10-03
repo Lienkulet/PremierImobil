@@ -212,7 +212,7 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
     const handlePropertySubmit = async (e, val) => {
         e.preventDefault();
         console.log(recomandate)
-        if (!selectedAgent || !recomandate || !description || !address || !price || !supraface || photos.length === 0) {
+        if (!selectedAgent || recomandate === '' || !description || !address || !price || !supraface || photos.length === 0) {
             toast.error("Toate câmpurile și cel puțin o imagine sunt obligatorii");
             // console.log(selectedAgent,' ',description,' ',address, ' ', price, ' ',supraface,' ',photos.length)
             return;

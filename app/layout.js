@@ -8,7 +8,7 @@ import { Toaster } from "react-hot-toast";
 // Server-side metadata
 export const metadata = {
   title: "Premier Imobil",
-  description: "Premier Imobil",
+  description: "Găsiți-vă casa visurilor astăzi! Explorați o gamă largă de proprietăți adaptate stilului dvs. de viață și bugetului dvs.",
 };
 
 export default function RootLayout({ children, session }) {
