@@ -26,9 +26,9 @@ const Case = () => {
 
   // Mapping of regions to sectors
   const sectorsByRegion = {
-    'Chişinău': ['Buiucani', 'Centru', 'Botanica', 'Telecentru', "Poșta Veche"],
+    'Chişinău': ['Buiucani', "Sculeanca", 'Centru', 'Botanica', 'Telecentru', "Poșta Veche", "Aeroport"],
     'Suburbii': [
-        'Anenii Noi', 'Truşeni', 'Durlesti', 'Băcioi', 'Bubuieci', 'Ciorescu',
+        'Anenii Noi', 'Truşeni', 'Durleşti', 'Băcioi', 'Bubuieci', 'Ciorescu',
         'Codru', 'Cricova', 'Dumbrava', 'Ialoveni', 'Măgdăceşti', 'Stăuceni',
         'Tohatin', 'Vadul lui Vodă', 'Cojuşna', 'Budeşti', 'Sîngera', 'Cruzesti',
         'Străşeni', 'Orhei', 'Ghidighici', 'Grătieşti', 'Vatra', 'Coloniţa',

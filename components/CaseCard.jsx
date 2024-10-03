@@ -3,7 +3,10 @@ import Link from 'next/link'
 
 const CaseCard = ({ property }) => {
     const { _id, name, desc, address, link, floor, floors, locativeFont, rooms, baths, balcony, parking,
-        type, price, supraface, images } = property
+        type, price, supraface, images } = property;
+        
+        const formattedPrice =  price.toLocaleString('en-US').replace(/,/g, ' '); // Adds a space as a separator
+
     return (
         <Link href={`/imobil/${_id}?type=case`}
         className='flex flex-col w-[300px] md:w-[300px] h-[600px] md:h-[650px] bg-matteBlack border-solid border-2 p-4 border-lightGrey rounded-xl duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-white transition-transform'>
@@ -41,7 +44,7 @@ const CaseCard = ({ property }) => {
                 <div className='flex flex-row gap-4'>
                     <div className='flex flex-col w-full gap-2 border-solid border-2 p-2 border-lightGrey rounded-xl'>
                         <h5 className='text-mainOrange text-sm font-light'>Vânzare</h5>
-                        <h3 className='text-white font-semibold text-2xl'>{price}€</h3>
+                        <h3 className='text-white font-semibold text-2xl'>{formattedPrice}€</h3>
                     </div>
                 </div>
             </div>

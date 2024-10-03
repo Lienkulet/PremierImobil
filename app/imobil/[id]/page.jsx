@@ -11,6 +11,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 const Imobil = ({ params }) => {
     const [property, setProperty] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [formattedPrice, setFormatedPrice] = useState('0');
     const { data: session } = useSession();
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -50,6 +51,8 @@ const Imobil = ({ params }) => {
 
                 const propertyData = await res.json();
                 setProperty(propertyData);
+                setFormatedPrice(propertyData.price.toLocaleString('en-US').replace(/,/g, ' ')); // Adds a space as a separator
+
             } catch (error) {
                 console.error(error);
                 toast.error('An error occurred while fetching the property data');
@@ -175,7 +178,7 @@ const Imobil = ({ params }) => {
                                 >Delete</button>
                             </div>
                         )}
-                        <h1 className="text-3xl font-medium text-white">{property.price}€</h1>
+                        <h1 className="text-3xl font-medium text-white">{formattedPrice}€</h1>
                         <h1 className="text-2xl font-light text-white">{property.supraface}m2</h1>
                     </div>
                 </header>
