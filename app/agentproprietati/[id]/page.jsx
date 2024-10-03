@@ -109,28 +109,28 @@ const PropertiesPage = ({ params }) => {
     return (
         <section className="flex flex-col items-start pb-10">
             {/* Property Type Filter using buttons */}
-            <div className="flex flex-row w-full items-start justify-start my-4 space-x-4">
+            <div className="flex flex-col md:flex-row w-full items-start justify-start my-4 space-x-4">
                 <button
                     onClick={() => setFilter('apartamente')}
-                    className={`md:w-40 h-12 duration-300 ease-in ${filter === 'apartamente' ? 'bg-mainOrange text-white' : 'bg-matteBlack border border-solid border-white text-white'} rounded-xl font-normal`}
+                    className={`w-full md:w-40 h-12 duration-300 ease-in ${filter === 'apartamente' ? 'bg-mainOrange text-white' : 'bg-matteBlack border border-solid border-white text-white'} rounded-xl font-normal`}
                 >
                     Apartamente
                 </button>
                 <button
                     onClick={() => setFilter('case')}
-                    className={`md:w-40 h-12 duration-300 ease-in ${filter === 'case' ? 'bg-mainOrange text-white' : 'bg-matteBlack border border-solid border-white text-white'} rounded-xl font-normal`}
+                    className={`w-full md:w-40 h-12 duration-300 ease-in ${filter === 'case' ? 'bg-mainOrange text-white' : 'bg-matteBlack border border-solid border-white text-white'} rounded-xl font-normal`}
                 >
                     Case
                 </button>
                 <button
                     onClick={() => setFilter('comercial')}
-                    className={`md:w-40 h-12 duration-300 ease-in ${filter === 'comercial' ? 'bg-mainOrange text-white' : 'bg-matteBlack border border-solid border-white text-white'} rounded-xl font-normal`}
+                    className={`w-full md:w-40 h-12 duration-300 ease-in ${filter === 'comercial' ? 'bg-mainOrange text-white' : 'bg-matteBlack border border-solid border-white text-white'} rounded-xl font-normal`}
                 >
                     Spatii Comerciale
                 </button>
                 <button
                     onClick={() => setFilter('terenuri')}
-                    className={`md:w-40 h-12 duration-300 ease-in ${filter === 'terenuri' ? 'bg-mainOrange text-white' : 'bg-matteBlack border border-solid border-white text-white'} rounded-xl font-normal`}
+                    className={`w-full md:w-40 h-12 duration-300 ease-in ${filter === 'terenuri' ? 'bg-mainOrange text-white' : 'bg-matteBlack border border-solid border-white text-white'} rounded-xl font-normal`}
                 >
                     Terenuri
                 </button>
@@ -138,7 +138,7 @@ const PropertiesPage = ({ params }) => {
 
 
             {/* Display Properties Based on Filter */}
-            <div className="grid grid-cols-4 gap-4">
+            <div className="flex flex-col md:grid md:grid-cols-4 gap-4">
                 {getCurrentProperties().length > 0 ? (
                     getCurrentProperties().map((property) => getCurrentCardComponent(property))
                 ) : (

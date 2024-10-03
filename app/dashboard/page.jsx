@@ -122,7 +122,6 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
     // Function to upload agent photo 
     const uploadAgentPhoto = async () => {
         if (!agentPhoto) return '';
-        console.log('Bucket Name:', process.env.NEXT_PUBLIC_AWS_S3_BUCKET_NAME);
         const params = {
             Bucket: process.env.NEXT_PUBLIC_AWS_S3_BUCKET_NAME,
             Key: `agent-photos/${Date.now()}-${agentPhoto.name}`,
