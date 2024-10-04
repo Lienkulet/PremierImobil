@@ -173,6 +173,9 @@ const Imobil = ({ params }) => {
                                 >
                                     {property.linkName}
                                 </a>
+                                {/* ?type=apartamente */}
+                                <Link href={`/imobil/${id}/edit?type=${type}`} className="text-xl font-medium text-orange-700 hover:underline duration-1000 ease-linear"
+                                >Edit</Link>
                                 <button className="text-xl font-medium text-red-700 hover:underline duration-1000 ease-linear"
                                     onClick={e => handleDelete(e)}
                                 >Delete</button>
@@ -194,7 +197,7 @@ const Imobil = ({ params }) => {
                             <p className='font-normal text-xl text-mainOrange'>Detalii Proprietate: </p>
                             <div className="max-w-[1000px] text-white font-medium pr-8 flex flex-col md:flex-row w-full justify-between md:gap-24">
                                 <div>
-                                    <h4 className="flex flex-row items-center gap-4">Sectorul: <span className="font-light">{property.region}</span> </h4>
+                                    <h4 className="flex flex-row items-center gap-4">Regiune:<span className="font-light">{property.region}, {property.sector}</span> </h4>
                                     {type == 'case' || type == 'apartamente' && (
                                         <>
                                             <h4 className="flex flex-row items-center gap-4">Etajul <span className="font-light">{property.floor} din {property.floors}</span></h4>

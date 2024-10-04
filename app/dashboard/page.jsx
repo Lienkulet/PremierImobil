@@ -65,10 +65,10 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
     const [floors, setFloors] = useState(1);
     const [locativeFont, setLocativeFont] = useState('Bloc Nou');
     const [rooms, setRooms] = useState(1);
-    const [baths, setBaths] = useState(1);
-    const [balcony, setBalcony] = useState(1);
+    const [baths, setBaths] = useState();
+    const [balcony, setBalcony] = useState();
     const [parking, setParking] = useState('Subterana');
-    const [type, setType] = useState('Apartament');
+    const [typeAgent, setTypeAgent] = useState('Agent');
     const [price, setPrice] = useState(1);
     const [supraface, setSupraface] = useState(1);
     const [heatingType, setheatingType] = useState("Autonomă");
@@ -162,6 +162,7 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                     phoneNr: agentPhone,
                     password: agentPass,
                     photoUrl: uploadedPhotoUrl,
+                    type: typeAgent
                 }),
             });
 
@@ -212,7 +213,7 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
         e.preventDefault();
         console.log(recomandate)
         if (!selectedAgent || recomandate === '' || !description || !address || !price ||
-        !sectorsByRegion || !supraface || photos.length === 0) {
+            !sectorsByRegion || !supraface || photos.length === 0) {
             toast.error("Toate câmpurile și cel puțin o imagine sunt obligatorii");
             // console.log(selectedAgent,' ',description,' ',address, ' ', price, ' ',supraface,' ',photos.length)
             return;
@@ -373,14 +374,29 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                                         className="w-full bg-lightGrey p-2 rounded-xl text-white"
                                     />
                                 </div>
-                                <div className="flex flex-col items-start justify-start gap-2">
-                                    <h4 className="text-white text-lg">Adaugă Poză</h4>
-                                    <input
-                                        type="file"
-                                        onChange={(e) => setAgentPhoto(e.target.files[0])} // Handle single file selection
-                                        className="bg-lightGrey p-3 rounded-2xl text-white w-full"
-                                    />
+                                <div className='flex flex-row gap-4'>
+                                    <div className="flex flex-col items-start justify-start gap-2">
+                                        <h4 className="text-white text-lg">Tip Cont</h4>
+                                        <select
+                                            value={typeAgent}
+                                            onChange={(e) => setTypeAgent(e.target.value)}
+                                            className="w-full md:w-fit bg-matteBlack border border-solid border-white p-3 rounded-xl text-white"
+                                        >
+                                            <option key='true' value='true'>Admin</option>
+                                            <option key='false' value='false'>Agent</option>
+                                        </select>
+                                    </div>
+                                    <div className="flex flex-col items-start justify-start gap-2">
+                                        <h4 className="text-white text-lg">Adaugă Poză</h4>
+                                        <input
+                                            type="file"
+                                            onChange={(e) => setAgentPhoto(e.target.files[0])} // Handle single file selection
+                                            className="bg-lightGrey p-3 rounded-2xl text-white w-full"
+                                        />
+                                    </div>
+
                                 </div>
+
                             </div>
 
                             <button type="submit" className="w-full bg-mainOrange p-3 rounded-xl text-white mt-4">Adaugă</button>
@@ -463,7 +479,7 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                                 type="text"
                                 value={linkName}
                                 onChange={(e) => setLinkName(e.target.value)}
-                                placeholder="str. Stefan cel Mare"
+                                placeholder="V14 sau E20"
                                 className="w-full bg-lightGrey p-2 rounded-xl text-white"
                             />
                             <h4 className="text-white text-lg">Link</h4>
@@ -471,7 +487,7 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                                 type="text"
                                 value={link}
                                 onChange={(e) => setLink(e.target.value)}
-                                placeholder="Enter Link"
+                                placeholder="Link URL"
                                 className="w-full bg-lightGrey p-2 rounded-xl text-white"
                             />
                         </div>
@@ -490,6 +506,7 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                                 onChange={(e) => setCategory(e.target.value)}
                                 className="w-full bg-lightGrey p-3 rounded-xl text-white"
                             >
+                                <option value=""></option>
                                 <option value="Exclusive">Exclusive</option>
                                 <option value="Rezervat">Rezervat</option>
                                 <option value="Vândut">Vândut</option>
@@ -585,21 +602,21 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                             </div>
                         </div>
                         <div className="bg-matteBlack flex flex-col p-4 gap-4 md:w-[500px] rounded-xl border border-solid border-white">
-                                <div className="flex flex-row items-center justify-start gap-2 ">
+                            <div className="flex flex-row items-center justify-start gap-2 ">
                                 <select className="w-full bg-lightGrey p-3 rounded-xl text-white"
-                                        value={rooms}
-                                        onChange={(e) => setRooms(e.target.value)}>
-                                        <option value="">Nr. camere</option>
-                                        <option value="1">1 Cameră</option>
-                                        <option value="1+living">1 Cameră+Living</option>
-                                        <option value="2">2 Camere</option>
-                                        <option value="2+living">2 Camere+Living</option>
-                                        <option value="3">3 Camere</option>
-                                        <option value="3+living">3 Camere+Living</option>
-                                        <option value="4">4 Camere</option>
-                                        <option value="4+living">4 Camere+Living</option>
-                                        <option value="5+">5+ Camere</option>
-                                    </select>
+                                    value={rooms}
+                                    onChange={(e) => setRooms(e.target.value)}>
+                                    <option value="">Nr. camere</option>
+                                    <option value="1 Cameră">1 Cameră</option>
+                                    <option value="1 Cameră+Living">1 Cameră+Living</option>
+                                    <option value="2 Camere">2 Camere</option>
+                                    <option value="2 Camere+living">2 Camere+Living</option>
+                                    <option value="3 Camere">3 Camere</option>
+                                    <option value="3 Camere+living">3 Camere+Living</option>
+                                    <option value="4 Camere">4 Camere</option>
+                                    <option value="4 Camere+living">4 Camere+Living</option>
+                                    <option value="5+ Camere+">5+ Camere</option>
+                                </select>
                                 <div className="flex flex-row items-center justify-start gap-2 ">
                                     <h4 className="text-white text-lg">Băi</h4>
                                     <input
@@ -744,6 +761,7 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                                 onChange={(e) => setCategory(e.target.value)}
                                 className="w-full bg-lightGrey p-3 rounded-xl text-white"
                             >
+                                <option value=""></option>
                                 <option value="Exclusive">Exclusive</option>
                                 <option value="Rezervat">Rezervat</option>
                                 <option value="Vândut">Vândut</option>
@@ -923,6 +941,7 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                                 onChange={(e) => setCategory(e.target.value)}
                                 className="w-full bg-lightGrey p-3 rounded-xl text-white"
                             >
+                                <option value=""></option>
                                 <option value="Exclusive">Exclusive</option>
                                 <option value="Rezervat">Rezervat</option>
                                 <option value="Vândut">Vândut</option>
@@ -1059,6 +1078,7 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                                 onChange={(e) => setCategory(e.target.value)}
                                 className="w-full bg-lightGrey p-3 rounded-xl text-white"
                             >
+                                <option value=""></option>
                                 <option value="Exclusive">Exclusive</option>
                                 <option value="Rezervat">Rezervat</option>
                                 <option value="Vândut">Vândut</option>

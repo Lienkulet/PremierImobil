@@ -10,7 +10,6 @@ const SpatiiComercialeSchema = new Schema({
     sector: String,
     destination: String,
     propertyCondition: String,
-    rooms: Number,
     type: String,
     price: Number,
     supraface: Number,

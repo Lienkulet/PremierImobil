@@ -13,7 +13,7 @@ const AddSchema = new Schema({
   heatingType: String,
   propertyCondition: String,
   locativeFont: String,
-  rooms: Number,
+  rooms: String,
   baths: Number,
   balcony: Number,
   parking: String,

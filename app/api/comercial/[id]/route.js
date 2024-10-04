@@ -13,17 +13,28 @@ export async function GET(req, {params: {id}}){
     }
 }
 
-export async function PUT(req, {params: {id}}){
+export async function PUT(req, { params: { id } }) {
     await db.connect();
 
     try {
+        // Parse the incoming request body
         const body = await req.json();
 
-        const add = await SpatiiComerciale.findByIdAndUpdate(id);
+        // Find the document by id and update it with the new data
+        const updatedAdd = await SpatiiComerciale.findByIdAndUpdate(id, body, {
+            new: true, // Return the updated document instead of the old one
+            runValidators: true, // Ensure the update follows schema validations
+        }).populate('agentId');
 
-        return new Response(JSON.stringify(add), {status: 200});
+        if (!updatedAdd) {
+            return new Response(JSON.stringify({ message: 'Property not found' }), { status: 404 });
+        }
+
+        // Return the updated document
+        return new Response(JSON.stringify(updatedAdd), { status: 200 });
     } catch (error) {
-        return new Response(JSON.stringify(error.message), {status: 500});
+        // Handle any errors that occur
+        return new Response(JSON.stringify({ error: error.message }), { status: 500 });
     }
 }
 
