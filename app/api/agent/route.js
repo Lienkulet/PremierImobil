@@ -20,10 +20,9 @@ export async function POST(req){
     try {
         await db.connect()
 
-        const {name, password: pass,email, phoneNr,photoUrl} = await req.json()
+        const {name, password: pass,email,type, phoneNr,photoUrl} = await req.json()
 
         const isExisting = await User.findOne({email});
-            console.log(email, photoUrl);
 
         if(isExisting){
             throw new Error("User already exists")

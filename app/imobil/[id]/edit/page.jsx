@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 import Image from 'next/image';
 import AWS from 'aws-sdk';
+import { ClipLoader } from 'react-spinners';
 
 const EditPropertyPage = ({ params }) => {
   const router = useRouter();
@@ -11,6 +12,7 @@ const EditPropertyPage = ({ params }) => {
   const type = searchParams.get('type');
   const { id } = params;
 
+  const [loading, setLoading] = useState(false);
   const [recomandate, setrecomandate] = useState(false);
   const [agents, setAgents] = useState([]);
   const [selectedAgent, setSelectedAgent] = useState('');
@@ -95,6 +97,7 @@ const EditPropertyPage = ({ params }) => {
     if (id && type) {
       const fetchPropertyData = async () => {
         try {
+          setLoading(true);
           const res = await fetch(getApiEndpoint());
           if (!res.ok) {
             throw new Error('Nu s-au putut prelua datele despre proprietate');
@@ -131,8 +134,9 @@ const EditPropertyPage = ({ params }) => {
           toast.error('Erroare încărcatrea datelor proprietății');
           console.error(err);
         }
+        setLoading(false);
       };
-
+      setLoading(true);
       fetchPropertyData();
     }
   }, [id, type]);
@@ -228,9 +232,13 @@ const EditPropertyPage = ({ params }) => {
     }
   };
 
-  if (!propertyData) {
-    return <div>Loading...</div>; // You can replace this with a loader
-  }
+  if (loading) {
+    return (
+        <div className="flex justify-center items-center h-screen">
+            <ClipLoader color="#BB8D3F" loading={loading} size={150} />
+        </div>
+    );
+}
 
   return (
     <div className="container mx-auto p-6">

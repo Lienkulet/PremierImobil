@@ -40,7 +40,7 @@ const PasswordUpdateForm = () => {
         <div className="flex flex-col gap-2">
           <label className="text-white">Email</label>
           <input
-            type="email"
+            type="text"
             value={targetEmail}
             onChange={(e) => setTargetEmail(e.target.value)}
             placeholder="Agent's email"
@@ -49,7 +49,7 @@ const PasswordUpdateForm = () => {
           />
         </div>
 
-        <div className="flex flex-col gap-2">
+        {/* <div className="flex flex-col gap-2">
           <label className="text-white">Old Password</label>
           <input
             type="password"
@@ -59,7 +59,7 @@ const PasswordUpdateForm = () => {
             className="w-full bg-lightGrey p-2 rounded-xl text-white"
             required
           />
-        </div>
+        </div> */}
 
         <div className="flex flex-col gap-2">
           <label className="text-white">New Password</label>

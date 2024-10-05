@@ -1,7 +1,11 @@
+'use client';
 import Image from "next/image"
 import Link from "next/link"
+import { signIn, useSession } from 'next-auth/react';
 
 const Footer = () => {
+    const { data: session } = useSession(); // Get user session info
+
     return (
         <footer className="w-full pt-[85px] pb-[55px] bg-darkBlue">
             <div className="container">
@@ -45,14 +49,21 @@ const Footer = () => {
                             <Link href='/proprietati/apartamente' className="text-base font-normal text-textGrey">Râșcani</Link>
                         </nav>
                     </div>
-                    <div className="flex-col md:flex hidden">
-                        <h3 className="text-white text-2xl font-semibold mb-[33px] w-full">Obțineți cele mai recente informații <br /> despre proprietăți de la PremierImobil</h3>
-                        <div className="flex pl-[22px] flex-row items-center justify-between gap-[60px] p-1 border-solid border-2 border-textGrey rounded-lg">
-                        <p className="text-sm font-normal text-textGrey">Introduceți numărul dvs de telefon</p>
-                            <button className="text-sm font-medium text-white p-[20px] bg-mainOrange rounded-lg">
-                                Abonați-vă
-                            </button>
+                    <div className="flex flex-col gap-4">
+                        <div className="md:flex hidden flex-col">
+                            <h3 className="text-white text-2xl font-semibold mb-[33px] w-full">Obțineți cele mai recente informații <br /> despre proprietăți de la PremierImobil</h3>
+                            <div className="flex pl-[22px] flex-row items-center justify-between gap-[60px] p-1 border-solid border-2 border-textGrey rounded-lg">
+                                <p className="text-sm font-normal text-textGrey">Introduceți numărul dvs de telefon</p>
+                                <button className="text-sm font-medium text-white p-[20px] bg-mainOrange rounded-lg">
+                                    Abonați-vă
+                                </button>
+                            </div>
                         </div>
+                        {!session?.user && (
+                            <button onClick={() => signIn()} className='bg-mainOrange text-white text-lg px-6 py-2 rounded-lg w-fit self-end'>
+                            Sign In
+                        </button>
+                        )}
                     </div>
                 </div>
                 <div className="line mt-[60px] mb-[36px]"></div>

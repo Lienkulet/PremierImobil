@@ -64,7 +64,7 @@ const Dashboard = () => {
     const [floor, setFloor] = useState(1);
     const [floors, setFloors] = useState(1);
     const [locativeFont, setLocativeFont] = useState('Bloc Nou');
-    const [rooms, setRooms] = useState(1);
+    const [rooms, setRooms] = useState();
     const [baths, setBaths] = useState();
     const [balcony, setBalcony] = useState();
     const [parking, setParking] = useState('Subterana');
@@ -119,6 +119,14 @@ const Dashboard = () => {
         fetchAgents();
     }, []);
 
+    // Automatically set the logged-in agent for non-admin users
+    useEffect(() => {
+        console.log(session?.user.type + ' ' + session?.user._id)
+        if (session?.user.type === 'agent') {
+            setSelectedAgent(session.user._id); // Automatically set the logged-in user as the agent
+        }
+    }, [session]);
+
     // Function to upload agent photo 
     const uploadAgentPhoto = async () => {
         if (!agentPhoto) return '';
@@ -147,10 +155,13 @@ const Dashboard = () => {
             return;
         }
 
-        // Upload the agent's photo and get the URL
-        const uploadedPhotoUrl = await uploadAgentPhoto();
+        // Show loading toast
+        const toastId = toast.loading("Loading");
 
         try {
+            // Upload the agent's photo and get the URL
+            const uploadedPhotoUrl = await uploadAgentPhoto();
+
             const res = await fetch(`/api/agent`, {
                 method: 'POST',
                 headers: {
@@ -170,17 +181,23 @@ const Dashboard = () => {
                 throw new Error("Error occurred while creating agent");
             }
 
+            // Update the toast to success
+            toast.success('Agent creat cu success', { id: toastId });
 
-            toast.success('Agent creat cu success');
+            // Clear the form inputs
             setAgentName('');
             setAgentEmail('');
             setAgentPhone('');
             setAgentPass('');
             setAgentPhoto(null); // Clear the photo input
+
         } catch (error) {
-            console.log(error);
+            // Update the toast to error
+            toast.error('Something went wrong', { id: toastId });
+            console.error(error);
         }
     };
+
 
     // Function to upload multiple property images to Cloudinary
     const uploadPropertyImages = async () => {
@@ -211,7 +228,7 @@ const Dashboard = () => {
     // Function to handle form submission for property creation
     const handlePropertySubmit = async (e, val) => {
         e.preventDefault();
-        console.log(recomandate)
+        console.log(selectedAgent)
         if (!selectedAgent || recomandate === '' || !description || !address || !price ||
             !sectorsByRegion || !supraface || photos.length === 0) {
             toast.error("Toate câmpurile și cel puțin o imagine sunt obligatorii");
@@ -384,8 +401,8 @@ const Dashboard = () => {
                                             onChange={(e) => setTypeAgent(e.target.value)}
                                             className="w-full md:w-fit bg-matteBlack border border-solid border-white p-3 rounded-xl text-white"
                                         >
-                                            <option key='true' value='true'>Admin</option>
-                                            <option key='false' value='false'>Agent</option>
+                                            <option key='admin' value='admin'>Admin</option>
+                                            <option key='agent' value='agent'>Agent</option>
                                         </select>
                                     </div>
                                     <div className="flex flex-col items-start justify-start gap-2">
@@ -430,17 +447,18 @@ const Dashboard = () => {
                     onClick={() => setFormDisplay(4)}>
                     Terenuri
                 </button>
-                {/* Dropdown to select agent */}
-                <select
-                    value={selectedAgent}
-                    onChange={(e) => setSelectedAgent(e.target.value)}
-                    className="w-full bg-matteBlack border border-solid border-white p-3 rounded-xl text-white"
-                >
-                    <option value="">Alege Agent</option>
-                    {agents.map((agent) => (
-                        <option key={agent._id} value={agent._id}>{agent.name}</option>
-                    ))}
-                </select>
+                {/* Only show agent selection for admin users */}
+                {session?.user.type === 'admin' ? (
+                    <select value={selectedAgent} onChange={(e) => setSelectedAgent(e.target.value)}
+                        className="w-full bg-matteBlack border border-solid border-white p-3 rounded-xl text-white"
+                    >
+                        {agents.map((agent) => (
+                            <option key={agent._id} value={agent._id}>
+                                {agent.name}
+                            </option>
+                        ))}
+                    </select>
+                ) : null}
                 <select
                     value={recomandate}
                     onChange={(e) => { setrecomandate(e.target.value === 'true' ? true : false); console.log(recomandate) }}
@@ -546,22 +564,21 @@ const Dashboard = () => {
                             <div className="flex flex-row items-center justify-start gap-2 ">
                                 <h4 className="text-white text-lg">Suprafata Totală</h4>
                                 <input
-                                    type="number"
-                                    value={supraface}
-                                    min='1'
-                                    onChange={(e) => setSupraface(Number(e.target.value))}
+                                    type="text"  // Change the input type to text
+                                    value={supraface === 0 ? '' : supraface}  // Handle empty case
+                                    onChange={(e) => setSupraface(e.target.value === '' ? 0 : Number(e.target.value))}  // Allow empty input
                                     className="w-[200px] bg-lightGrey p-2 rounded-xl text-white"
                                 />
                                 <h4 className="text-white text-lg">m2</h4>
                             </div>
 
+
                             <div className="flex flex-row items-center justify-start gap-2 ">
                                 <h4 className="text-white text-lg">Pret</h4>
                                 <input
-                                    type="number"
-                                    value={price}
-                                    min='1'
-                                    onChange={(e) => setPrice(Number(e.target.value))}
+                                    type="text"  // Change the input type to text
+                                    value={price === 0 ? '' : price}  // Handle empty case
+                                    onChange={(e) => setPrice(e.target.value === '' ? 0 : Number(e.target.value))}  // Allow empty input
                                     className="w-[200px] bg-lightGrey p-2 rounded-xl text-white"
                                 />
                             </div>
@@ -729,7 +746,7 @@ const Dashboard = () => {
             {formDisplay === 2 && (
                 <form onSubmit={(e) => { handlePropertySubmit(e, 'case') }}>
                     <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-white">
-                    <div className="flex flex-col items-start justify-start gap-2">
+                        <div className="flex flex-col items-start justify-start gap-2">
                             <h4 className="text-white text-lg">Adaugă Descriere</h4>
                             <textarea
                                 value={description}
@@ -819,22 +836,21 @@ const Dashboard = () => {
                             <div className="flex flex-row items-center justify-start gap-2 ">
                                 <h4 className="text-white text-lg">Suprafata Totală</h4>
                                 <input
-                                    type="number"
-                                    value={supraface}
-                                    min='1'
-                                    onChange={(e) => setSupraface(Number(e.target.value))}
+                                    type="text"  // Change the input type to text
+                                    value={supraface === 0 ? '' : supraface}  // Handle empty case
+                                    onChange={(e) => setSupraface(e.target.value === '' ? 0 : Number(e.target.value))}  // Allow empty input
                                     className="w-[200px] bg-lightGrey p-2 rounded-xl text-white"
                                 />
                                 <h4 className="text-white text-lg">m2</h4>
                             </div>
 
+
                             <div className="flex flex-row items-center justify-start gap-2 ">
                                 <h4 className="text-white text-lg">Pret</h4>
                                 <input
-                                    type="number"
-                                    value={price}
-                                    min='1'
-                                    onChange={(e) => setPrice(Number(e.target.value))}
+                                    type="text"  // Change the input type to text
+                                    value={price === 0 ? '' : price}  // Handle empty case
+                                    onChange={(e) => setPrice(e.target.value === '' ? 0 : Number(e.target.value))}  // Allow empty input
                                     className="w-[200px] bg-lightGrey p-2 rounded-xl text-white"
                                 />
                             </div>
@@ -927,7 +943,7 @@ const Dashboard = () => {
             {formDisplay === 3 && (
                 <form onSubmit={(e) => { handlePropertySubmit(e, 'comercial') }}>
                     <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-white">
-                    <div className="flex flex-col items-start justify-start gap-2">
+                        <div className="flex flex-col items-start justify-start gap-2">
                             <h4 className="text-white text-lg">Adaugă Descriere</h4>
                             <textarea
                                 value={description}
@@ -1054,22 +1070,21 @@ const Dashboard = () => {
                         <div className="flex flex-row items-center justify-start gap-2 ">
                             <h4 className="text-white text-lg">Suprafata Totală</h4>
                             <input
-                                type="number"
-                                value={supraface}
-                                min='1'
-                                onChange={(e) => setSupraface(Number(e.target.value))}
+                                type="text"  // Change the input type to text
+                                value={supraface === 0 ? '' : supraface}  // Handle empty case
+                                onChange={(e) => setSupraface(e.target.value === '' ? 0 : Number(e.target.value))}  // Allow empty input
                                 className="w-[200px] bg-lightGrey p-2 rounded-xl text-white"
                             />
                             <h4 className="text-white text-lg">m2</h4>
                         </div>
 
+
                         <div className="flex flex-row items-center justify-start gap-2 ">
                             <h4 className="text-white text-lg">Pret</h4>
                             <input
-                                type="number"
-                                value={price}
-                                min='1'
-                                onChange={(e) => setPrice(Number(e.target.value))}
+                                type="text"  // Change the input type to text
+                                value={price === 0 ? '' : price}  // Handle empty case
+                                onChange={(e) => setPrice(e.target.value === '' ? 0 : Number(e.target.value))}  // Allow empty input
                                 className="w-[200px] bg-lightGrey p-2 rounded-xl text-white"
                             />
                         </div>
@@ -1082,7 +1097,7 @@ const Dashboard = () => {
             {formDisplay === 4 && (
                 <form onSubmit={(e) => { handlePropertySubmit(e, 'terenuri') }}>
                     <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-white">
-                    <div className="flex flex-col items-start justify-start gap-2">
+                        <div className="flex flex-col items-start justify-start gap-2">
                             <h4 className="text-white text-lg">Adaugă Descriere</h4>
                             <textarea
                                 value={description}
@@ -1210,22 +1225,21 @@ const Dashboard = () => {
                         <div className="flex flex-row items-center justify-start gap-2 ">
                             <h4 className="text-white text-lg">Suprafata Totală</h4>
                             <input
-                                type="number"
-                                value={supraface}
-                                min='1'
-                                onChange={(e) => setSupraface(Number(e.target.value))}
+                                type="text"  // Change the input type to text
+                                value={supraface === 0 ? '' : supraface}  // Handle empty case
+                                onChange={(e) => setSupraface(e.target.value === '' ? 0 : Number(e.target.value))}  // Allow empty input
                                 className="w-[200px] bg-lightGrey p-2 rounded-xl text-white"
                             />
-                            <h4 className="text-white text-lg">ari</h4>
+                            <h4 className="text-white text-lg">m2</h4>
                         </div>
+
 
                         <div className="flex flex-row items-center justify-start gap-2 ">
                             <h4 className="text-white text-lg">Pret</h4>
                             <input
-                                type="number"
-                                value={price}
-                                min='1'
-                                onChange={(e) => setPrice(Number(e.target.value))}
+                                type="text"  // Change the input type to text
+                                value={price === 0 ? '' : price}  // Handle empty case
+                                onChange={(e) => setPrice(e.target.value === '' ? 0 : Number(e.target.value))}  // Allow empty input
                                 className="w-[200px] bg-lightGrey p-2 rounded-xl text-white"
                             />
                         </div>

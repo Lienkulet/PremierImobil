@@ -26,7 +26,7 @@ const Imobil = ({ params }) => {
             .split('-')
             .map(item => item.trim()) // Remove leading/trailing spaces
             .filter(item => item.length > 0); // Filter out empty strings
-        
+
         setFormattedList(items);
     }, [property]);
 
@@ -64,7 +64,6 @@ const Imobil = ({ params }) => {
                 const propertyData = await res.json();
                 setProperty(propertyData);
                 setFormatedPrice(propertyData.price.toLocaleString('en-US').replace(/,/g, ' ')); // Adds a space as a separator
-
             } catch (error) {
                 console.error(error);
                 toast.error('An error occurred while fetching the property data');
@@ -78,11 +77,11 @@ const Imobil = ({ params }) => {
 
     const handleDelete = async (e) => {
         e.preventDefault();
-    
+
         // Confirm the deletion
         const confirmed = window.confirm("Are you sure you want to delete this property?");
         if (!confirmed) return;
-    
+
         try {
             let apiEndpoint = '';
             switch (type) {
@@ -102,15 +101,15 @@ const Imobil = ({ params }) => {
                     toast.error('Invalid property type');
                     return;
             }
-    
+
             const res = await fetch(apiEndpoint, {
                 method: 'DELETE',
             });
-    
+
             if (!res.ok) {
                 throw new Error('Failed to delete the property');
             }
-    
+
             toast.success('Property deleted successfully');
             router.push('/');
         } catch (error) {
@@ -177,7 +176,7 @@ const Imobil = ({ params }) => {
                         </div>
                     </div>
                     <div className="flex flex-col md:items-end items-start md:mt-0 mt-4">
-                        {session?.user && (session?.user.type === 'admin' || session?.user.id === property.agentId) && (
+                        {session?.user && (session?.user.type === 'admin' || session?.user._id === property.agentId._id) && (
                             <div className="flex flex-row gap-4">
                                 <a
                                     href={property.link.startsWith('http') ? property.link : `https://${property.link}`}
@@ -190,10 +189,12 @@ const Imobil = ({ params }) => {
                                 <Link href={`/imobil/${id}/edit?type=${type}`} className="text-xl font-medium text-orange-700 hover:underline duration-1000 ease-linear">
                                     Edit
                                 </Link>
-                                <button className="text-xl font-medium text-red-700 hover:underline duration-1000 ease-linear"
-                                    onClick={e => handleDelete(e)}>
-                                    Delete
-                                </button>
+                                {session?.user.type === 'admin' &&
+                                    <button className="text-xl font-medium text-red-700 hover:underline duration-1000 ease-linear"
+                                        onClick={e => handleDelete(e)}>
+                                        Delete
+                                    </button>
+                                }
                             </div>
                         )}
                         <h1 className="text-3xl font-medium text-white">{formattedPrice}€</h1>

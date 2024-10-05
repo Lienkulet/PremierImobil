@@ -6,7 +6,7 @@ export async function PUT(req) {
     await db.connect(); // Connect to the database
 
     try {
-        const { email, oldPassword, newPassword, isAdmin } = await req.json();
+        const { email, newPassword, isAdmin } = await req.json();
 
         // Find user by email (check in User or User collection)
         const user = await User.findOne({ email }) || await User.findOne({ email });
@@ -15,13 +15,13 @@ export async function PUT(req) {
         }
 
         // Check if the requester is the admin or the user themselves
-        if (!isAdmin) {
-            // Validate old password for non-admin users
-            const isPasswordCorrect = await bcrypt.compare(oldPassword, user.password);
-            if (!isPasswordCorrect) {
-                return new Response(JSON.stringify({ message: "Incorrect old password" }), { status: 400 });
-            }
-        }
+        // if (!isAdmin) {
+        //     // Validate old password for non-admin users
+        //     const isPasswordCorrect = await bcrypt.compare(oldPassword, user.password);
+        //     if (!isPasswordCorrect) {
+        //         return new Response(JSON.stringify({ message: "Incorrect old password" }), { status: 400 });
+        //     }
+        // }
 
         // Hash the new password
         const salt = await bcrypt.genSalt(10);
