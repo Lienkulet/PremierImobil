@@ -20,7 +20,7 @@ const handler = NextAuth({
                                 
                 const user = await User.findOne({ email })
                 let type = user.type;
-                console.log(password)
+                let name = user.name;
                 if(!user){
                     throw new Error("Invalid input")
                 }
@@ -36,7 +36,8 @@ const handler = NextAuth({
                     return {
                         ...currentUser,
                         accessToken,
-                        type // Add user type to the returned user object
+                        type,
+                        name
                     }
                 }
             }
@@ -51,7 +52,8 @@ const handler = NextAuth({
             if(user){
                 token.accessToken = user.accessToken
                 token._id = user._id
-                token.type = user.type; // Add the type to the token
+                token.type = user.type; 
+                token.name = user.name; 
             }
 
             return token
@@ -60,7 +62,8 @@ const handler = NextAuth({
             if(token){
                 session.user._id = token._id
                 session.user.accessToken = token.accessToken
-                session.user.type = token.type; // Add the type to the session
+                session.user.type = token.type;
+                session.user.name = token.name;
             }
 
             return session

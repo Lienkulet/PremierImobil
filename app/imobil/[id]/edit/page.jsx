@@ -35,6 +35,7 @@ const EditPropertyPage = ({ params }) => {
   const [link, setLink] = useState('');
   const [linkName, setLinkName] = useState('');
   const [locativeFont, setLocativeFont] = useState('');
+  const [destination, setDestination] = useState('');
 
   const [region, setRegion] = useState('Chişinău');
   const [sector, setSector] = useState('');
@@ -115,12 +116,14 @@ const EditPropertyPage = ({ params }) => {
           setSector(data.sector || '');
           setHeatingType(data.heatingType || '');
           setPropertyCondition(data.propertyCondition || '');
+          setLocativeFont(data.locativeFont || '');
           setExistingImages(data.images || []);
           setTipAnunt(data.tipAnunt || ''); 
           setCategory(data.category || 'Exclusive'); 
           setSelectedAgent(data.agentId._id); 
-          setLink(data.link); 
-          setLinkName(data.linkName); 
+          setLink(data.link || ''); 
+          setLinkName(data.linkName || ''); 
+          setDestination(data.destination || ''); 
         } catch (err) {
           toast.error('Erroare încărcatrea datelor proprietății');
           console.error(err);
@@ -193,6 +196,7 @@ const EditPropertyPage = ({ params }) => {
         tipAnunt,
         recomandate,
         locativeFont,
+        destination,
         images: [...existingImages, ...uploadedPhotos], 
         agentId: selectedAgent
       };
@@ -394,7 +398,7 @@ const EditPropertyPage = ({ params }) => {
                 </select>
               </div>
               <div className="flex flex-col w-full md:w-[200px]">
-                <h4 className="text-mainOrange text-lg">Font Locativ</h4>
+                <h4 className="text-mainOrange text-lg">Fond Locativ</h4>
                 <select
                   value={locativeFont}
                   onChange={(e) => setLocativeFont(e.target.value)}

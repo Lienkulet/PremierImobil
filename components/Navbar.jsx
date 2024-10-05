@@ -7,6 +7,7 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 
 const Navbar = () => {
     const [menu, setMenu] = useState(false);
+    const [subMenu, setSubMenu] = useState(false);
     const router = useRouter();
     const { data: session } = useSession(); // Get user session info
 
@@ -56,14 +57,21 @@ const Navbar = () => {
             {/* Desktop Auth Buttons */}
             <div className="hidden md:flex flex-row items-center gap-4">
                 {session?.user ? (
-                    <>
-                        <Link href='/dashboard' className='text-white hover:text-mainOrange duration-500 text-xl'>
-                            Dashboard
-                        </Link>
-                        <button onClick={() => signOut()} className='text-white hover:text-mainOrange duration-500 text-xl'>
-                            Sign out
+                    <div className='relative'>
+                        <button type='button' className='flex flex-row text-mainOrange items-center justify-center gap-4' onClick={e => setSubMenu(!subMenu)}>
+                            <h4>{session?.user.name}</h4>
+                            <Image src="/user1.svg" alt="Sing" width={40} height={40} />
                         </button>
-                    </>
+                        <div className={`absolute top-10 z-50 w-full flex-col items-center justify-center bg-lightGrey p-2 transform-gpu transition-all duration-300 ease-in-out 
+                ${subMenu ? 'opacity-100 translate-y-0 visible' : 'opacity-0 -translate-y-4 invisible'}`}>
+                            <Link href='/dashboard' className='text-white hover:text-mainOrange duration-500 text-xl'>
+                                Dashboard
+                            </Link>
+                            <button onClick={() => signOut()} className='text-white hover:text-mainOrange duration-500 text-xl'>
+                                Sign out
+                            </button>
+                        </div>
+                    </div>
                 ) : (
                     <button onClick={() => signIn()} className='bg-mainOrange text-white text-lg px-6 py-2 rounded-lg'>
                         Sign In
@@ -72,7 +80,9 @@ const Navbar = () => {
             </div>
 
             {/* Mobile Menu */}
-            <div className={`md:hidden ${menu ? 'flex' : 'hidden'} duration-500 flex-col gap-4 pl-6 pt-6 pb-6 absolute top-20 w-full z-10 bg-matteBlack`}>
+            {/* Mobile Menu */}
+            <div className={`md:hidden transform-gpu transition-all duration-500 ease-in-out absolute top-20 w-full z-10 bg-matteBlack flex flex-col gap-4 pl-6 pt-6 pb-6
+                ${menu ? 'opacity-100 translate-y-0 visible' : 'opacity-0 -translate-y-8 invisible'}`}>
                 <h3 className='text-white text-xl font-medium'>Vânzare</h3>
                 <Link href='/proprietati/apartamente' className='text-mainOrange text-xl' onClick={handleCloseMenu}>
                     Apartamente
@@ -109,10 +119,10 @@ const Navbar = () => {
                 {/* Conditionally render Login or Dashboard in mobile view */}
                 {session?.user ? (
                     <>
-                        <Link href='/dashboard' className='text-white hover:text-mainOrange duration-500 text-xl w-full text-center' onClick={handleCloseMenu}>
+                        <Link href='/dashboard' className='text-white hover:text-mainOrange duration-500 text-xl w-full text-start' onClick={handleCloseMenu}>
                             Dashboard
                         </Link>
-                        <button onClick={() => signOut()} className='text-white hover:text-mainOrange duration-500 text-xl'>
+                        <button onClick={() => signOut()} className='text-white hover:text-mainOrange duration-500 text-xl text-start'>
                             Sign out
                         </button>
                     </>
@@ -122,6 +132,7 @@ const Navbar = () => {
                     </Link>
                 )}
             </div>
+
         </nav>
     );
 };

@@ -1,5 +1,6 @@
 'use client';
 import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 import toast from 'react-hot-toast';
 
 const AgentCard = ({ property }) => {
@@ -28,10 +29,9 @@ const AgentCard = ({ property }) => {
         }
     };
 
-    console.log(session?.user?.type);
-
     return (
-        <article className={`w-[370px] ${session?.user?.type === 'admin' ? 'h-[550px]': 'h-[500px]'}  bg-matteBlack flex flex-col items-center gap-10 text-mainOrange rounded-2xl `}>
+        <Link href={`/agentproprietati/${_id}`}
+        className={`w-[370px] ${session?.user?.type === 'admin' ? 'h-[550px]': 'h-[500px]'}  bg-matteBlack flex flex-col items-center gap-10 text-mainOrange rounded-2xl `}>
             <img
                 src={photoUrl !== '' ? `${photoUrl}` : '/agentbg.png'}
                 className={`w-full h-[360px] bg-grey ${photoUrl !== '' ? `rounded-full` : 'rounded-t-2xl'}`}
@@ -42,16 +42,24 @@ const AgentCard = ({ property }) => {
                 <h6 className="text-base font-medium">{phoneNr}</h6>
                    {/* Show delete button if the user is an admin */}
             {session?.user?.type === 'admin' && (
+               <div className='flex flex-row gap-3'>
+                 <Link
+                    href={`/agent/${_id}`}
+                    className="text-xl font-medium text-orange-700 hover:underline duration-300 ease-linear"
+                >
+                    Edit
+                </Link>
                 <button
                     onClick={handleDelete}
                     className="text-xl font-medium text-red-700 hover:underline duration-300 ease-linear"
                 >
                     Delete
                 </button>
+                </div>
             )}
             </div>
          
-        </article>
+        </Link>
     );
 };
 
