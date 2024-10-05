@@ -3,6 +3,8 @@ const { Schema, models, model } = require("mongoose");
 const TerenuriSchema = new Schema({
     name: {type: String, required: true},
     description: String,
+    characteristics: String,
+    descriptionFooter: String,
     address: {type: String, required: true},
     link: String,
     linkName: String,

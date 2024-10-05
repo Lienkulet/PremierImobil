@@ -16,7 +16,9 @@ const EditPropertyPage = ({ params }) => {
   const [selectedAgent, setSelectedAgent] = useState('');
   const [propertyData, setPropertyData] = useState(null);
   const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+  const [description, setDesc] = useState('');
+  const [descriptionFooter, setDescriptionFooter] = useState('');
+  const [characteristics, setCharacterisitics] = useState('');
   const [price, setPrice] = useState('');
   const [supraface, setSupraface] = useState('');
   const [address, setAddress] = useState('');
@@ -102,7 +104,6 @@ const EditPropertyPage = ({ params }) => {
 
           // Populate form with fetched data
           setName(data.name || '');
-          setDescription(data.description || '');
           setPrice(data.price || '');
           setSupraface(data.supraface || '');
           setAddress(data.address || '');
@@ -123,7 +124,9 @@ const EditPropertyPage = ({ params }) => {
           setSelectedAgent(data.agentId._id); 
           setLink(data.link || ''); 
           setLinkName(data.linkName || ''); 
-          setDestination(data.destination || ''); 
+          setDesc(data.description || ''); 
+          setCharacterisitics(data.characteristics || ''); 
+          setDescriptionFooter(data.descriptionFooter || ''); 
         } catch (err) {
           toast.error('Erroare încărcatrea datelor proprietății');
           console.error(err);
@@ -245,15 +248,33 @@ const EditPropertyPage = ({ params }) => {
         </div>
 
         {/* Description Input */}
-        <div className="flex flex-col">
-          <label className="text-lg text-mainOrange">Descriere</label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="outline-none bg-matteBlack text-white p-2 rounded-xl min-h-[200px]"
-            required
-          />
-        </div>
+        <div className="flex flex-col items-start justify-start gap-2">
+                            <h4 className="text-mainOrange text-lg">Adaugă Descriere</h4>
+                            <textarea
+                                value={description}
+                                onChange={(e) => setDesc(e.target.value)}
+                                placeholder="Apartament cu 2 camere in zona de lux..."
+                                className="w-full h-[100px] bg-matteBlack p-2 rounded-xl text-white"
+                            />
+                        </div>
+                        <div className="flex flex-col items-start justify-start gap-2">
+                            <h4 className="text-mainOrange text-lg">Adaugă Caracterstici</h4>
+                            <textarea
+                                value={characteristics}
+                                onChange={(e) => characteristics(e.target.value)}
+                                placeholder="-usa blindata"
+                                className="w-full h-[100px] bg-matteBlack p-2 rounded-xl text-white"
+                            />
+                        </div>
+                        <div className="flex flex-col items-start justify-start gap-2">
+                            <h4 className="text-mainOrange text-lg">Adaugă Descriere Final</h4>
+                            <textarea
+                                value={descriptionFooter}
+                                onChange={(e) => setDescriptionFooter(e.target.value)}
+                                placeholder="Apartament cu 2 camere in zona de lux..."
+                                className="w-full h-[100px] bg-matteBlack p-2 rounded-xl text-white"
+                            />
+                        </div>
         <div className='flex flex-wrap items-end justify-start gap-4'>
           {/* Address Input */}
           <div className="flex flex-col w-full max-w-[400px]">

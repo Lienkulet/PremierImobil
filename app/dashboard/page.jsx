@@ -24,37 +24,37 @@ const Dashboard = () => {
     const [description, setDesc] = useState(`Se vinde apartament cu 2 camere + living,
      în complexul locativ Sprancenoaia, construit de compania Basconslux, amplasat în sectorul Telecentru,
       str. Sprâncenoaia 3/h.Suprafața 65 m2, etajul 3/11. Compartimentare: antreu, 2 dormitoare, bucătărie, 
-      living, bloc sanitar, (garderobă).
-      \n
-      Caracteristici: 
--localizare bilaterală;
- - localizare de mijloc; -mobilă + tehnică de uz casnic; 
--parchet/laminat 
-- sistem de aer condiționat Vara/Iarna;
-- încălzire autonomă cu cazan german Bosch; 
-- geamuri termopane Low-E cu 5 camere; 
-- izolare termică cu vată minerală ;
-- izolare fonică; 
-- ușă blindată; 
-- ascensor silențios; 
-- teren de joacă pentru copii; - acces securizat și supraveghere video;
-- parcare subterană; 
--zonă de relaxare pentru maturi; 
--fațadă din cărămidă roșie; 
-- curte de tip inchis; 
--pază; 
--balcon; 
--terasă 
--debara 
--încălzire prin pardoseală; -casă de tip club; 
--mașină de spălat vase; -mașină de spălat haine -mașină de uscat haine 
--Fasadă Ventilată-Interfon ”домофон”
-\n Imobilul poate fi cumpărat în credit cu doar 30% aport propriu!* Ajutor pe întreg procesul, 
-procesul de vânzare-cumpărare a unui imobil (economisiți timp, nervi și bani).* Consultanță juridică 
-în domeniul imobiliar (verificarea și pregătirea actelor necesare pentru tranzacție);* Consultanță 
-profesionistă cu privire la accesarea unui credit ipotecar;* Consultanță gratuită cu privire la prețurile 
-reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați de servicii imobiliare profesioniste
- absolut GRATUIT!`);
+      living, bloc sanitar, (garderobă).`);
+
+    const [characteristics, setCharacterisitics] = useState(`-localizare bilaterală;
+    - localizare de mijloc; -mobilă + tehnică de uz casnic; 
+   -parchet/laminat 
+   - sistem de aer condiționat Vara/Iarna;
+   - încălzire autonomă cu cazan german Bosch; 
+   - geamuri termopane Low-E cu 5 camere; 
+   - izolare termică cu vată minerală ;
+   - izolare fonică; 
+   - ușă blindată; 
+   - ascensor silențios; 
+   - teren de joacă pentru copii; - acces securizat și supraveghere video;
+   - parcare subterană; 
+   -zonă de relaxare pentru maturi; 
+   -fațadă din cărămidă roșie; 
+   - curte de tip inchis; 
+   -pază; 
+   -balcon; 
+   -terasă 
+   -debara 
+   -încălzire prin pardoseală; -casă de tip club; 
+   -mașină de spălat vase; -mașină de spălat haine -mașină de uscat haine 
+   -Fasadă Ventilată-Interfon ”домофон”`);
+    const [descriptionFooter, setDescriptionFooter] = useState(`Imobilul poate fi cumpărat în credit cu doar 30% aport propriu!* Ajutor pe întreg procesul, 
+    procesul de vânzare-cumpărare a unui imobil (economisiți timp, nervi și bani).* Consultanță juridică 
+    în domeniul imobiliar (verificarea și pregătirea actelor necesare pentru tranzacție);* Consultanță 
+    profesionistă cu privire la accesarea unui credit ipotecar;* Consultanță gratuită cu privire la prețurile 
+    reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați de servicii imobiliare profesioniste
+     absolut GRATUIT!`);
+
     const [address, setAddress] = useState('');
     const [photos, setPhotos] = useState([]); // Store multiple photos
     const [link, setLink] = useState('');
@@ -226,6 +226,8 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
             // Define a common object to hold the property details
             let propertyData = {
                 description,
+                characteristics,
+                descriptionFooter,
                 address,
                 link,
                 linkName,
@@ -459,6 +461,24 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
                             <textarea
                                 value={description}
                                 onChange={(e) => setDesc(e.target.value)}
+                                placeholder="Apartament cu 2 camere in zona de lux..."
+                                className="w-full h-[100px] bg-lightGrey p-2 rounded-xl text-white"
+                            />
+                        </div>
+                        <div className="flex flex-col items-start justify-start gap-2">
+                            <h4 className="text-white text-lg">Adaugă Caracterstici</h4>
+                            <textarea
+                                value={characteristics}
+                                onChange={(e) => characteristics(e.target.value)}
+                                placeholder="-usa blindata"
+                                className="w-full h-[100px] bg-lightGrey p-2 rounded-xl text-white"
+                            />
+                        </div>
+                        <div className="flex flex-col items-start justify-start gap-2">
+                            <h4 className="text-white text-lg">Adaugă Descriere Final</h4>
+                            <textarea
+                                value={descriptionFooter}
+                                onChange={(e) => setDescriptionFooter(e.target.value)}
                                 placeholder="Apartament cu 2 camere in zona de lux..."
                                 className="w-full h-[100px] bg-lightGrey p-2 rounded-xl text-white"
                             />
@@ -709,11 +729,29 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
             {formDisplay === 2 && (
                 <form onSubmit={(e) => { handlePropertySubmit(e, 'case') }}>
                     <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-white">
-                        <div className="flex flex-col items-start justify-start gap-2">
+                    <div className="flex flex-col items-start justify-start gap-2">
                             <h4 className="text-white text-lg">Adaugă Descriere</h4>
                             <textarea
                                 value={description}
                                 onChange={(e) => setDesc(e.target.value)}
+                                placeholder="Apartament cu 2 camere in zona de lux..."
+                                className="w-full h-[100px] bg-lightGrey p-2 rounded-xl text-white"
+                            />
+                        </div>
+                        <div className="flex flex-col items-start justify-start gap-2">
+                            <h4 className="text-white text-lg">Adaugă Caracterstici</h4>
+                            <textarea
+                                value={characteristics}
+                                onChange={(e) => characteristics(e.target.value)}
+                                placeholder="-usa blindata"
+                                className="w-full h-[100px] bg-lightGrey p-2 rounded-xl text-white"
+                            />
+                        </div>
+                        <div className="flex flex-col items-start justify-start gap-2">
+                            <h4 className="text-white text-lg">Adaugă Descriere Final</h4>
+                            <textarea
+                                value={descriptionFooter}
+                                onChange={(e) => setDescriptionFooter(e.target.value)}
                                 placeholder="Apartament cu 2 camere in zona de lux..."
                                 className="w-full h-[100px] bg-lightGrey p-2 rounded-xl text-white"
                             />
@@ -889,11 +927,29 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
             {formDisplay === 3 && (
                 <form onSubmit={(e) => { handlePropertySubmit(e, 'comercial') }}>
                     <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-white">
-                        <div className="flex flex-col items-start justify-start gap-2">
+                    <div className="flex flex-col items-start justify-start gap-2">
                             <h4 className="text-white text-lg">Adaugă Descriere</h4>
                             <textarea
                                 value={description}
                                 onChange={(e) => setDesc(e.target.value)}
+                                placeholder="Apartament cu 2 camere in zona de lux..."
+                                className="w-full h-[100px] bg-lightGrey p-2 rounded-xl text-white"
+                            />
+                        </div>
+                        <div className="flex flex-col items-start justify-start gap-2">
+                            <h4 className="text-white text-lg">Adaugă Caracterstici</h4>
+                            <textarea
+                                value={characteristics}
+                                onChange={(e) => characteristics(e.target.value)}
+                                placeholder="-usa blindata"
+                                className="w-full h-[100px] bg-lightGrey p-2 rounded-xl text-white"
+                            />
+                        </div>
+                        <div className="flex flex-col items-start justify-start gap-2">
+                            <h4 className="text-white text-lg">Adaugă Descriere Final</h4>
+                            <textarea
+                                value={descriptionFooter}
+                                onChange={(e) => setDescriptionFooter(e.target.value)}
                                 placeholder="Apartament cu 2 camere in zona de lux..."
                                 className="w-full h-[100px] bg-lightGrey p-2 rounded-xl text-white"
                             />
@@ -1026,11 +1082,29 @@ reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați d
             {formDisplay === 4 && (
                 <form onSubmit={(e) => { handlePropertySubmit(e, 'terenuri') }}>
                     <div className="flex flex-col gap-4 bg-matteBlack p-4 h-fit w-full rounded-xl border border-solid border-white">
-                        <div className="flex flex-col items-start justify-start gap-2">
+                    <div className="flex flex-col items-start justify-start gap-2">
                             <h4 className="text-white text-lg">Adaugă Descriere</h4>
                             <textarea
                                 value={description}
                                 onChange={(e) => setDesc(e.target.value)}
+                                placeholder="Apartament cu 2 camere in zona de lux..."
+                                className="w-full h-[100px] bg-lightGrey p-2 rounded-xl text-white"
+                            />
+                        </div>
+                        <div className="flex flex-col items-start justify-start gap-2">
+                            <h4 className="text-white text-lg">Adaugă Caracterstici</h4>
+                            <textarea
+                                value={characteristics}
+                                onChange={(e) => characteristics(e.target.value)}
+                                placeholder="-usa blindata"
+                                className="w-full h-[100px] bg-lightGrey p-2 rounded-xl text-white"
+                            />
+                        </div>
+                        <div className="flex flex-col items-start justify-start gap-2">
+                            <h4 className="text-white text-lg">Adaugă Descriere Final</h4>
+                            <textarea
+                                value={descriptionFooter}
+                                onChange={(e) => setDescriptionFooter(e.target.value)}
                                 placeholder="Apartament cu 2 camere in zona de lux..."
                                 className="w-full h-[100px] bg-lightGrey p-2 rounded-xl text-white"
                             />

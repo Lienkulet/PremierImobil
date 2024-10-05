@@ -18,6 +18,18 @@ const Imobil = ({ params }) => {
     const type = searchParams.get('type');
     const { id } = params;
 
+    const [formattedList, setFormattedList] = useState([]);
+
+    useEffect(() => {
+        // Split the string by '-' and remove empty or invalid items
+        const items = property?.characteristics
+            .split('-')
+            .map(item => item.trim()) // Remove leading/trailing spaces
+            .filter(item => item.length > 0); // Filter out empty strings
+        
+        setFormattedList(items);
+    }, [property]);
+
     useEffect(() => {
         if (!id || !type) return;
 
@@ -72,7 +84,6 @@ const Imobil = ({ params }) => {
         if (!confirmed) return;
     
         try {
-            // Define the endpoint for deletion
             let apiEndpoint = '';
             switch (type) {
                 case 'apartamente':
@@ -100,9 +111,8 @@ const Imobil = ({ params }) => {
                 throw new Error('Failed to delete the property');
             }
     
-            // On successful deletion
             toast.success('Property deleted successfully');
-            router.push('/'); // Redirect user after deletion (adjust path if necessary)
+            router.push('/');
         } catch (error) {
             console.error('Error deleting property:', error);
             toast.error('An error occurred while deleting the property');
@@ -144,19 +154,23 @@ const Imobil = ({ params }) => {
                         <div className="flex flex-col md:flex-row gap-8">
                             {type === 'case' || type === 'apartamente' && (
                                 <>
-                                    <p className='font-normal text-xl text-mainOrange gap-2 mt-4 flex flex-row items-center'>
-                                        <Image src='/bed.svg' alt='left' width={28} height={24} />
-                                        {property.rooms} camere
-                                    </p>
-                                    <p className='font-normal text-xl text-mainOrange gap-2 mt-4 flex flex-row items-center'>
-                                        <Image src='/bath.svg' alt='left' width={28} height={24} />
-                                        {property.baths} băi
-                                    </p>
+                                    {property.rooms && (
+                                        <p className='font-normal text-xl text-mainOrange gap-2 mt-4 flex flex-row items-center'>
+                                            <Image src='/bed.svg' alt='rooms' width={28} height={24} />
+                                            {property.rooms} camere
+                                        </p>
+                                    )}
+                                    {property.baths && (
+                                        <p className='font-normal text-xl text-mainOrange gap-2 mt-4 flex flex-row items-center'>
+                                            <Image src='/bath.svg' alt='baths' width={28} height={24} />
+                                            {property.baths} băi
+                                        </p>
+                                    )}
                                 </>
                             )}
-                            {type === 'case' || type === 'apartamente' && (
+                            {type === 'case' || type === 'apartamente' && property.parking && (
                                 <p className='font-normal text-xl text-mainOrange gap-2 mt-4 flex flex-row items-center'>
-                                    <Image src='/garage.svg' alt='left' width={28} height={24} />
+                                    <Image src='/garage.svg' alt='parking' width={28} height={24} />
                                     Parcare {property.parking}
                                 </p>
                             )}
@@ -173,12 +187,13 @@ const Imobil = ({ params }) => {
                                 >
                                     {property.linkName}
                                 </a>
-                                {/* ?type=apartamente */}
-                                <Link href={`/imobil/${id}/edit?type=${type}`} className="text-xl font-medium text-orange-700 hover:underline duration-1000 ease-linear"
-                                >Edit</Link>
+                                <Link href={`/imobil/${id}/edit?type=${type}`} className="text-xl font-medium text-orange-700 hover:underline duration-1000 ease-linear">
+                                    Edit
+                                </Link>
                                 <button className="text-xl font-medium text-red-700 hover:underline duration-1000 ease-linear"
-                                    onClick={e => handleDelete(e)}
-                                >Delete</button>
+                                    onClick={e => handleDelete(e)}>
+                                    Delete
+                                </button>
                             </div>
                         )}
                         <h1 className="text-3xl font-medium text-white">{formattedPrice}€</h1>
@@ -187,11 +202,19 @@ const Imobil = ({ params }) => {
                 </header>
 
                 <div className="flex flex-col md:flex-row items-start justify-between ">
-                    {/* Left side - Property Description */}
                     <div className="w-[600px]">
                         <div className="my-12 flex flex-col gap-4">
                             <p className='font-normal text-xl text-mainOrange'>Descriere: </p>
                             <p className="text-base text-white">{property.description}</p>
+                            <p className="font-normal text-xl text-mainOrange">Caracteristici:</p>
+                            <ul className="list-disc ml-8 space-y-2">
+                                {formattedList?.map((item, index) => (
+                                    <li key={index} className="text-white">
+                                        {item}
+                                    </li>
+                                ))}
+                            </ul>
+                            <p className="text-base text-white">{property.descriptionFooter}</p>
                         </div>
                         <div className=" gap-4 flex flex-col">
                             <p className='font-normal text-xl text-mainOrange'>Detalii Proprietate: </p>
@@ -200,10 +223,18 @@ const Imobil = ({ params }) => {
                                     <h4 className="flex flex-row items-center gap-4">Regiune:<span className="font-light">{property.region}, {property.sector}</span> </h4>
                                     {type == 'case' || type == 'apartamente' && (
                                         <>
-                                            <h4 className="flex flex-row items-center gap-4">Etajul <span className="font-light">{property.floor} din {property.floors}</span></h4>
-                                            <h4 className="flex flex-row items-center gap-4">Tip Incalzire: <span className="font-light">{property.heatingType}</span></h4>
-                                            <h4 className="flex flex-row items-center gap-4">Stare apartament: <span className="font-light">{property.propertyCondition}</span></h4>
-                                            <h4 className="flex flex-row items-center gap-4">Fond Locativ: <span className="font-light">{property.locativeFont}</span></h4>
+                                            {property.floor && property.floors && (
+                                                <h4 className="flex flex-row items-center gap-4">Etajul <span className="font-light">{property.floor} din {property.floors}</span></h4>
+                                            )}
+                                            {property.heatingType && (
+                                                <h4 className="flex flex-row items-center gap-4">Tip Incalzire: <span className="font-light">{property.heatingType}</span></h4>
+                                            )}
+                                            {property.propertyCondition && (
+                                                <h4 className="flex flex-row items-center gap-4">Stare apartament: <span className="font-light">{property.propertyCondition}</span></h4>
+                                            )}
+                                            {property.locativeFont && (
+                                                <h4 className="flex flex-row items-center gap-4">Fond Locativ: <span className="font-light">{property.locativeFont}</span></h4>
+                                            )}
                                         </>
                                     )}
                                 </div>
@@ -211,29 +242,35 @@ const Imobil = ({ params }) => {
                                     <h4 className="flex flex-row items-center gap-4">Suprafata: <span className="font-light">{property.supraface}m2</span></h4>
                                     {type == 'case' || type == 'apartamente' && (
                                         <>
-                                            <h4 className="flex flex-row items-center gap-4">Nr Camere: <span className="font-light">{property.rooms}</span></h4>
-                                            <h4 className="flex flex-row items-center gap-4">Nr Grup Sanitar: <span className="font-light">{property.baths}</span></h4>
-                                            <h4 className="flex flex-row items-center gap-4">Nr Balcon/Lodja: <span className="font-light">{property.balcony}</span></h4>
-                                            <h4 className="flex flex-row items-center gap-4">Parcare: <span className="font-light">{property.parking}</span></h4>
+                                            {property.rooms && (
+                                                <h4 className="flex flex-row items-center gap-4">Nr Camere: <span className="font-light">{property.rooms}</span></h4>
+                                            )}
+                                            {property.baths && (
+                                                <h4 className="flex flex-row items-center gap-4">Nr Grup Sanitar: <span className="font-light">{property.baths}</span></h4>
+                                            )}
+                                            {property.balcony && (
+                                                <h4 className="flex flex-row items-center gap-4">Nr Balcon/Lodja: <span className="font-light">{property.balcony}</span></h4>
+                                            )}
+                                            {property.parking && (
+                                                <h4 className="flex flex-row items-center gap-4">Parcare: <span className="font-light">{property.parking}</span></h4>
+                                            )}
                                         </>
                                     )}
                                 </div>
                             </div>
                         </div>
-
                     </div>
 
-                    {/* Right side - Agent details */}
                     {property.agentId && (
                         <div className=" flex flex-col gap-4 mt-8 p-4 border border-lightGrey rounded-xl">
                             <div className="flex flex-row items-center gap-8">
                                 {property.agentId.photoUrl && (
                                     <Link href={`/agentproprietati/${property.agentId._id}`}>
-                                    <img
-                                        src={property.agentId.photoUrl}
-                                        alt="Agent's Photo"
-                                        className="rounded-3xl w-[170px] h-[300px]"
-                                    />
+                                        <img
+                                            src={property.agentId.photoUrl}
+                                            alt="Agent's Photo"
+                                            className="rounded-full w-[200px] h-[200px]"
+                                        />
                                     </Link>
                                 )}
                                 <div className="flex flex-col">
@@ -249,7 +286,6 @@ const Imobil = ({ params }) => {
                     )}
                 </div>
 
-                {/* Google Maps */}
                 <div className="w-full my-12 h-[600px]">
                     <iframe
                         src={googleMapUrl}
