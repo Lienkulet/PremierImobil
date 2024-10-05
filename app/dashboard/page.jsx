@@ -48,7 +48,7 @@ const Dashboard = () => {
    -încălzire prin pardoseală; -casă de tip club; 
    -mașină de spălat vase; -mașină de spălat haine -mașină de uscat haine 
    -Fasadă Ventilată-Interfon ”домофон”`);
-    const [descriptionFooter, setDescriptionFooter] = useState(`Imobilul poate fi cumpărat în credit cu doar 30% aport propriu!* Ajutor pe întreg procesul, 
+    const [descriptionFooter, setDescriptionFooter] = useState(`Imobilul poate fi cumpărat în credit cu doar 30% aport propriu! Ajutor pe întreg procesul, 
     procesul de vânzare-cumpărare a unui imobil (economisiți timp, nervi și bani). Consultanță juridică 
     în domeniul imobiliar (verificarea și pregătirea actelor necesare pentru tranzacție); Consultanță 
     profesionistă cu privire la accesarea unui credit ipotecar; Consultanță gratuită cu privire la prețurile 
@@ -256,6 +256,9 @@ const Dashboard = () => {
         }
         if (!supraface) {
             toast.error("Suprafața este obligatorie");
+        }
+        if (!rooms) {
+            toast.error("Nr camere este obligatorie");
         }
         if (photos.length === 0) {
             toast.error("Cel puțin o imagine este obligatorie");
@@ -483,6 +486,7 @@ const Dashboard = () => {
                     <select value={selectedAgent} onChange={(e) => setSelectedAgent(e.target.value)}
                         className="w-full bg-matteBlack border border-solid border-white p-3 rounded-xl text-white"
                     >
+                        <option key='1' value="">Alege Agent</option>
                         {agents.map((agent) => (
                             <option key={agent._id} value={agent._id}>
                                 {agent.name}
