@@ -49,10 +49,10 @@ const Dashboard = () => {
    -mașină de spălat vase; -mașină de spălat haine -mașină de uscat haine 
    -Fasadă Ventilată-Interfon ”домофон”`);
     const [descriptionFooter, setDescriptionFooter] = useState(`Imobilul poate fi cumpărat în credit cu doar 30% aport propriu!* Ajutor pe întreg procesul, 
-    procesul de vânzare-cumpărare a unui imobil (economisiți timp, nervi și bani).* Consultanță juridică 
-    în domeniul imobiliar (verificarea și pregătirea actelor necesare pentru tranzacție);* Consultanță 
-    profesionistă cu privire la accesarea unui credit ipotecar;* Consultanță gratuită cu privire la prețurile 
-    reale de piață;*Cumpărând imobil prin compania Premier Imobil beneficiați de servicii imobiliare profesioniste
+    procesul de vânzare-cumpărare a unui imobil (economisiți timp, nervi și bani). Consultanță juridică 
+    în domeniul imobiliar (verificarea și pregătirea actelor necesare pentru tranzacție); Consultanță 
+    profesionistă cu privire la accesarea unui credit ipotecar; Consultanță gratuită cu privire la prețurile 
+    reale de piață; Cumpărând imobil prin compania Premier Imobil beneficiați de servicii imobiliare profesioniste
      absolut GRATUIT!`);
 
     const [address, setAddress] = useState('');
@@ -149,9 +149,16 @@ const Dashboard = () => {
     // Function to handle form submission for agent creation
     const handleAgentSubmit = async (e) => {
         e.preventDefault();
-
+        if (!agentName) {
+            toast.error("Numele agentului este obligatoriu");
+        }
+        if (!agentEmail) {
+            toast.error("Email-ul agentului este obligatoriu");
+        }
+        if (!agentPass) {
+            toast.error("Parola agentului este obligatorie");
+        }
         if (!agentName || !agentEmail || !agentPass) {
-            toast.error("All fields are required");
             return;
         }
 
@@ -229,9 +236,33 @@ const Dashboard = () => {
     const handlePropertySubmit = async (e, val) => {
         e.preventDefault();
         console.log(selectedAgent)
+        if (!selectedAgent) {
+            toast.error("Agentul selectat este obligatoriu");
+        }
+        if (recomandate === '') {
+            toast.error("Recomandarea este obligatorie");
+        }
+        if (!description) {
+            toast.error("Descrierea este obligatorie");
+        }
+        if (!address) {
+            toast.error("Adresa este obligatorie");
+        }
+        if (!price) {
+            toast.error("Prețul este obligatoriu");
+        }
+        if (!sectorsByRegion) {
+            toast.error("Sectorul este obligatoriu");
+        }
+        if (!supraface) {
+            toast.error("Suprafața este obligatorie");
+        }
+        if (photos.length === 0) {
+            toast.error("Cel puțin o imagine este obligatorie");
+        }
         if (!selectedAgent || recomandate === '' || !description || !address || !price ||
             !sectorsByRegion || !supraface || photos.length === 0) {
-            toast.error("Toate câmpurile și cel puțin o imagine sunt obligatorii");
+            // toast.error("Toate câmpurile și cel puțin o imagine sunt obligatorii");
             // console.log(selectedAgent,' ',description,' ',address, ' ', price, ' ',supraface,' ',photos.length)
             return;
         }
@@ -487,7 +518,7 @@ const Dashboard = () => {
                             <h4 className="text-white text-lg">Adaugă Caracterstici</h4>
                             <textarea
                                 value={characteristics}
-                                onChange={(e) => characteristics(e.target.value)}
+                                onChange={(e) => setCharacterisitics(e.target.value)}
                                 placeholder="-usa blindata"
                                 className="w-full h-[100px] bg-lightGrey p-2 rounded-xl text-white"
                             />
@@ -759,7 +790,7 @@ const Dashboard = () => {
                             <h4 className="text-white text-lg">Adaugă Caracterstici</h4>
                             <textarea
                                 value={characteristics}
-                                onChange={(e) => characteristics(e.target.value)}
+                                onChange={(e) => setCharacterisitics(e.target.value)}
                                 placeholder="-usa blindata"
                                 className="w-full h-[100px] bg-lightGrey p-2 rounded-xl text-white"
                             />
@@ -956,7 +987,7 @@ const Dashboard = () => {
                             <h4 className="text-white text-lg">Adaugă Caracterstici</h4>
                             <textarea
                                 value={characteristics}
-                                onChange={(e) => characteristics(e.target.value)}
+                                onChange={(e) => setCharacterisitics(e.target.value)}
                                 placeholder="-usa blindata"
                                 className="w-full h-[100px] bg-lightGrey p-2 rounded-xl text-white"
                             />
@@ -1110,7 +1141,7 @@ const Dashboard = () => {
                             <h4 className="text-white text-lg">Adaugă Caracterstici</h4>
                             <textarea
                                 value={characteristics}
-                                onChange={(e) => characteristics(e.target.value)}
+                                onChange={(e) => setCharacterisitics(e.target.value)}
                                 placeholder="-usa blindata"
                                 className="w-full h-[100px] bg-lightGrey p-2 rounded-xl text-white"
                             />
