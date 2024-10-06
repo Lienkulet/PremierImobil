@@ -44,7 +44,7 @@ const ApartmentCard = ({ property }) => {
           <div>
             <p className='font-normal text-xs md:text-sm text-white gap-2 mt-2 md:mt-4 flex flex-row items-center'>
               <Image src='/bed.svg' alt='bed' width={15} height={15} />
-              {rooms} camere
+              {rooms}
             </p>
             <p className='font-normal text-xs md:text-sm text-white gap-2 mt-2 md:mt-4 flex flex-row items-center'>
               <Image src='/bath.svg' alt='bath' width={15} height={15} />
