@@ -123,15 +123,15 @@ const Page = () => {
             <select className="bg-gray-800 text-white p-2 rounded-lg w-[128px] h-[50px]"
               onChange={(e) => handleFilterChange('rooms', e.target.value)}>
               <option value="">Nr. camere</option>
-              <option value="1">1 Cameră</option>
-              <option value="1+living">1 Cameră+Living</option>
-              <option value="2">2 Camere</option>
-              <option value="2+living">2 Camere+Living</option>
-              <option value="3">3 Camere</option>
-              <option value="3+living">3 Camere+Living</option>
-              <option value="4">4 Camere</option>
-              <option value="4+living">4 Camere+Living</option>
-              <option value="5+">5+ Camere</option>
+              <option value="1 Cameră">1 Cameră</option>
+              <option value="1 Cameră+living">1 Cameră+Living</option>
+              <option value="2 Camere">2 Camere</option>
+              <option value="2 Camere+living">2 Camere+Living</option>
+              <option value="3 Camere">3 Camere</option>
+              <option value="3 Camere+living">3 Camere+Living</option>
+              <option value="4 Camere">4 Camere</option>
+              <option value="4 Camere+living">4 Camere+Living</option>
+              <option value="5+ Camere+">5+ Camere</option>
             </select>
 
 
