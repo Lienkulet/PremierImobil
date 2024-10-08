@@ -74,7 +74,7 @@ const Page = () => {
     const applyFilters = () => {
       setLoading(true);
       let result = properties.filter(property => {
-        return  (!filters.rooms || property.rooms.toString() === filters.rooms) &&
+        return  (!filters.rooms || property?.rooms?.toString() === filters.rooms) &&
           (!filters.status || property.locativeFont === filters.status) &&
           (!filters.heatingType || property.heatingType === filters.heatingType) &&
           (!filters.region || property.region === filters.region) &&
