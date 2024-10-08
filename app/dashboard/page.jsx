@@ -68,7 +68,7 @@ const Dashboard = () => {
     const [baths, setBaths] = useState();
     const [balcony, setBalcony] = useState();
     const [parking, setParking] = useState('Subterana');
-    const [typeAgent, setTypeAgent] = useState('Agent');
+    const [typeAgent, setTypeAgent] = useState('admin');
     const [price, setPrice] = useState(1);
     const [supraface, setSupraface] = useState(1);
     const [heatingType, setheatingType] = useState("Autonomă");
