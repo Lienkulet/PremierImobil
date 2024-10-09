@@ -270,7 +270,7 @@ const Imobil = ({ params }) => {
                                         <img
                                             src={property.agentId.photoUrl}
                                             alt="Agent's Photo"
-                                            className="rounded-full w-[200px] h-[200px]"
+                                            className="rounded-xl w-[200px] h-[200px]"
                                         />
                                     </Link>
                                 )}
