@@ -205,14 +205,14 @@ const Case = () => {
             <input
               type="number"
               placeholder="Min preț (€)"
-              className="bg-gray-800 text-white p-2 rounded-lg w-full md: w-full md:w-40 h-[50px]"
+              className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-40 h-[50px]"
               onChange={(e) => handleFilterChange('priceMin', e.target.value)}
             />
             <span className="text-gray-400 hidden md:block">-</span>
             <input
               type="number"
               placeholder="Max preț (€)"
-              className="bg-gray-800 text-white p-2 rounded-lg  w-full md: w-full md:w-40 h-[50px]"
+              className="bg-gray-800 text-white p-2 rounded-lg  w-full md:w-40 h-[50px]"
               onChange={(e) => handleFilterChange('priceMax', e.target.value)}
             />
           </div>
