@@ -103,12 +103,12 @@ const Page = () => {
     <section className="md:p-8">
       {/* Filters Section */}
       <header className="flex flex-col md:flex-row items-start justify-between w-full gap-4">
-        <div className="flex flex-col items-start justify-between gap-6 ">
-          <h1 className="text-white md:text-4xl font-bold">Proprietăți - Apartamente</h1>
-          {/* Dropdowns for various attributes */}
-          <div className="flex flex-wrap gap-2">
-            {/* Property Type Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-[128px] h-[50px]"
+        <div className="flex flex-col items-start justify-between gap-6 w-full">
+          <h1 className="text-white text-2xl md:text-4xl font-bold">Proprietăți - Apartamente</h1>
+          
+          {/* Filters */}
+          <div className="flex flex-col md:flex-row flex-wrap gap-2 w-full">
+            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
               onChange={(e) => {
                 handleFilterChange('type', e.target.value);
                 handleTypeChange(e.target.value);
@@ -119,8 +119,7 @@ const Page = () => {
               <option value="Terenuri">Terenuri</option>
             </select>
 
-            {/* Rooms Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-[128px] h-[50px]"
+            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
               onChange={(e) => handleFilterChange('rooms', e.target.value)}>
               <option value="">Nr. camere</option>
               <option value="1 Cameră">1 Cameră</option>
@@ -134,17 +133,14 @@ const Page = () => {
               <option value="5+ Camere+">5+ Camere</option>
             </select>
 
-
-            {/* Property Status Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-[128px] h-[50px]"
+            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
               onChange={(e) => handleFilterChange('status', e.target.value)}>
               <option value="">Fond Locativ</option>
               <option value="Bloc Nou">Bloc Nou</option>
               <option value="Bloc Secundar">Bloc Secundar</option>
             </select>
 
-            {/* Property Condition Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-[128px] h-[50px]"
+            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
               onChange={(e) => handleFilterChange('propertyCondition', e.target.value)}>
               <option value="">Stare Imobil</option>
               <option value="Reparație euro">Reparație euro</option>
@@ -152,16 +148,14 @@ const Page = () => {
               <option value="Fără reparație/Variantă albă">Fără reparație/Variantă albă</option>
             </select>
 
-            {/* Heating Type Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-[128px] h-[50px]"
+            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
               onChange={(e) => handleFilterChange('heatingType', e.target.value)}>
               <option value="">Tip Încălzire</option>
               <option value="Centralizată">Centralizată</option>
               <option value="Autonomă">Autonomă</option>
             </select>
 
-            {/* Region Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-[128px] h-[50px]"
+            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
               onChange={(e) => {
                 handleFilterChange('region', e.target.value);
                 handleFilterChange('sector', ''); // Reset sector when region changes
@@ -171,8 +165,7 @@ const Page = () => {
               <option value="Suburbii">Suburbii</option>
             </select>
 
-            {/* Sector Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-[128px] h-[50px]"
+            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
               value={filters.sector}
               onChange={(e) => handleFilterChange('sector', e.target.value)}
               disabled={!filters.region}>
@@ -183,39 +176,38 @@ const Page = () => {
             </select>
           </div>
         </div>
-
         {/* Range Inputs */}
-        <div className="flex flex-col gap-4 items-end justify-end">
+        <div className="flex flex-col gap-4 items-start md:items-end justify-end w-full md:w-auto mt-4 md:mt-0">
           {/* Surface Area Range */}
-          <div className="flex flex-wrap md:flex-row md:flex-nowrap items-center gap-2">
+          <div className="flex flex-wrap md:flex-row md:flex-nowrap items-center gap-2 w-full">
             <input
               type="text"
               placeholder="Min suprafața (m2)"
-              className="bg-gray-800 text-white px-2 py-1 rounded-lg w-40 h-[50px]"
+              className="bg-gray-800 text-white px-2 py-1 rounded-lg w-full md:w-40 h-[50px]"
               onChange={(e) => handleFilterChange('areaMin', parseInt(e.target.value))}
             />
-            <span className="text-gray-400">-</span>
+            <span className="text-gray-400 hidden md:block">-</span>
             <input
               type="text"
               placeholder="Max suprafața (m2)"
-              className="bg-gray-800 text-white px-2 py-1 rounded-lg w-40 h-[50px]"
+              className="bg-gray-800 text-white px-2 py-1 rounded-lg w-full md:w-40 h-[50px]"
               onChange={(e) => handleFilterChange('areaMax', parseInt(e.target.value))}
             />
           </div>
 
           {/* Price Range */}
-          <div className="flex flex-wrap md:flex-row md:flex-nowrap items-center gap-2">
+          <div className="flex flex-wrap md:flex-row md:flex-nowrap items-center gap-2 w-full">
             <input
               type="text"
               placeholder="Min preț (€)"
-              className="bg-gray-800 text-white px-2 py-1 rounded-lg w-40 h-[50px]"
+              className="bg-gray-800 text-white px-2 py-1 rounded-lg w-full md:w-40 h-[50px]"
               onChange={(e) => handleFilterChange('priceMin', parseFloat(e.target.value))}
             />
-            <span className="text-gray-400">-</span>
+            <span className="text-gray-400 hidden md:block">-</span>
             <input
               type="text"
               placeholder="Max preț (€)"
-              className="bg-gray-800 text-white px-2 py-1 rounded-lg w-40 h-[50px]"
+              className="bg-gray-800 text-white px-2 py-1 rounded-lg w-full md:w-40 h-[50px]"
               onChange={(e) => handleFilterChange('priceMax', parseFloat(e.target.value))}
             />
           </div>

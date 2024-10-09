@@ -94,10 +94,10 @@ const Terenuri = () => {
       {/* Filters Section */}
       <header className="flex flex-col md:flex-row items-start justify-between w-full gap-4">
         <div className="flex flex-col items-start justify-between gap-6 ">
-          <h1 className="text-white text-4xl font-bold">Proprietăți - {filters.type}</h1>
+          <h1 className="text-white text-2xl md:text-4xl font-bold">Proprietăți - {filters.type}</h1>
           <div className="flex flex-wrap gap-4">
             {/* Property Type Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-fit min-w-[128px] h-[50px]"
+            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
               onChange={(e) => { 
                 handleFilterChange('type', e.target.value); 
                 handleTypeChange(e.target.value); 
@@ -109,7 +109,7 @@ const Terenuri = () => {
             </select>
 
             {/* Region Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-fit min-w-[128px] h-[50px]"
+            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
               onChange={(e) => { 
                 handleFilterChange('region', e.target.value); 
                 handleFilterChange('sector', ''); // Reset sector when region changes
@@ -120,7 +120,7 @@ const Terenuri = () => {
             </select>
 
             {/* Sector Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-fit min-w-[128px] h-[50px]"
+            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
               value={filters.sector}
               onChange={(e) => handleFilterChange('sector', e.target.value)}
               disabled={!filters.region}>
@@ -131,7 +131,7 @@ const Terenuri = () => {
             </select>
 
             {/* Destination Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-fit min-w-[128px] h-[50px]"
+            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
               onChange={(e) => handleFilterChange('destination', e.target.value)}>
               <option value="">Destinaţie</option>
               <option value="Agricol">Agricol</option>
@@ -148,14 +148,14 @@ const Terenuri = () => {
             <input
               type="number"
               placeholder="Min suprafața (m2)"
-              className="bg-gray-800 text-white p-2 rounded-lg w-40 h-[50px]"
+              className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-40 h-[50px]"
               onChange={(e) => handleFilterChange('suprafaceMin', e.target.value)}
             />
-            <span className="text-gray-400">-</span>
+            <span className="text-gray-400 hidden md:block">-</span>
             <input
               type="number"
               placeholder="Max suprafața (m2)"
-              className="bg-gray-800 text-white p-2 rounded-lg w-40 h-[50px]"
+              className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-40 h-[50px]"
               onChange={(e) => handleFilterChange('suprafaceMax', e.target.value)}
             />
           </div>
@@ -165,14 +165,14 @@ const Terenuri = () => {
             <input
               type="number"
               placeholder="Min preț (€)"
-              className="bg-gray-800 text-white p-2 rounded-lg w-40 h-[50px]"
+              className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-40 h-[50px]"
               onChange={(e) => handleFilterChange('priceMin', e.target.value)}
             />
-            <span className="text-gray-400">-</span>
+            <span className="text-gray-400 hidden md:block">-</span>
             <input
               type="number"
               placeholder="Max preț (€)"
-              className="bg-gray-800 text-white p-2 rounded-lg w-40 h-[50px]"
+              className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-40 h-[50px]"
               onChange={(e) => handleFilterChange('priceMax', e.target.value)}
             />
           </div>

@@ -105,11 +105,11 @@ const Case = () => {
       {/* Filters Section */}
       <header className="flex flex-col md:flex-row items-start justify-between w-full gap-4">
         <div className="flex flex-col items-start justify-between gap-6 ">
-          <h1 className="text-white text-4xl font-bold">Proprietăți - Case</h1>
+          <h1 className="text-white text-2xl md:text-4xl font-bold">Proprietăți - Case</h1>
           {/* Dropdowns for various attributes */}
           <div className="flex flex-wrap gap-4">
             {/* Property Type Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-[128px] h-[50px]"
+            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
               onChange={(e) => {
                 handleFilterChange('type', e.target.value);
                 handleTypeChange(e.target.value);
@@ -121,7 +121,7 @@ const Case = () => {
             </select>
 
             {/* Property Condition Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-[128px] h-[50px]"
+            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
               onChange={(e) => handleFilterChange('propertyCondition', e.target.value)}>
               <option value="">Stare Imobil</option>
               <option value="Reparație euro">Reparație euro</option>
@@ -130,7 +130,7 @@ const Case = () => {
             </select>
 
             {/* Locative Font Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-[128px] h-[50px]"
+            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
               onChange={(e) => handleFilterChange('locativeFont', e.target.value)}>
               <option value="">Fond Locativ</option>
               <option value="Construcţii Noi">Construcţii Noi</option>
@@ -138,7 +138,7 @@ const Case = () => {
             </select>
 
             {/* Region Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-[128px] h-[50px]"
+            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
               onChange={(e) => {
                 handleFilterChange('region', e.target.value);
                 handleFilterChange('sector', ''); // Reset sector when region changes
@@ -149,7 +149,7 @@ const Case = () => {
             </select>
 
             {/* Sector Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-[128px] h-[50px]"
+            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
               value={filters.sector}
               onChange={(e) => handleFilterChange('sector', e.target.value)}
               disabled={!filters.region}>
@@ -160,7 +160,7 @@ const Case = () => {
             </select>
 
             {/* Rooms Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-[128px] h-[50px]"
+            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
               onChange={(e) => handleFilterChange('rooms', e.target.value)}>
               <option value="">Nr. camere</option>
               <option value="1">1 Cameră</option>
@@ -169,7 +169,7 @@ const Case = () => {
             </select>
 
             {/* Floors Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-[128px] h-[50px]"
+            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
               onChange={(e) => handleFilterChange('floors', e.target.value)}>
               <option value="">Nr. etaje</option>
               <option value="1">1</option>
@@ -188,14 +188,14 @@ const Case = () => {
             <input
               type="number"
               placeholder="Min suprafața (m2)"
-              className="bg-gray-800 text-white p-2 rounded-lg w-40 h-[50px]"
+              className="bg-gray-800 text-white p-2 rounded-lg  w-full md:w-40 h-[50px]"
               onChange={(e) => handleFilterChange('areaMin', e.target.value)}
             />
-            <span className="text-gray-400">-</span>
+            <span className="text-gray-400 hidden md:block">-</span>
             <input
               type="number"
               placeholder="Max suprafața (m2)"
-              className="bg-gray-800 text-white p-2 rounded-lg w-40 h-[50px]"
+              className="bg-gray-800 text-white p-2 rounded-lg  w-full md:w-40 h-[50px]"
               onChange={(e) => handleFilterChange('areaMax', e.target.value)}
             />
           </div>
@@ -205,14 +205,14 @@ const Case = () => {
             <input
               type="number"
               placeholder="Min preț (€)"
-              className="bg-gray-800 text-white p-2 rounded-lg w-40 h-[50px]"
+              className="bg-gray-800 text-white p-2 rounded-lg w-full md: w-full md:w-40 h-[50px]"
               onChange={(e) => handleFilterChange('priceMin', e.target.value)}
             />
-            <span className="text-gray-400">-</span>
+            <span className="text-gray-400 hidden md:block">-</span>
             <input
               type="number"
               placeholder="Max preț (€)"
-              className="bg-gray-800 text-white p-2 rounded-lg w-40 h-[50px]"
+              className="bg-gray-800 text-white p-2 rounded-lg  w-full md: w-full md:w-40 h-[50px]"
               onChange={(e) => handleFilterChange('priceMax', e.target.value)}
             />
           </div>
