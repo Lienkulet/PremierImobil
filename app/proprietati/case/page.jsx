@@ -1,6 +1,6 @@
 'use client';
 
-import CaseCard from "@/components/CaseCard";
+import ApartmentCard from "@/components/ApartmentCard";
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
@@ -228,7 +228,7 @@ const Case = () => {
         ) : (
           filteredProperties.length > 0 ? (
             filteredProperties.map((property, index) => (
-              <CaseCard property={property} key={index} />
+              <ApartmentCard property={property} key={index} />
             ))
           ) : (
             <p className="text-white">Nicio casa nu se potrivește cu filtrele selectate.</p>

@@ -1,6 +1,6 @@
 'use client';
 
-import ComercialCard from "@/components/ComercialCard";
+import ApartmentCard from "@/components/ApartmentCard";
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
@@ -200,7 +200,7 @@ const Comercial = () => {
         ) : (
           filteredProperties.length > 0 ? (
             filteredProperties.map((property, index) => (
-              <ComercialCard property={property} key={index} />
+              <ApartmentCard property={property} key={index} />
             ))
           ) : (
             <p className="text-white">Niciun spațiu nu se potrivește cu filtrele selectate.</p>

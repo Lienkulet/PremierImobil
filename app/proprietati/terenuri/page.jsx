@@ -1,6 +1,6 @@
 'use client';
 
-import TerenCard from "@/components/TerenuriCard";
+import ApartmentCard from "@/components/ApartmentCard";
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
@@ -188,7 +188,7 @@ const Terenuri = () => {
         ) : (
           filteredProperties.length > 0 ? (
             filteredProperties.map((property, index) => (
-              <TerenCard property={property} key={index} />
+              <ApartmentCard property={property} key={index} />
             ))
           ) : (
             <p className="text-white">Niciun teren nu se potrivește cu filtrele selectate.</p>
