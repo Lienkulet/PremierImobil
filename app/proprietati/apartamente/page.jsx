@@ -104,7 +104,7 @@ const Page = () => {
       {/* Filters Section */}
       <header className="flex flex-col md:flex-row items-start justify-between w-full gap-4">
         <div className="flex flex-col items-start justify-between gap-6 ">
-          <h1 className="text-white text-4xl font-bold">Proprietăți - Apartamente</h1>
+          <h1 className="text-white md:text-4xl font-bold">Proprietăți - Apartamente</h1>
           {/* Dropdowns for various attributes */}
           <div className="flex flex-wrap gap-2">
             {/* Property Type Filter */}
