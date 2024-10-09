@@ -62,8 +62,11 @@ const Navbar = () => {
                             <h4>{session?.user.name}</h4>
                             <Image src="/user1.svg" alt="Sing" width={40} height={40} />
                         </button>
-                        <div className={`absolute top-10 z-50 w-fit flex-col bg-lightGrey p-2 transform-gpu transition-all duration-300 ease-in-out 
+                        <div className={`absolute top-10 z-50 w-fit flex flex-col items-start text-start bg-lightGrey p-2 transform-gpu transition-all duration-300 ease-in-out 
                 ${subMenu ? 'opacity-100 translate-y-0 visible' : 'opacity-0 -translate-y-4 invisible'}`}>
+                            <Link href={`/agentproprietati/${session?.user._id}`} className='text-white hover:text-mainOrange duration-500 text-xl'>
+                                Anunturile Mele
+                            </Link>
                             <Link href='/dashboard' className='text-white hover:text-mainOrange duration-500 text-xl'>
                                 Dashboard
                             </Link>

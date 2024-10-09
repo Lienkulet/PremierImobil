@@ -109,7 +109,7 @@ const PropertiesPage = ({ params }) => {
     return (
         <section className="flex flex-col items-start pb-10">
             {/* Property Type Filter using buttons */}
-            <div className="flex flex-col md:flex-row w-full items-start justify-start my-4 space-x-4">
+            <div className="flex flex-col md:flex-row w-full items-center md:items-start justify-center md:justify-start my-4 space-y-4 md:space-y-0 md:space-x-4">
                 <button
                     onClick={() => setFilter('apartamente')}
                     className={`w-full md:w-40 h-12 duration-300 ease-in ${filter === 'apartamente' ? 'bg-mainOrange text-white' : 'bg-matteBlack border border-solid border-white text-white'} rounded-xl font-normal`}
@@ -137,16 +137,18 @@ const PropertiesPage = ({ params }) => {
             </div>
 
 
+
             {/* Display Properties Based on Filter */}
-            <div className="flex flex-col md:grid md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
                 {getCurrentProperties().length > 0 ? (
                     getCurrentProperties().map((property) => getCurrentCardComponent(property))
                 ) : (
-                    <p className="text-center col-span-4 text-gray-300 py-5">
+                    <p className="text-center col-span-full text-gray-300 py-5">
                         Nici-o proprietate de tip {filter} disponibil pentru acest agent.
                     </p>
                 )}
             </div>
+
         </section>
     );
 };

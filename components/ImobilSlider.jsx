@@ -49,14 +49,14 @@ const ImobilSlider = ({ img, category }) => {
     };
 
     return (
-        <section className="py-4">
+        <section className="pb-4">
             {/* Main image with category badge */}
             <div className="flex w-full items-center justify-center relative">
                 <div className={`relative ${isMobile ? 'w-full' : 'w-1/2'}`}>
                     <img
                         src={img[selectedImageIndex]}
                         alt="Main"
-                        className="w-full md:h-[600px] h-[350px] mb-4 bg-contain bg-no-repeat rounded-xl"
+                        className="w-full md:h-[450px] h-[350px] mb-4 bg-contain bg-no-repeat rounded-xl"
                     />
 
                     {/* Category displayed in the top-right corner */}
@@ -95,7 +95,7 @@ const ImobilSlider = ({ img, category }) => {
                                 <img
                                     src={image}
                                     alt={`Thumbnail ${index}`}
-                                    className="w-[180px] md:w-[250px] h-[200px] cursor-pointer rounded-xl"
+                                    className="w-[160px] md:w-[250px] h-[150px] cursor-pointer rounded-xl"
                                 />
                             </div>
                         ))}
