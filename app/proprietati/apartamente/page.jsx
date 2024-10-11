@@ -123,7 +123,7 @@ const Page = () => {
               onChange={(e) => handleFilterChange('rooms', e.target.value)}>
               <option value="">Nr. camere</option>
               <option value="1 Cameră">1 Cameră</option>
-              <option value="1 Cameră+living">1 Cameră+Living</option>
+              <option value="1 Cameră+Living">1 Cameră+Living</option>
               <option value="2 Camere">2 Camere</option>
               <option value="2 Camere+living">2 Camere+Living</option>
               <option value="3 Camere">3 Camere</option>
