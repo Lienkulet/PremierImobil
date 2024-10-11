@@ -29,15 +29,15 @@ const Page = () => {
 
   // Mapping of regions to sectors
   const sectorsByRegion = {
-    'Chişinău': ['Buiucani', "Sculeanca", 'Rîşcani','Centru', 'Botanica', 'Telecentru', "Poșta Veche", "Aeroport"],
+    'Chişinău': ['Buiucani', "Sculeanca", 'Rîşcani', 'Centru', 'Botanica', 'Telecentru', "Poșta Veche", "Aeroport"],
     'Suburbii': [
-        'Anenii Noi', 'Truşeni', 'Durleşti', 'Băcioi', 'Bubuieci', 'Ciorescu',
-        'Codru', 'Cricova', 'Dumbrava', 'Ialoveni', 'Măgdăceşti', 'Stăuceni',
-        'Tohatin', 'Vadul lui Vodă', 'Cojuşna', 'Budeşti', 'Sîngera', 'Cruzesti',
-        'Străşeni', 'Orhei', 'Ghidighici', 'Grătieşti', 'Vatra', 'Coloniţa',
-        'Cheltuitori', 'Cahul', 'Peresecina'
+      'Anenii Noi', 'Truşeni', 'Durleşti', 'Băcioi', 'Bubuieci', 'Ciorescu',
+      'Codru', 'Cricova', 'Dumbrava', 'Ialoveni', 'Măgdăceşti', 'Stăuceni',
+      'Tohatin', 'Vadul lui Vodă', 'Cojuşna', 'Budeşti', 'Sîngera', 'Cruzesti',
+      'Străşeni', 'Orhei', 'Ghidighici', 'Grătieşti', 'Vatra', 'Coloniţa',
+      'Cheltuitori', 'Cahul', 'Peresecina'
     ]
-};
+  };
 
   // Fetch properties from the API
   useEffect(() => {
@@ -74,7 +74,7 @@ const Page = () => {
     const applyFilters = () => {
       setLoading(true);
       let result = properties.filter(property => {
-        return  (!filters.rooms || property?.rooms?.toString() === filters.rooms) &&
+        return (!filters.rooms || property?.rooms?.toString() === filters.rooms) &&
           (!filters.status || property.locativeFont === filters.status) &&
           (!filters.heatingType || property.heatingType === filters.heatingType) &&
           (!filters.region || property.region === filters.region) &&
@@ -105,7 +105,7 @@ const Page = () => {
       <header className="flex flex-col md:flex-row items-start justify-between w-full gap-4">
         <div className="flex flex-col items-start justify-between gap-6 w-full">
           <h1 className="text-white text-2xl md:text-4xl font-bold">Proprietăți - Apartamente</h1>
-          
+
           {/* Filters */}
           <div className="flex flex-col md:flex-row flex-wrap gap-2 w-full">
             <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
@@ -215,23 +215,26 @@ const Page = () => {
       </header>
 
       {/* Properties List */}
-      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {
+      {
           loading ? (
-            <div className="flex justify-center items-center h-screen w-full">
-              <ClipLoader color="#BB8D3F" loading={loading} size={150} />
+            <div className="fixed inset-0 flex justify-center items-center min-h-screen bg-transparent z-50">
+              <ClipLoader color="#BB8D3F" loading={true} size={150} />
             </div>
+       
           ) : (
-            filteredProperties.length > 0 ? (
-              filteredProperties.map((property, index) => (
-                <ApartmentCard property={property} key={index} />
-              ))
-            ) : (
-              <p className="text-white">Niciun apartament nu se potrivește cu filtrele selectate.</p>
-            )
+            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {
+                filteredProperties.length > 0 ? (
+                  filteredProperties.map((property, index) => (
+                    <ApartmentCard property={property} key={index} />
+                  ))
+                ) : (
+                  <p className="text-white">Niciun apartament nu se potrivește cu filtrele selectate.</p>
+                )
+              }
+          </div>
           )
         }
-      </div>
     </section>
   );
 };

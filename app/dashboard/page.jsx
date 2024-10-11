@@ -20,7 +20,7 @@ const Dashboard = () => {
 
     // State variables for property creation
     const [name, setName] = useState('');
-    const [propertyCondition, setPropertyCondition] = useState('');
+    const [propertyCondition, setPropertyCondition] = useState('Reparație euro');
     const [description, setDesc] = useState(`Se vinde apartament cu 2 camere + living,
      în complexul locativ Sprancenoaia, construit de compania Basconslux, amplasat în sectorul Telecentru,
       str. Sprâncenoaia 3/h.Suprafața 65 m2, etajul 3/11. Compartimentare: antreu, 2 dormitoare, bucătărie, 

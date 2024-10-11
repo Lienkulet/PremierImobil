@@ -5,9 +5,10 @@ const HomeHero = () => {
   return (
     <section>
       <div className="relative z-10 hidden md:flex">
-        <img src="/headerimg2.png" className="hidden md:flex" />
-        <div className="absolute top-20 w-full flex items-center justify-center">
+        <img src="/herohome.jpeg" className="hidden md:flex w-full" />
+        <div className="absolute top-20 w-full flex flex-col items-center justify-center gap-4">
           <h1 className="text-white text-center max-w-[700px] text-6xl font-bold ">Găsiți-vă casa <span className="text-mainOrange">visurilor</span>  astăzi !</h1>
+          <p className="text-white text-center text-lg">Explorați o gamă largă de proprietăți adaptate stilului dvs. de viață și bugetului dvs.</p>
         </div>
       </div>
 
