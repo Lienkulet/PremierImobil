@@ -45,7 +45,7 @@ const ApartmentSlider = () => {
                         <h4 className="text-white font-semibold text-2xl text-center absolute bottom-8 left-1/3">Centru</h4>
                     </div>
                     <div className="flex flex-col items-center justify-center relative">
-                        <img src="rascani.png" className="h-[450px] md:h-[500px] w-[400px] rounded-xl" />
+                        <img src="rascani.jpeg" className="h-[450px] md:h-[500px] w-[400px] rounded-xl" />
                         <h4 className="text-white font-semibold text-2xl text-center absolute bottom-8 left-1/3">Râșcani</h4>
                     </div>
                     <div className="relative">
