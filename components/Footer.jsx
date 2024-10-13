@@ -86,6 +86,9 @@ const Footer = () => {
                             <Image src='/Instagram.svg' alt="Instagram" width={20} height={20} />
                         </Link>
                     </div>
+                    <div>
+                        <h3 className="text-white font-normal text-base">Made by <a href="https://virtualsculpt.pro/" className="font-bold text-base">virtualsculpt.pro</a></h3>
+                    </div>
                     <h3 className="text-textGrey font-normal text-base md:flex hidden">Politica de confidențialitate | Termeni și condiții | Politica de cookie-uri</h3>
                 </div>
             </div>

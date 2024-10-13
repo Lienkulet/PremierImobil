@@ -23,8 +23,7 @@ const Dashboard = () => {
     const [propertyCondition, setPropertyCondition] = useState('Reparație euro');
     const [description, setDesc] = useState(`Se vinde apartament cu 2 camere + living,
      în complexul locativ Sprancenoaia, construit de compania Basconslux, amplasat în sectorul Telecentru,
-      str. Sprâncenoaia 3/h.Suprafața 65 m2, etajul 3/11. Compartimentare: antreu, 2 dormitoare, bucătărie, 
-      living, bloc sanitar, (garderobă).`);
+      str. Sprâncenoaia 3/h.Suprafața 65 m2, etajul 3/11.`);
 
     const [characteristics, setCharacterisitics] = useState(`-localizare bilaterală;
     - localizare de mijloc; -mobilă + tehnică de uz casnic; 
@@ -97,6 +96,9 @@ const Dashboard = () => {
         ]
     };
 
+    useEffect(() => {
+        setDesc(`Se vinde apartament cu ${rooms || 'N/A'} camere ${rooms ? `+ living` : ''}, amplasat în sectorul ${region || 'N/A'}, ${address}. Suprafața ${supraface || 'N/A'} m2, etajul ${floor || 'N/A'}/${floors || 'N/A'}.`);
+    }, [rooms, address, region, supraface, floor, floors]);
 
     const s3 = new AWS.S3({
         accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,

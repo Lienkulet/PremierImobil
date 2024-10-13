@@ -51,7 +51,7 @@ const HomeHero = () => {
         <img src="/mobilehome.png" className="w-full m-0 p-0" />
 
         {/* Buttons placed over the image with adjusted positioning */}
-        <div className="absolute inset-x-0 top-16 flex flex-col justify-center items-center z-20">
+        <div className="absolute inset-x-0 top-16 flex flex-col justify-center items-center z-10">
           <div className="grid grid-cols-2 gap-5">
             <Link href='/proprietati/case'
               className="bg-matteBlack duration-300 hover:scale-105 hover:shadow-lg hover:shadow-white h-[150px] w-[150px] flex flex-col justify-center items-center gap-4 rounded-xl transition-transform">

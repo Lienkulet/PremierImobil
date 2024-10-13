@@ -82,7 +82,7 @@ const Navbar = () => {
 
             {/* Mobile Menu */}
             {/* Mobile Menu */}
-            <div className={`md:hidden transform-gpu transition-all duration-500 ease-in-out absolute top-20 w-full z-10 bg-matteBlack flex flex-col gap-4 pl-6 pt-6 pb-6
+            <div className={`md:hidden transform-gpu transition-all duration-500 ease-in-out absolute top-20 w-full z-40 bg-matteBlack flex flex-col gap-4 pl-6 pt-6 pb-6
                 ${menu ? 'opacity-100 translate-y-0 visible' : 'opacity-0 -translate-y-8 invisible'}`}>
                 <h3 className='text-white text-xl font-medium'>Vânzare</h3>
                 <Link href='/proprietati/apartamente' className='text-mainOrange text-xl' onClick={handleCloseMenu}>
