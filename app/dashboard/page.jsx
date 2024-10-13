@@ -97,7 +97,7 @@ const Dashboard = () => {
     };
 
     useEffect(() => {
-        setDesc(`Se vinde apartament cu ${rooms || 'N/A'} camere ${rooms ? `+ living` : ''}, amplasat în sectorul ${region || 'N/A'}, ${address}. Suprafața ${supraface || 'N/A'} m2, etajul ${floor || 'N/A'}/${floors || 'N/A'}.`);
+        setDesc(`Se vinde apartament cu ${rooms || 'N/A'}, amplasat în sectorul ${region || 'N/A'}, ${address}. Suprafața ${supraface || 'N/A'} m2, etajul ${floor || 'N/A'}/${floors || 'N/A'}.`);
     }, [rooms, address, region, supraface, floor, floors]);
 
     const s3 = new AWS.S3({

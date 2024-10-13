@@ -146,6 +146,27 @@ const EditPropertyPage = ({ params }) => {
     setExistingImages(existingImages.filter((image) => image !== url));
   };
 
+  // Move Image Left
+const handleMoveImageLeft = (index) => {
+  if (index === 0) return; // Can't move the first image left
+  const newImages = [...existingImages];
+  const temp = newImages[index - 1];
+  newImages[index - 1] = newImages[index];
+  newImages[index] = temp;
+  setExistingImages(newImages);
+};
+
+// Move Image Right
+const handleMoveImageRight = (index) => {
+  if (index === existingImages.length - 1) return; // Can't move the last image right
+  const newImages = [...existingImages];
+  const temp = newImages[index + 1];
+  newImages[index + 1] = newImages[index];
+  newImages[index] = temp;
+  setExistingImages(newImages);
+};
+
+
   const handleImageUpload = async () => {
     if (photos.length === 0) return [];
 
@@ -625,22 +646,46 @@ const EditPropertyPage = ({ params }) => {
         )}
         {/* Display Existing Photos with Remove Option */}
         <div className="flex flex-col">
-          <label className="text-lg text-mainOrange">Fotografii existente</label>
-          <div className="flex flex-wrap gap-4">
-            {existingImages.map((url, index) => (
-              <div key={index} className="relative">
-                <img src={url} alt={`property-photo-${index}`} className="w-32 h-32 object-cover rounded-md" />
-                <button
-                  type="button"
-                  onClick={() => handleRemoveImage(url)}
-                  className="absolute top-0 right-0"
-                >
-                  <Image src='/deleteIcon.svg' alt='X' width={30} height={30} />
-                </button>
-              </div>
-            ))}
-          </div>
+  <label className="text-lg text-mainOrange">Fotografii existente</label>
+  <div className="flex flex-wrap gap-4">
+    {existingImages.map((url, index) => (
+      <div key={index} className="relative">
+        <img src={url} alt={`property-photo-${index}`} className="w-32 h-32 object-cover rounded-md" />
+        
+        {/* Controls to move the image left or right */}
+        <div className="flex justify-between mt-2">
+          {/* Move Left */}
+          <button
+            type="button"
+            onClick={() => handleMoveImageLeft(index)}
+            className={`p-1 text-white text-sm ${index === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+            disabled={index === 0}
+          >
+            &#8592;
+          </button>
+          {/* Remove Image */}
+          <button
+            type="button"
+            onClick={() => handleRemoveImage(url)}
+            className="p-1 text-sm text-red-500"
+          >
+            Elimina
+          </button>
+          {/* Move Right */}
+          <button
+            type="button"
+            onClick={() => handleMoveImageRight(index)}
+            className={`p-1 text-white text-sm ${index === existingImages.length - 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
+            disabled={index === existingImages.length - 1}
+          >
+            &#8594;
+          </button>
         </div>
+      </div>
+    ))}
+  </div>
+</div>
+
 
         {/* Upload New Photos */}
         <div className="flex flex-col">
