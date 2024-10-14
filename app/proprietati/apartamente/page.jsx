@@ -175,7 +175,7 @@ const Page = () => {
               displayValue="label"
               onSelect={(selectedList) => handleMultiSelectChange('rooms', selectedList)}
               onRemove={(selectedList) => handleMultiSelectChange('rooms', selectedList)}
-              placeholder="Select Rooms"
+              placeholder="Nr. Camere"
               showCheckbox={true}
               hidePlaceholderAfterSelect={true}
               style={{
@@ -190,7 +190,7 @@ const Page = () => {
               displayValue="label"
               onSelect={(selectedList) => handleMultiSelectChange('status', selectedList)}
               onRemove={(selectedList) => handleMultiSelectChange('status', selectedList)}
-              placeholder="Select Status"
+              placeholder="Fond Locativ"
               showCheckbox={true}
               hidePlaceholderAfterSelect={true}
               style={{
@@ -205,7 +205,7 @@ const Page = () => {
               displayValue="label"
               onSelect={(selectedList) => handleMultiSelectChange('heatingType', selectedList)}
               onRemove={(selectedList) => handleMultiSelectChange('heatingType', selectedList)}
-              placeholder="Select Heating Type"
+              placeholder="Tipul de încălzire"
               showCheckbox={true}
               hidePlaceholderAfterSelect={true}
               style={{
@@ -220,7 +220,7 @@ const Page = () => {
               displayValue="label"
               onSelect={(selectedList) => handleMultiSelectChange('propertyCondition', selectedList)}
               onRemove={(selectedList) => handleMultiSelectChange('propertyCondition', selectedList)}
-              placeholder="Select Property Condition"
+              placeholder="Stare Imobil"
               showCheckbox={true}
               hidePlaceholderAfterSelect={true}
               style={{
@@ -235,7 +235,7 @@ const Page = () => {
               displayValue="label"
               onSelect={(selectedList) => handleMultiSelectChange('region', selectedList)}
               onRemove={(selectedList) => handleMultiSelectChange('region', selectedList)}
-              placeholder="Select Region"
+              placeholder="Regiune"
               showCheckbox={true}
               hidePlaceholderAfterSelect={true}
               style={{
@@ -250,7 +250,7 @@ const Page = () => {
               displayValue="label"
               onSelect={(selectedList) => handleMultiSelectChange('sector', selectedList)}
               onRemove={(selectedList) => handleMultiSelectChange('sector', selectedList)}
-              placeholder="Select Sector"
+              placeholder="Sector"
               showCheckbox={true}
               hidePlaceholderAfterSelect={true}
               disabled={!filters.region.length} // Disable if no region selected
