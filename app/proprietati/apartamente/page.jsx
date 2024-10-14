@@ -4,6 +4,7 @@ import ApartmentCard from "@/components/ApartmentCard";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
+import Multiselect from 'multiselect-react-dropdown';
 
 const Page = () => {
   const [properties, setProperties] = useState([]);
@@ -15,12 +16,12 @@ const Page = () => {
   // Initial filters state
   const [filters, setFilters] = useState({
     type: 'Apartamente',
-    rooms: '',
-    status: '',
-    heatingType: '',
-    region: '',
-    sector: '',
-    propertyCondition: '',
+    rooms: [],
+    status: [],
+    heatingType: [],
+    region: [],
+    sector: [],
+    propertyCondition: [],
     areaMin: '',
     areaMax: '',
     priceMin: 0,
@@ -61,11 +62,18 @@ const Page = () => {
     fetchProperties();
   }, [type]);
 
-  // Update filters when user selects new criteria
+  // Handle multi-select and other filter changes
   const handleFilterChange = (filterName, value) => {
     setFilters(prev => ({
       ...prev,
-      [filterName]: value || ''
+      [filterName]: value
+    }));
+  };
+
+  const handleMultiSelectChange = (filterName, selectedList) => {
+    setFilters(prev => ({
+      ...prev,
+      [filterName]: selectedList.map(item => item.value) // Extract the selected values
     }));
   };
 
@@ -74,12 +82,12 @@ const Page = () => {
     const applyFilters = () => {
       setLoading(true);
       let result = properties.filter(property => {
-        return (!filters.rooms || property?.rooms?.toString() === filters.rooms) &&
-          (!filters.status || property.locativeFont === filters.status) &&
-          (!filters.heatingType || property.heatingType === filters.heatingType) &&
-          (!filters.region || property.region === filters.region) &&
-          (!filters.sector || property.sector === filters.sector) &&
-          (!filters.propertyCondition || property.propertyCondition === filters.propertyCondition) &&
+        return (!filters.rooms.length || filters.rooms.includes(property.rooms)) &&
+          (!filters.status.length || filters.status.includes(property.locativeFont)) &&
+          (!filters.heatingType.length || filters.heatingType.includes(property.heatingType)) &&
+          (!filters.region.length || filters.region.includes(property.region)) &&
+          (!filters.sector.length || filters.sector.includes(property.sector)) &&
+          (!filters.propertyCondition.length || filters.propertyCondition.includes(property.propertyCondition)) &&
           (!filters.areaMin || property.supraface >= parseInt(filters.areaMin)) &&
           (!filters.areaMax || property.supraface <= parseInt(filters.areaMax)) &&
           (!filters.priceMin || property.price >= parseFloat(filters.priceMin)) &&
@@ -99,6 +107,48 @@ const Page = () => {
     router.push(`/proprietati/${value.toLowerCase()}`);
   };
 
+  // Options for the dropdowns
+  const roomOptions = [
+    { value: '1 Cameră', label: '1 Cameră' },
+    { value: '1 Cameră+Living', label: '1 Cameră+Living' },
+    { value: '2 Camere', label: '2 Camere' },
+    { value: '2 Camere+Living', label: '2 Camere+Living' },
+    { value: '3 Camere', label: '3 Camere' },
+    { value: '3 Camere+Living', label: '3 Camere+Living' },
+    { value: '4 Camere', label: '4 Camere' }
+  ];
+
+  const statusOptions = [
+    { value: 'Bloc Nou', label: 'Bloc Nou' },
+    { value: 'Bloc Secundar', label: 'Bloc Secundar' }
+  ];
+
+  const heatingOptions = [
+    { value: 'Centralizată', label: 'Centralizată' },
+    { value: 'Autonomă', label: 'Autonomă' }
+  ];
+
+  const conditionOptions = [
+    { value: 'Reparație euro', label: 'Reparație euro' },
+    { value: 'Reparație mediu', label: 'Reparație mediu' },
+    { value: 'Fără reparație/Variantă albă', label: 'Fără reparație/Variantă albă' }
+  ];
+
+  // Region and Sector options
+  const regionOptions = [
+    { value: 'Chişinău', label: 'Chişinău' },
+    { value: 'Suburbii', label: 'Suburbii' }
+  ];
+
+  const sectorOptions = filters.region.flatMap(region =>
+    sectorsByRegion[region]?.map(sector => ({
+      value: sector, label: sector
+    })) || []
+  );
+
+  // Tailwind CSS for consistent input styling
+  const unifiedInputStyle = "bg-[#2D2D2D] border border-[#ccc] border-solid p-1 text-white rounded-md  w-full md:w-[190px] min-h-[22px]";
+
   return (
     <section className="md:p-8">
       {/* Filters Section */}
@@ -107,10 +157,10 @@ const Page = () => {
           <h1 className="text-white text-2xl md:text-4xl font-bold">Proprietăți - Apartamente</h1>
 
           {/* Filters */}
-          <div className="flex flex-col md:flex-row flex-wrap gap-2 w-full">
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
+          <div className="flex flex-col md:flex-row flex-wrap gap-4 w-full">
+            {/* Single-select Type */}
+            <select className={unifiedInputStyle}
               onChange={(e) => {
-                handleFilterChange('type', e.target.value);
                 handleTypeChange(e.target.value);
               }}>
               <option value="Apartamente">Apartamente</option>
@@ -119,122 +169,155 @@ const Page = () => {
               <option value="Terenuri">Terenuri</option>
             </select>
 
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
-              onChange={(e) => handleFilterChange('rooms', e.target.value)}>
-              <option value="">Nr. camere</option>
-              <option value="1 Cameră">1 Cameră</option>
-              <option value="1 Cameră+Living">1 Cameră+Living</option>
-              <option value="2 Camere">2 Camere</option>
-              <option value="2 Camere+living">2 Camere+Living</option>
-              <option value="3 Camere">3 Camere</option>
-              <option value="3 Camere+living">3 Camere+Living</option>
-              <option value="4 Camere">4 Camere</option>
-              <option value="4 Camere+living">4 Camere+Living</option>
-              <option value="5+ Camere+">5+ Camere</option>
-            </select>
-
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
-              onChange={(e) => handleFilterChange('status', e.target.value)}>
-              <option value="">Fond Locativ</option>
-              <option value="Bloc Nou">Bloc Nou</option>
-              <option value="Bloc Secundar">Bloc Secundar</option>
-            </select>
-
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
-              onChange={(e) => handleFilterChange('propertyCondition', e.target.value)}>
-              <option value="">Stare Imobil</option>
-              <option value="Reparație euro">Reparație euro</option>
-              <option value="Reparație mediu">Reparație mediu</option>
-              <option value="Fără reparație/Variantă albă">Fără reparație/Variantă albă</option>
-            </select>
-
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
-              onChange={(e) => handleFilterChange('heatingType', e.target.value)}>
-              <option value="">Tip Încălzire</option>
-              <option value="Centralizată">Centralizată</option>
-              <option value="Autonomă">Autonomă</option>
-            </select>
-
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
-              onChange={(e) => {
-                handleFilterChange('region', e.target.value);
-                handleFilterChange('sector', ''); // Reset sector when region changes
-              }}>
-              <option value="">Regiune</option>
-              <option value="Chişinău">Chişinău</option>
-              <option value="Suburbii">Suburbii</option>
-            </select>
-
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
-              value={filters.sector}
-              onChange={(e) => handleFilterChange('sector', e.target.value)}
-              disabled={!filters.region}>
-              <option value="">Selectează Sector</option>
-              {filters.region && sectorsByRegion[filters.region]?.map((sec) => (
-                <option key={sec} value={sec}>{sec}</option>
-              ))}
-            </select>
-          </div>
-        </div>
-        {/* Range Inputs */}
-        <div className="flex flex-col gap-4 items-start md:items-end justify-end w-full md:w-auto mt-4 md:mt-0">
-          {/* Surface Area Range */}
-          <div className="flex flex-wrap md:flex-row md:flex-nowrap items-center gap-2 w-full">
-            <input
-              type="text"
-              placeholder="Min suprafața (m2)"
-              className="bg-gray-800 text-white px-2 py-1 rounded-lg w-full md:w-40 h-[50px]"
-              onChange={(e) => handleFilterChange('areaMin', parseInt(e.target.value))}
+            {/* Multi-select Rooms */}
+            <Multiselect
+              options={roomOptions}
+              displayValue="label"
+              onSelect={(selectedList) => handleMultiSelectChange('rooms', selectedList)}
+              onRemove={(selectedList) => handleMultiSelectChange('rooms', selectedList)}
+              placeholder="Select Rooms"
+              showCheckbox={true}
+              hidePlaceholderAfterSelect={true}
+              style={{
+                chips: { display: 'none' },
+                searchBox: { background: '#2D2D2D', color: '#fff' }
+              }}
             />
-            <span className="text-gray-400 hidden md:block">-</span>
-            <input
-              type="text"
-              placeholder="Max suprafața (m2)"
-              className="bg-gray-800 text-white px-2 py-1 rounded-lg w-full md:w-40 h-[50px]"
-              onChange={(e) => handleFilterChange('areaMax', parseInt(e.target.value))}
-            />
-          </div>
 
-          {/* Price Range */}
-          <div className="flex flex-wrap md:flex-row md:flex-nowrap items-center gap-2 w-full">
-            <input
-              type="text"
-              placeholder="Min preț (€)"
-              className="bg-gray-800 text-white px-2 py-1 rounded-lg w-full md:w-40 h-[50px]"
-              onChange={(e) => handleFilterChange('priceMin', parseFloat(e.target.value))}
+            {/* Multi-select Status */}
+            <Multiselect
+              options={statusOptions}
+              displayValue="label"
+              onSelect={(selectedList) => handleMultiSelectChange('status', selectedList)}
+              onRemove={(selectedList) => handleMultiSelectChange('status', selectedList)}
+              placeholder="Select Status"
+              showCheckbox={true}
+              hidePlaceholderAfterSelect={true}
+              style={{
+                chips: { display: 'none' },
+                searchBox: { background: '#2D2D2D', color: '#fff' }
+              }}
             />
-            <span className="text-gray-400 hidden md:block">-</span>
-            <input
-              type="text"
-              placeholder="Max preț (€)"
-              className="bg-gray-800 text-white px-2 py-1 rounded-lg w-full md:w-40 h-[50px]"
-              onChange={(e) => handleFilterChange('priceMax', parseFloat(e.target.value))}
+
+            {/* Multi-select Heating Type */}
+            <Multiselect
+              options={heatingOptions}
+              displayValue="label"
+              onSelect={(selectedList) => handleMultiSelectChange('heatingType', selectedList)}
+              onRemove={(selectedList) => handleMultiSelectChange('heatingType', selectedList)}
+              placeholder="Select Heating Type"
+              showCheckbox={true}
+              hidePlaceholderAfterSelect={true}
+              style={{
+                chips: { display: 'none' },
+                searchBox: { background: '#2D2D2D', color: '#fff' }
+              }}
             />
+
+            {/* Multi-select Property Condition */}
+            <Multiselect
+              options={conditionOptions}
+              displayValue="label"
+              onSelect={(selectedList) => handleMultiSelectChange('propertyCondition', selectedList)}
+              onRemove={(selectedList) => handleMultiSelectChange('propertyCondition', selectedList)}
+              placeholder="Select Property Condition"
+              showCheckbox={true}
+              hidePlaceholderAfterSelect={true}
+              style={{
+                chips: { display: 'none' },
+                searchBox: { background: '#2D2D2D', color: '#fff' }
+              }}
+            />
+
+            {/* Multi-select Region */}
+            <Multiselect
+              options={regionOptions}
+              displayValue="label"
+              onSelect={(selectedList) => handleMultiSelectChange('region', selectedList)}
+              onRemove={(selectedList) => handleMultiSelectChange('region', selectedList)}
+              placeholder="Select Region"
+              showCheckbox={true}
+              hidePlaceholderAfterSelect={true}
+              style={{
+                chips: { display: 'none' },
+                searchBox: { background: '#2D2D2D', color: '#fff' }
+              }}
+            />
+
+            {/* Multi-select Sector (depends on Region) */}
+            <Multiselect
+              options={sectorOptions}
+              displayValue="label"
+              onSelect={(selectedList) => handleMultiSelectChange('sector', selectedList)}
+              onRemove={(selectedList) => handleMultiSelectChange('sector', selectedList)}
+              placeholder="Select Sector"
+              showCheckbox={true}
+              hidePlaceholderAfterSelect={true}
+              disabled={!filters.region.length} // Disable if no region selected
+              style={{
+                chips: { display: 'none' },
+                searchBox: { background: '#2D2D2D', color: '#fff' }
+              }}
+            />
+
+            {/* Surface Area Range */}
+            <div className="flex flex-wrap md:flex-row md:flex-nowrap items-center gap-2">
+              <input
+                type="text"
+                placeholder="Min suprafața (m2)"
+                className={unifiedInputStyle}
+                onChange={(e) => handleFilterChange('areaMin', parseInt(e.target.value))}
+              />
+              <span className="text-gray-400 hidden md:block">-</span>
+              <input
+                type="text"
+                placeholder="Max suprafața (m2)"
+                className={unifiedInputStyle}
+                onChange={(e) => handleFilterChange('areaMax', parseInt(e.target.value))}
+              />
+            </div>
+
+            {/* Price Range */}
+            <div className="flex flex-wrap md:flex-row md:flex-nowrap items-center gap-2">
+              <input
+                type="text"
+                placeholder="Min preț (€)"
+                className={unifiedInputStyle}
+                onChange={(e) => handleFilterChange('priceMin', parseFloat(e.target.value))}
+              />
+              <span className="text-gray-400 hidden md:block">-</span>
+              <input
+                type="text"
+                placeholder="Max preț (€)"
+                className={unifiedInputStyle}
+                onChange={(e) => handleFilterChange('priceMax', parseFloat(e.target.value))}
+              />
+            </div>
+
           </div>
         </div>
       </header>
 
       {/* Properties List */}
       {
-          loading ? (
-            <div className="fixed inset-0 flex justify-center items-center min-h-screen bg-transparent z-50">
-              <ClipLoader color="#BB8D3F" loading={true} size={150} />
-            </div>
-       
-          ) : (
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {
-                filteredProperties.length > 0 ? (
-                  filteredProperties.map((property, index) => (
-                    <ApartmentCard property={property} key={index} />
-                  ))
-                ) : (
-                  <p className="text-white">Niciun apartament nu se potrivește cu filtrele selectate.</p>
-                )
-              }
+        loading ? (
+          <div className="fixed inset-0 flex justify-center items-center min-h-screen bg-transparent z-50">
+            <ClipLoader color="#BB8D3F" loading={true} size={150} />
           </div>
-          )
-        }
+        ) : (
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {
+              filteredProperties.length > 0 ? (
+                filteredProperties.map((property, index) => (
+                  <ApartmentCard property={property} key={index} />
+                ))
+              ) : (
+                <p className="text-white">Niciun apartament nu se potrivește cu filtrele selectate.</p>
+              )
+            }
+          </div>
+        )
+      }
     </section>
   );
 };

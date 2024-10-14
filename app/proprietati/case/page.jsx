@@ -26,15 +26,17 @@ const Case = () => {
 
   // Mapping of regions to sectors
   const sectorsByRegion = {
-    'Chişinău': ['Buiucani', "Sculeanca", 'Rîşcani','Centru', 'Botanica', 'Telecentru', "Poșta Veche", "Aeroport"],
+    'Chişinău': ['Buiucani', "Sculeanca", 'Rîşcani', 'Centru', 'Botanica', 'Telecentru', "Poșta Veche", "Aeroport"],
     'Suburbii': [
-        'Anenii Noi', 'Truşeni', 'Durleşti', 'Băcioi', 'Bubuieci', 'Ciorescu',
-        'Codru', 'Cricova', 'Dumbrava', 'Ialoveni', 'Măgdăceşti', 'Stăuceni',
-        'Tohatin', 'Vadul lui Vodă', 'Cojuşna', 'Budeşti', 'Sîngera', 'Cruzesti',
-        'Străşeni', 'Orhei', 'Ghidighici', 'Grătieşti', 'Vatra', 'Coloniţa',
-        'Cheltuitori', 'Cahul', 'Peresecina'
+      'Anenii Noi', 'Truşeni', 'Durleşti', 'Băcioi', 'Bubuieci', 'Ciorescu',
+      'Codru', 'Cricova', 'Dumbrava', 'Ialoveni', 'Măgdăceşti', 'Stăuceni',
+      'Tohatin', 'Vadul lui Vodă', 'Cojuşna', 'Budeşti', 'Sîngera', 'Cruzesti',
+      'Străşeni', 'Orhei', 'Ghidighici', 'Grătieşti', 'Vatra', 'Coloniţa',
+      'Cheltuitori', 'Cahul', 'Peresecina'
     ]
-};
+  };
+  const unifiedInputStyle = "bg-[#2D2D2D] border border-[#ccc] border-solid p-1 text-white rounded-md w-full md:w-[190px] min-h-[22px]";
+
 
   // Fetch properties from the API based on type
   useEffect(() => {
@@ -71,7 +73,7 @@ const Case = () => {
   useEffect(() => {
     const applyFilters = () => {
       setLoading(true);  // Show loading during filtering
-  
+
       const result = properties.filter(property => {
         return (
           (!filters.rooms || property.rooms === parseInt(filters.rooms)) &&
@@ -86,15 +88,15 @@ const Case = () => {
           (!filters.priceMax || property.price <= parseFloat(filters.priceMax))
         );
       });
-  
+
       console.log("Filtered properties:", result);  // Log filtered properties for debugging
       setFilteredProperties(result);
       setLoading(false);  // Stop loading after filtering is complete
     };
-  
+
     applyFilters();
   }, [filters, properties]);
-  
+
   // Navigate to the corresponding page when a property type is selected
   const handleTypeChange = (value) => {
     router.push(`/proprietati/${value.toLowerCase()}`);
@@ -109,7 +111,8 @@ const Case = () => {
           {/* Dropdowns for various attributes */}
           <div className="flex flex-wrap gap-4">
             {/* Property Type Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
+            <select className={unifiedInputStyle}
+
               onChange={(e) => {
                 handleFilterChange('type', e.target.value);
                 handleTypeChange(e.target.value);
@@ -121,7 +124,9 @@ const Case = () => {
             </select>
 
             {/* Property Condition Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
+            <select
+              className={unifiedInputStyle}
+
               onChange={(e) => handleFilterChange('propertyCondition', e.target.value)}>
               <option value="">Stare Imobil</option>
               <option value="Reparație euro">Reparație euro</option>
@@ -130,7 +135,8 @@ const Case = () => {
             </select>
 
             {/* Locative Font Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
+            <select className={unifiedInputStyle}
+
               onChange={(e) => handleFilterChange('locativeFont', e.target.value)}>
               <option value="">Fond Locativ</option>
               <option value="Construcţii Noi">Construcţii Noi</option>
@@ -138,7 +144,8 @@ const Case = () => {
             </select>
 
             {/* Region Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
+            <select
+              className={unifiedInputStyle}
               onChange={(e) => {
                 handleFilterChange('region', e.target.value);
                 handleFilterChange('sector', ''); // Reset sector when region changes
@@ -149,7 +156,8 @@ const Case = () => {
             </select>
 
             {/* Sector Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
+            <select className={unifiedInputStyle}
+
               value={filters.sector}
               onChange={(e) => handleFilterChange('sector', e.target.value)}
               disabled={!filters.region}>
@@ -160,7 +168,8 @@ const Case = () => {
             </select>
 
             {/* Rooms Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
+            <select className={unifiedInputStyle}
+
               onChange={(e) => handleFilterChange('rooms', e.target.value)}>
               <option value="">Nr. camere</option>
               <option value="1">1 Cameră</option>
@@ -169,7 +178,8 @@ const Case = () => {
             </select>
 
             {/* Floors Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
+            <select className={unifiedInputStyle}
+
               onChange={(e) => handleFilterChange('floors', e.target.value)}>
               <option value="">Nr. etaje</option>
               <option value="1">1</option>
@@ -178,45 +188,45 @@ const Case = () => {
               <option value="4">4</option>
               <option value="5">5</option>
             </select>
+
+            {/* Surface Area Range */}
+            <div className="flex flex-wrap md:flex-row md:flex-nowrap items-center gap-2">
+              <input
+                type="number"
+                placeholder="Min suprafața (m2)"
+                className={unifiedInputStyle}
+                onChange={(e) => handleFilterChange('areaMin', e.target.value)}
+              />
+              <span className="text-gray-400 hidden md:block">-</span>
+              <input
+                type="number"
+                placeholder="Max suprafața (m2)"
+                className={unifiedInputStyle}
+                onChange={(e) => handleFilterChange('areaMax', e.target.value)}
+              />
+            </div>
+
+            {/* Price Range */}
+            <div className="flex flex-wrap md:flex-row md:flex-nowrap items-center gap-2">
+              <input
+                type="number"
+                placeholder="Min preț (€)"
+                className={unifiedInputStyle}
+                onChange={(e) => handleFilterChange('priceMin', e.target.value)}
+              />
+              <span className="text-gray-400 hidden md:block">-</span>
+              <input
+                type="number"
+                placeholder="Max preț (€)"
+                className={unifiedInputStyle}
+                onChange={(e) => handleFilterChange('priceMax', e.target.value)}
+              />
+            </div>
           </div>
+
         </div>
 
-        {/* Range Inputs */}
-        <div className="flex flex-col gap-4 items-end justify-end">
-          {/* Surface Area Range */}
-          <div className="flex flex-wrap md:flex-row md:flex-nowrap items-center gap-2">
-            <input
-              type="number"
-              placeholder="Min suprafața (m2)"
-              className="bg-gray-800 text-white p-2 rounded-lg  w-full md:w-40 h-[50px]"
-              onChange={(e) => handleFilterChange('areaMin', e.target.value)}
-            />
-            <span className="text-gray-400 hidden md:block">-</span>
-            <input
-              type="number"
-              placeholder="Max suprafața (m2)"
-              className="bg-gray-800 text-white p-2 rounded-lg  w-full md:w-40 h-[50px]"
-              onChange={(e) => handleFilterChange('areaMax', e.target.value)}
-            />
-          </div>
 
-          {/* Price Range */}
-          <div className="flex flex-wrap md:flex-row md:flex-nowrap items-center gap-2">
-            <input
-              type="number"
-              placeholder="Min preț (€)"
-              className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-40 h-[50px]"
-              onChange={(e) => handleFilterChange('priceMin', e.target.value)}
-            />
-            <span className="text-gray-400 hidden md:block">-</span>
-            <input
-              type="number"
-              placeholder="Max preț (€)"
-              className="bg-gray-800 text-white p-2 rounded-lg  w-full md:w-40 h-[50px]"
-              onChange={(e) => handleFilterChange('priceMax', e.target.value)}
-            />
-          </div>
-        </div>
       </header>
 
       {/* Properties List */}

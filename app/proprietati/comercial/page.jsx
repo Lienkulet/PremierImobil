@@ -34,6 +34,8 @@ const Comercial = () => {
     ]
 };
 
+const unifiedInputStyle = "bg-[#2D2D2D] border border-[#ccc] border-solid p-1 text-white rounded-md  w-full md:w-[190px] min-h-[22px]";
+
   // Fetch properties from the API based on type
   useEffect(() => {
     const fetchProperties = async () => {
@@ -98,9 +100,9 @@ const Comercial = () => {
         <div className="flex flex-col items-start justify-between gap-6 ">
           <h1 className="text-white text-2xl md:text-4xl font-bold">Proprietăți - {filters.type}</h1>
           {/* Dropdowns for various attributes */}
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-col md:flex-row flex-wrap gap-4 w-full">
             {/* Property Type Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
+            <select className={unifiedInputStyle}
               onChange={(e) => {
                 handleFilterChange('type', e.target.value);
                 handleTypeChange(e.target.value);
@@ -112,7 +114,7 @@ const Comercial = () => {
             </select>
 
             {/* Destination Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
+            <select className={unifiedInputStyle}
               onChange={(e) => handleFilterChange('destination', e.target.value)}>
               <option value="">Destinaţie Spatiu</option>
               <option value="Comercial">Comercial</option>
@@ -121,7 +123,7 @@ const Comercial = () => {
             </select>
 
             {/* Property Condition Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
+            <select className={unifiedInputStyle}
               onChange={(e) => handleFilterChange('propertyCondition', e.target.value)}>
               <option value="">Stare Imobil</option>
               <option value="euro">Reparație euro</option>
@@ -130,7 +132,7 @@ const Comercial = () => {
             </select>
 
             {/* Region Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
+            <select className={unifiedInputStyle}
               onChange={(e) => {
                 handleFilterChange('region', e.target.value);
                 handleFilterChange('sector', ''); // Reset sector when region changes
@@ -141,7 +143,7 @@ const Comercial = () => {
             </select>
 
             {/* Sector Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
+            <select className={unifiedInputStyle}
               value={filters.sector}
               onChange={(e) => handleFilterChange('sector', e.target.value)}
               disabled={!filters.region}>
@@ -150,24 +152,19 @@ const Comercial = () => {
                 <option key={sec} value={sec}>{sec}</option>
               ))}
             </select>
-          </div>
-        </div>
-
-        {/* Range Inputs */}
-        <div className="flex flex-col gap-4 items-end justify-end">
-          {/* Surface Area Range */}
+             {/* Surface Area Range */}
           <div className="flex flex-wrap md:flex-row md:flex-nowrap items-center gap-2">
             <input
               type="number"
               placeholder="Min suprafața (m2)"
-              className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-40 h-[50px]"
+              className={unifiedInputStyle}
               onChange={(e) => handleFilterChange('areaMin', e.target.value)}
             />
             <span className="text-gray-400 hidden md:block">-</span>
             <input
               type="number"
               placeholder="Max suprafața (m2)"
-              className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-40 h-[50px]"
+              className={unifiedInputStyle}
               onChange={(e) => handleFilterChange('areaMax', e.target.value)}
             />
           </div>
@@ -177,16 +174,17 @@ const Comercial = () => {
             <input
               type="number"
               placeholder="Min preț (€)"
-              className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-40 h-[50px]"
+              className={unifiedInputStyle}
               onChange={(e) => handleFilterChange('priceMin', e.target.value)}
             />
             <span className="text-gray-400 hidden md:block">-</span>
             <input
               type="number"
               placeholder="Max preț (€)"
-              className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-40 h-[50px]"
+              className={unifiedInputStyle}
               onChange={(e) => handleFilterChange('priceMax', e.target.value)}
             />
+          </div>
           </div>
         </div>
       </header>

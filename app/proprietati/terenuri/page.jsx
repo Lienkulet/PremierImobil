@@ -23,15 +23,18 @@ const Terenuri = () => {
 
   // Mapping of regions to sectors
   const sectorsByRegion = {
-    'Chişinău': ['Buiucani', "Sculeanca", 'Rîşcani','Centru', 'Botanica', 'Telecentru', "Poșta Veche", "Aeroport"],
+    'Chişinău': ['Buiucani', "Sculeanca", 'Rîşcani', 'Centru', 'Botanica', 'Telecentru', "Poșta Veche", "Aeroport"],
     'Suburbii': [
-        'Anenii Noi', 'Truşeni', 'Durleşti', 'Băcioi', 'Bubuieci', 'Ciorescu',
-        'Codru', 'Cricova', 'Dumbrava', 'Ialoveni', 'Măgdăceşti', 'Stăuceni',
-        'Tohatin', 'Vadul lui Vodă', 'Cojuşna', 'Budeşti', 'Sîngera', 'Cruzesti',
-        'Străşeni', 'Orhei', 'Ghidighici', 'Grătieşti', 'Vatra', 'Coloniţa',
-        'Cheltuitori', 'Cahul', 'Peresecina'
+      'Anenii Noi', 'Truşeni', 'Durleşti', 'Băcioi', 'Bubuieci', 'Ciorescu',
+      'Codru', 'Cricova', 'Dumbrava', 'Ialoveni', 'Măgdăceşti', 'Stăuceni',
+      'Tohatin', 'Vadul lui Vodă', 'Cojuşna', 'Budeşti', 'Sîngera', 'Cruzesti',
+      'Străşeni', 'Orhei', 'Ghidighici', 'Grătieşti', 'Vatra', 'Coloniţa',
+      'Cheltuitori', 'Cahul', 'Peresecina'
     ]
-};
+  };
+
+  const unifiedInputStyle = "bg-[#2D2D2D] border border-[#ccc] border-solid p-1 text-white rounded-md  w-full md:w-[190px] min-h-[22px]";
+
 
   // Fetch properties from API based on type
   useEffect(() => {
@@ -97,10 +100,10 @@ const Terenuri = () => {
           <h1 className="text-white text-2xl md:text-4xl font-bold">Proprietăți - {filters.type}</h1>
           <div className="flex flex-wrap gap-4">
             {/* Property Type Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
-              onChange={(e) => { 
-                handleFilterChange('type', e.target.value); 
-                handleTypeChange(e.target.value); 
+            <select className={unifiedInputStyle}
+              onChange={(e) => {
+                handleFilterChange('type', e.target.value);
+                handleTypeChange(e.target.value);
               }}>
               <option value="Terenuri">Terenuri</option>
               <option value="Apartamente">Apartamente</option>
@@ -109,9 +112,9 @@ const Terenuri = () => {
             </select>
 
             {/* Region Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
-              onChange={(e) => { 
-                handleFilterChange('region', e.target.value); 
+            <select className={unifiedInputStyle}
+              onChange={(e) => {
+                handleFilterChange('region', e.target.value);
                 handleFilterChange('sector', ''); // Reset sector when region changes
               }}>
               <option value="">Selectează Regiune</option>
@@ -120,7 +123,7 @@ const Terenuri = () => {
             </select>
 
             {/* Sector Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
+            <select className={unifiedInputStyle}
               value={filters.sector}
               onChange={(e) => handleFilterChange('sector', e.target.value)}
               disabled={!filters.region}>
@@ -131,52 +134,51 @@ const Terenuri = () => {
             </select>
 
             {/* Destination Filter */}
-            <select className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-[128px] h-[50px]"
+            <select className={unifiedInputStyle}
               onChange={(e) => handleFilterChange('destination', e.target.value)}>
               <option value="">Destinaţie</option>
               <option value="Agricol">Agricol</option>
               <option value="Rezidențial">Rezidențial</option>
               <option value="Industrial">Industrial</option>
             </select>
+            {/* Surface Area Range */}
+            <div className="flex flex-wrap md:flex-row md:flex-nowrap items-center gap-2">
+              <input
+                type="number"
+                placeholder="Min suprafața (m2)"
+                className={unifiedInputStyle}
+                onChange={(e) => handleFilterChange('suprafaceMin', e.target.value)}
+              />
+              <span className="text-gray-400 hidden md:block">-</span>
+              <input
+                type="number"
+                placeholder="Max suprafața (m2)"
+                className={unifiedInputStyle}
+                onChange={(e) => handleFilterChange('suprafaceMax', e.target.value)}
+              />
+            </div>
+
+            {/* Price Range */}
+            <div className="flex flex-wrap md:flex-row md:flex-nowrap items-center gap-2">
+              <input
+                type="number"
+                placeholder="Min preț (€)"
+                className={unifiedInputStyle}
+                onChange={(e) => handleFilterChange('priceMin', e.target.value)}
+              />
+              <span className="text-gray-400 hidden md:block">-</span>
+              <input
+                type="number"
+                placeholder="Max preț (€)"
+                className={unifiedInputStyle}
+                onChange={(e) => handleFilterChange('priceMax', e.target.value)}
+              />
+            </div>
           </div>
+
         </div>
 
-        {/* Range Inputs */}
-        <div className="flex flex-col gap-4 items-center">
-          {/* Surface Area Range */}
-          <div className="flex flex-wrap md:flex-row md:flex-nowrap items-center gap-2">
-            <input
-              type="number"
-              placeholder="Min suprafața (m2)"
-              className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-40 h-[50px]"
-              onChange={(e) => handleFilterChange('suprafaceMin', e.target.value)}
-            />
-            <span className="text-gray-400 hidden md:block">-</span>
-            <input
-              type="number"
-              placeholder="Max suprafața (m2)"
-              className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-40 h-[50px]"
-              onChange={(e) => handleFilterChange('suprafaceMax', e.target.value)}
-            />
-          </div>
 
-          {/* Price Range */}
-          <div className="flex flex-wrap md:flex-row md:flex-nowrap items-center gap-2">
-            <input
-              type="number"
-              placeholder="Min preț (€)"
-              className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-40 h-[50px]"
-              onChange={(e) => handleFilterChange('priceMin', e.target.value)}
-            />
-            <span className="text-gray-400 hidden md:block">-</span>
-            <input
-              type="number"
-              placeholder="Max preț (€)"
-              className="bg-gray-800 text-white p-2 rounded-lg w-full md:w-40 h-[50px]"
-              onChange={(e) => handleFilterChange('priceMax', e.target.value)}
-            />
-          </div>
-        </div>
       </header>
 
       {/* Properties List */}
