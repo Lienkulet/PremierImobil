@@ -4,6 +4,7 @@ import ApartmentCard from "@/components/ApartmentCard";
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
+import Multiselect from 'multiselect-react-dropdown';
 
 const Comercial = () => {
   const [properties, setProperties] = useState([]);
@@ -11,35 +12,35 @@ const Comercial = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(true); // Loading state
   const [filters, setFilters] = useState({
-    type: 'Comercial',       // Type (Comercial, Apartamente, Case, Terenuri)
-    destination: '',         // Destination (
-    propertyCondition: '',   // Property Condition (like 'Renovat', 'Nerenovat')
-    region: '',              // Region (like 'Chişinău', 'Suburbii')
-    sector: '',              // Sector (like 'Buiucani', 'Centru')
-    priceMin: null,          // Minimum price
-    priceMax: null,          // Maximum price
-    areaMin: null,           // Minimum surface area
-    areaMax: null            // Maximum surface area
+    type: 'Comercial',
+    destination: [],
+    propertyCondition: [],
+    region: [],
+    sector: [],
+    priceMin: '',
+    priceMax: '',
+    areaMin: '',
+    areaMax: ''
   });
 
   // Mapping of regions to sectors
   const sectorsByRegion = {
     'Chişinău': ['Buiucani', "Sculeanca", 'Rîşcani','Centru', 'Botanica', 'Telecentru', "Poșta Veche", "Aeroport"],
     'Suburbii': [
-        'Anenii Noi', 'Truşeni', 'Durleşti', 'Băcioi', 'Bubuieci', 'Ciorescu',
-        'Codru', 'Cricova', 'Dumbrava', 'Ialoveni', 'Măgdăceşti', 'Stăuceni',
-        'Tohatin', 'Vadul lui Vodă', 'Cojuşna', 'Budeşti', 'Sîngera', 'Cruzesti',
-        'Străşeni', 'Orhei', 'Ghidighici', 'Grătieşti', 'Vatra', 'Coloniţa',
-        'Cheltuitori', 'Cahul', 'Peresecina'
+      'Anenii Noi', 'Truşeni', 'Durleşti', 'Băcioi', 'Bubuieci', 'Ciorescu',
+      'Codru', 'Cricova', 'Dumbrava', 'Ialoveni', 'Măgdăceşti', 'Stăuceni',
+      'Tohatin', 'Vadul lui Vodă', 'Cojuşna', 'Budeşti', 'Sîngera', 'Cruzesti',
+      'Străşeni', 'Orhei', 'Ghidighici', 'Grătieşti', 'Vatra', 'Coloniţa',
+      'Cheltuitori', 'Cahul', 'Peresecina'
     ]
-};
+  };
 
-const unifiedInputStyle = "bg-[#2D2D2D] border border-[#ccc] border-solid p-1 text-white rounded-md  w-full md:w-[190px] min-h-[22px]";
+  const unifiedInputStyle = "bg-[#2D2D2D] border border-[#ccc] border-solid p-1 text-white rounded-md w-full md:w-[190px] min-h-[22px]";
 
   // Fetch properties from the API based on type
   useEffect(() => {
     const fetchProperties = async () => {
-      setLoading(true);  // Start loading when fetching data
+      setLoading(true);
       try {
         const response = await fetch(`/api/${filters.type.toLowerCase()}`);
         if (!response.ok) {
@@ -47,34 +48,34 @@ const unifiedInputStyle = "bg-[#2D2D2D] border border-[#ccc] border-solid p-1 te
         }
         const data = await response.json();
         setProperties(data);
-        setFilteredProperties(data); // Initialize filtered properties
+        setFilteredProperties(data);
       } catch (error) {
         console.error('Error fetching properties:', error);
       } finally {
-        setLoading(false);  // Stop loading after fetching is complete
+        setLoading(false);
       }
     };
 
     fetchProperties();
   }, [filters.type]);
 
-  // Update filters when user selects new criteria
-  const handleFilterChange = (filterName, value) => {
+  // Handle multi-select filter changes
+  const handleMultiSelectChange = (filterName, selectedList) => {
     setFilters(prev => ({
       ...prev,
-      [filterName]: value
+      [filterName]: selectedList.map(item => item.value)
     }));
   };
 
   // Apply filters when filters or properties change
   useEffect(() => {
     const applyFilters = () => {
-      setLoading(true);  // Show loading during filtering
-      let result = properties.filter(property => {
-        return (!filters.region || property.region === filters.region) &&
-          (!filters.sector || property.sector === filters.sector) &&
-          (!filters.destination || property.destination === filters.destination) &&
-          (!filters.propertyCondition || property.propertyCondition === filters.propertyCondition) &&
+      setLoading(true);
+      const result = properties.filter(property => {
+        return (!filters.region.length || filters.region.includes(property.region)) &&
+          (!filters.sector.length || filters.sector.includes(property.sector)) &&
+          (!filters.destination.length || filters.destination.includes(property.destination)) &&
+          (!filters.propertyCondition.length || filters.propertyCondition.includes(property.propertyCondition)) &&
           (!filters.areaMin || property.supraface >= parseInt(filters.areaMin)) &&
           (!filters.areaMax || property.supraface <= parseInt(filters.areaMax)) &&
           (!filters.priceMin || property.price >= parseFloat(filters.priceMin)) &&
@@ -82,7 +83,7 @@ const unifiedInputStyle = "bg-[#2D2D2D] border border-[#ccc] border-solid p-1 te
       });
 
       setFilteredProperties(result);
-      setLoading(false);  // Stop loading after filtering is complete
+      setLoading(false);
     };
 
     applyFilters();
@@ -93,98 +94,143 @@ const unifiedInputStyle = "bg-[#2D2D2D] border border-[#ccc] border-solid p-1 te
     router.push(`/proprietati/${value.toLowerCase()}`);
   };
 
+  // Multi-select options for filters
+  const destinationOptions = [
+    { value: 'Comercial', label: 'Comercial' },
+    { value: 'Birouri', label: 'Birouri' },
+    { value: 'Depozit', label: 'Depozit/Producere' }
+  ];
+
+  const propertyConditionOptions = [
+    { value: 'Reparație euro', label: 'Reparație euro' },
+    { value: 'Reparație mediu', label: 'Reparație mediu' },
+    { value: 'Fără reparație/Variantă albă', label: 'Fără reparație/Variantă albă' }
+  ];
+
+  const regionOptions = [
+    { value: 'Chişinău', label: 'Chişinău' },
+    { value: 'Suburbii', label: 'Suburbii' }
+  ];
+
+  const sectorOptions = filters.region.flatMap(region =>
+    sectorsByRegion[region]?.map(sector => ({
+      value: sector, label: sector
+    })) || []
+  );
+
   return (
     <section className="md:p-8">
       {/* Filters Section */}
       <header className="flex flex-col md:flex-row items-start justify-between w-full gap-4">
-        <div className="flex flex-col items-start justify-between gap-6 ">
+        <div className="flex flex-col items-start justify-between gap-6">
           <h1 className="text-white text-2xl md:text-4xl font-bold">Proprietăți - {filters.type}</h1>
-          {/* Dropdowns for various attributes */}
+
           <div className="flex flex-col md:flex-row flex-wrap gap-4 w-full">
-            {/* Property Type Filter */}
+            {/* Property Type Filter - Do Not Change */}
             <select className={unifiedInputStyle}
               onChange={(e) => {
-                handleFilterChange('type', e.target.value);
                 handleTypeChange(e.target.value);
               }}>
               <option value="Comercial">Spații Comerciale</option>
-              <option value="Apartamente">Apartamente</option>
               <option value="Case">Case</option>
+              <option value="Apartamente">Apartamente</option>
               <option value="Terenuri">Terenuri</option>
             </select>
 
-            {/* Destination Filter */}
-            <select className={unifiedInputStyle}
-              onChange={(e) => handleFilterChange('destination', e.target.value)}>
-              <option value="">Destinaţie Spatiu</option>
-              <option value="Comercial">Comercial</option>
-              <option value="Birouri">Birouri</option>
-              <option value="Depozit">Depozit/Producere</option>
-            </select>
-
-            {/* Property Condition Filter */}
-            <select className={unifiedInputStyle}
-              onChange={(e) => handleFilterChange('propertyCondition', e.target.value)}>
-              <option value="">Stare Imobil</option>
-              <option value="euro">Reparație euro</option>
-              <option value="mediu">Reparație mediu</option>
-              <option value="alb">Fără reparație/Variantă albă</option>
-            </select>
-
-            {/* Region Filter */}
-            <select className={unifiedInputStyle}
-              onChange={(e) => {
-                handleFilterChange('region', e.target.value);
-                handleFilterChange('sector', ''); // Reset sector when region changes
-              }}>
-              <option value="">Selectează Regiune</option>
-              <option value="Chişinău">Chişinău</option>
-              <option value="Suburbii">Suburbii</option>
-            </select>
-
-            {/* Sector Filter */}
-            <select className={unifiedInputStyle}
-              value={filters.sector}
-              onChange={(e) => handleFilterChange('sector', e.target.value)}
-              disabled={!filters.region}>
-              <option value="">Selectează Sector</option>
-              {filters.region && sectorsByRegion[filters.region]?.map((sec) => (
-                <option key={sec} value={sec}>{sec}</option>
-              ))}
-            </select>
-             {/* Surface Area Range */}
-          <div className="flex flex-wrap md:flex-row md:flex-nowrap items-center gap-2">
-            <input
-              type="number"
-              placeholder="Min suprafața (m2)"
-              className={unifiedInputStyle}
-              onChange={(e) => handleFilterChange('areaMin', e.target.value)}
+            {/* Multi-select Destination */}
+            <Multiselect
+              options={destinationOptions}
+              displayValue="label"
+              onSelect={(selectedList) => handleMultiSelectChange('destination', selectedList)}
+              onRemove={(selectedList) => handleMultiSelectChange('destination', selectedList)}
+              placeholder="Destinaţie Spatiu"
+              showCheckbox={true}
+              hidePlaceholderAfterSelect={true}
+              style={{
+                chips: { display: 'none' },
+                searchBox: { background: '#2D2D2D', color: '#fff' }
+              }}
             />
-            <span className="text-gray-400 hidden md:block">-</span>
-            <input
-              type="number"
-              placeholder="Max suprafața (m2)"
-              className={unifiedInputStyle}
-              onChange={(e) => handleFilterChange('areaMax', e.target.value)}
-            />
-          </div>
 
-          {/* Price Range */}
-          <div className="flex flex-wrap md:flex-row md:flex-nowrap items-center gap-2">
-            <input
-              type="number"
-              placeholder="Min preț (€)"
-              className={unifiedInputStyle}
-              onChange={(e) => handleFilterChange('priceMin', e.target.value)}
+            {/* Multi-select Property Condition */}
+            <Multiselect
+              options={propertyConditionOptions}
+              displayValue="label"
+              onSelect={(selectedList) => handleMultiSelectChange('propertyCondition', selectedList)}
+              onRemove={(selectedList) => handleMultiSelectChange('propertyCondition', selectedList)}
+              placeholder="Stare Imobil"
+              showCheckbox={true}
+              hidePlaceholderAfterSelect={true}
+              style={{
+                chips: { display: 'none' },
+                searchBox: { background: '#2D2D2D', color: '#fff' }
+              }}
             />
-            <span className="text-gray-400 hidden md:block">-</span>
-            <input
-              type="number"
-              placeholder="Max preț (€)"
-              className={unifiedInputStyle}
-              onChange={(e) => handleFilterChange('priceMax', e.target.value)}
+
+            {/* Multi-select Region */}
+            <Multiselect
+              options={regionOptions}
+              displayValue="label"
+              onSelect={(selectedList) => handleMultiSelectChange('region', selectedList)}
+              onRemove={(selectedList) => handleMultiSelectChange('region', selectedList)}
+              placeholder="Regiune"
+              showCheckbox={true}
+              hidePlaceholderAfterSelect={true}
+              style={{
+                chips: { display: 'none' },
+                searchBox: { background: '#2D2D2D', color: '#fff' }
+              }}
             />
-          </div>
+
+            {/* Multi-select Sector */}
+            <Multiselect
+              options={sectorOptions}
+              displayValue="label"
+              onSelect={(selectedList) => handleMultiSelectChange('sector', selectedList)}
+              onRemove={(selectedList) => handleMultiSelectChange('sector', selectedList)}
+              placeholder="Sector"
+              showCheckbox={true}
+              hidePlaceholderAfterSelect={true}
+              disabled={!filters.region.length} // Disable if no region selected
+              style={{
+                chips: { display: 'none' },
+                searchBox: { background: '#2D2D2D', color: '#fff' }
+              }}
+            />
+
+            {/* Surface Area Range */}
+            <div className="flex flex-wrap md:flex-row md:flex-nowrap items-center gap-2">
+              <input
+                type="number"
+                placeholder="Min suprafața (m2)"
+                className={unifiedInputStyle}
+                onChange={(e) => handleFilterChange('areaMin', e.target.value)}
+              />
+              <span className="text-gray-400 hidden md:block">-</span>
+              <input
+                type="number"
+                placeholder="Max suprafața (m2)"
+                className={unifiedInputStyle}
+                onChange={(e) => handleFilterChange('areaMax', e.target.value)}
+              />
+            </div>
+
+            {/* Price Range */}
+            <div className="flex flex-wrap md:flex-row md:flex-nowrap items-center gap-2">
+              <input
+                type="number"
+                placeholder="Min preț (€)"
+                className={unifiedInputStyle}
+                onChange={(e) => handleFilterChange('priceMin', e.target.value)}
+              />
+              <span className="text-gray-400 hidden md:block">-</span>
+              <input
+                type="number"
+                placeholder="Max preț (€)"
+                className={unifiedInputStyle}
+                onChange={(e) => handleFilterChange('priceMax', e.target.value)}
+              />
+            </div>
           </div>
         </div>
       </header>

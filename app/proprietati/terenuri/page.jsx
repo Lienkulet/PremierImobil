@@ -4,6 +4,7 @@ import ApartmentCard from "@/components/ApartmentCard";
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
+import Multiselect from 'multiselect-react-dropdown';
 
 const Terenuri = () => {
   const [properties, setProperties] = useState([]);
@@ -12,13 +13,13 @@ const Terenuri = () => {
   const [loading, setLoading] = useState(true); // Loading state
   const [filters, setFilters] = useState({
     type: 'Terenuri',   // Type (Terenuri, Apartamente, Case, Comercial)
-    region: '',         // Region (like 'Chişinău', 'Suburbii')
-    sector: '',         // Sector (like 'Buiucani', 'Centru')
-    destination: '',    // Destination (like 'Agricol', 'Rezidențial')
-    priceMin: null,     // Minimum price
-    priceMax: null,     // Maximum price
-    suprafaceMin: null, // Minimum surface area
-    suprafaceMax: null  // Maximum surface area
+    region: [],
+    sector: [],
+    destination: [],
+    priceMin: '',
+    priceMax: '',
+    suprafaceMin: '',
+    suprafaceMax: ''
   });
 
   // Mapping of regions to sectors
@@ -33,8 +34,7 @@ const Terenuri = () => {
     ]
   };
 
-  const unifiedInputStyle = "bg-[#2D2D2D] border border-[#ccc] border-solid p-1 text-white rounded-md  w-full md:w-[190px] min-h-[22px]";
-
+  const unifiedInputStyle = "bg-[#2D2D2D] border border-[#ccc] border-solid p-1 text-white rounded-md w-full md:w-[190px] min-h-[22px]";
 
   // Fetch properties from API based on type
   useEffect(() => {
@@ -58,11 +58,11 @@ const Terenuri = () => {
     fetchProperties();
   }, [filters.type]);
 
-  // Update filters when user selects new criteria
-  const handleFilterChange = (filterName, value) => {
+  // Handle multi-select filter changes
+  const handleMultiSelectChange = (filterName, selectedList) => {
     setFilters(prev => ({
       ...prev,
-      [filterName]: value
+      [filterName]: selectedList.map(item => item.value)
     }));
   };
 
@@ -71,9 +71,9 @@ const Terenuri = () => {
     const applyFilters = () => {
       setLoading(true);  // Show loading during filtering
       let result = properties.filter(property => {
-        return (!filters.region || property.region === filters.region) &&
-          (!filters.sector || property.sector === filters.sector) &&
-          (!filters.destination || property.destination === filters.destination) &&
+        return (!filters.region.length || filters.region.includes(property.region)) &&
+          (!filters.sector.length || filters.sector.includes(property.sector)) &&
+          (!filters.destination.length || filters.destination.includes(property.destination)) &&
           (!filters.suprafaceMin || property.supraface >= parseInt(filters.suprafaceMin)) &&
           (!filters.suprafaceMax || property.supraface <= parseInt(filters.suprafaceMax)) &&
           (!filters.priceMin || property.price >= parseFloat(filters.priceMin)) &&
@@ -92,17 +92,35 @@ const Terenuri = () => {
     router.push(`/proprietati/${value.toLowerCase()}`);
   };
 
+  // Multi-select options for filters
+  const destinationOptions = [
+    { value: 'Agricol', label: 'Agricol' },
+    { value: 'Rezidențial', label: 'Rezidențial' },
+    { value: 'Industrial', label: 'Industrial' }
+  ];
+
+  const regionOptions = [
+    { value: 'Chişinău', label: 'Chişinău' },
+    { value: 'Suburbii', label: 'Suburbii' }
+  ];
+
+  const sectorOptions = filters.region.flatMap(region =>
+    sectorsByRegion[region]?.map(sector => ({
+      value: sector, label: sector
+    })) || []
+  );
+
   return (
     <section className="md:p-8">
       {/* Filters Section */}
       <header className="flex flex-col md:flex-row items-start justify-between w-full gap-4">
-        <div className="flex flex-col items-start justify-between gap-6 ">
+        <div className="flex flex-col items-start justify-between gap-6">
           <h1 className="text-white text-2xl md:text-4xl font-bold">Proprietăți - {filters.type}</h1>
+
           <div className="flex flex-wrap gap-4">
             {/* Property Type Filter */}
             <select className={unifiedInputStyle}
               onChange={(e) => {
-                handleFilterChange('type', e.target.value);
                 handleTypeChange(e.target.value);
               }}>
               <option value="Terenuri">Terenuri</option>
@@ -111,36 +129,52 @@ const Terenuri = () => {
               <option value="Comercial">Spații Comerciale</option>
             </select>
 
-            {/* Region Filter */}
-            <select className={unifiedInputStyle}
-              onChange={(e) => {
-                handleFilterChange('region', e.target.value);
-                handleFilterChange('sector', ''); // Reset sector when region changes
-              }}>
-              <option value="">Selectează Regiune</option>
-              <option value="Chişinău">Chişinău</option>
-              <option value="Suburbii">Suburbii</option>
-            </select>
+            {/* Multi-select Region */}
+            <Multiselect
+              options={regionOptions}
+              displayValue="label"
+              onSelect={(selectedList) => handleMultiSelectChange('region', selectedList)}
+              onRemove={(selectedList) => handleMultiSelectChange('region', selectedList)}
+              placeholder="Regiune"
+              showCheckbox={true}
+              hidePlaceholderAfterSelect={true}
+              style={{
+                chips: { display: 'none' },
+                searchBox: { background: '#2D2D2D', color: '#fff' }
+              }}
+            />
 
-            {/* Sector Filter */}
-            <select className={unifiedInputStyle}
-              value={filters.sector}
-              onChange={(e) => handleFilterChange('sector', e.target.value)}
-              disabled={!filters.region}>
-              <option value="">Selectează Sector</option>
-              {filters.region && sectorsByRegion[filters.region]?.map((sec) => (
-                <option key={sec} value={sec}>{sec}</option>
-              ))}
-            </select>
+            {/* Multi-select Sector */}
+            <Multiselect
+              options={sectorOptions}
+              displayValue="label"
+              onSelect={(selectedList) => handleMultiSelectChange('sector', selectedList)}
+              onRemove={(selectedList) => handleMultiSelectChange('sector', selectedList)}
+              placeholder="Sector"
+              showCheckbox={true}
+              hidePlaceholderAfterSelect={true}
+              disabled={!filters.region.length} // Disable if no region selected
+              style={{
+                chips: { display: 'none' },
+                searchBox: { background: '#2D2D2D', color: '#fff' }
+              }}
+            />
 
-            {/* Destination Filter */}
-            <select className={unifiedInputStyle}
-              onChange={(e) => handleFilterChange('destination', e.target.value)}>
-              <option value="">Destinaţie</option>
-              <option value="Agricol">Agricol</option>
-              <option value="Rezidențial">Rezidențial</option>
-              <option value="Industrial">Industrial</option>
-            </select>
+            {/* Multi-select Destination */}
+            <Multiselect
+              options={destinationOptions}
+              displayValue="label"
+              onSelect={(selectedList) => handleMultiSelectChange('destination', selectedList)}
+              onRemove={(selectedList) => handleMultiSelectChange('destination', selectedList)}
+              placeholder="Destinație"
+              showCheckbox={true}
+              hidePlaceholderAfterSelect={true}
+              style={{
+                chips: { display: 'none' },
+                searchBox: { background: '#2D2D2D', color: '#fff' }
+              }}
+            />
+
             {/* Surface Area Range */}
             <div className="flex flex-wrap md:flex-row md:flex-nowrap items-center gap-2">
               <input
@@ -175,10 +209,7 @@ const Terenuri = () => {
               />
             </div>
           </div>
-
         </div>
-
-
       </header>
 
       {/* Properties List */}

@@ -4,24 +4,26 @@ import ApartmentCard from "@/components/ApartmentCard";
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
+import Multiselect from 'multiselect-react-dropdown';
 
 const Case = () => {
   const [properties, setProperties] = useState([]);
   const [filteredProperties, setFilteredProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const [loading, setLoading] = useState(true); // Loading state
+  const [type, setType] = useState('Case');
+
+  // Initial filters state
   const [filters, setFilters] = useState({
-    type: 'Case',             // Type (Case, Apartamente, Comercial, Terenuri)
-    floors: '',               // Number of floors
-    rooms: '',                // Number of rooms
-    locativeFont: '',         // Locative Font (Construcţii Noi, Secundar)
-    propertyCondition: '',     // Property Condition (Renovat, Nerenovat)
-    region: '',               // Region (Chişinău, Suburbii)
-    sector: '',               // Sector (Buiucani, Centru, etc.)
-    priceMin: '',             // Minimum price
-    priceMax: '',             // Maximum price
-    areaMin: '',              // Minimum surface area
-    areaMax: ''               // Maximum surface area
+    type: 'Case',
+    propertyCondition: [],
+    locativeFont: [],
+    region: [],
+    sector: [],
+    areaMin: '',
+    areaMax: '',
+    priceMin: '',
+    priceMax: ''
   });
 
   // Mapping of regions to sectors
@@ -35,8 +37,6 @@ const Case = () => {
       'Cheltuitori', 'Cahul', 'Peresecina'
     ]
   };
-  const unifiedInputStyle = "bg-[#2D2D2D] border border-[#ccc] border-solid p-1 text-white rounded-md w-full md:w-[190px] min-h-[22px]";
-
 
   // Fetch properties from the API based on type
   useEffect(() => {
@@ -48,7 +48,6 @@ const Case = () => {
           throw new Error("Failed to fetch properties");
         }
         const data = await response.json();
-        console.log("Fetched Data:", data);
         setProperties(data);
         setFilteredProperties(data); // Initialize filtered properties
       } catch (error) {
@@ -61,11 +60,11 @@ const Case = () => {
     fetchProperties();
   }, []);
 
-  // Update filters when user selects new criteria
-  const handleFilterChange = (filterName, value) => {
+  // Handle multi-select filter changes
+  const handleMultiSelectChange = (filterName, selectedList) => {
     setFilters(prev => ({
       ...prev,
-      [filterName]: value || '' // Avoid setting `null`
+      [filterName]: selectedList.map(item => item.value) // Extract selected values
     }));
   };
 
@@ -76,12 +75,10 @@ const Case = () => {
 
       const result = properties.filter(property => {
         return (
-          (!filters.rooms || property.rooms === parseInt(filters.rooms)) &&
-          (!filters.floors || property.floors === parseInt(filters.floors)) &&
-          (!filters.locativeFont || property.locativeFont?.toLowerCase() === filters.locativeFont.toLowerCase()) && // Case insensitive
-          (!filters.propertyCondition || property.propertyCondition?.toLowerCase() === filters.propertyCondition.toLowerCase()) && // Case insensitive
-          (!filters.region || property.region.toLowerCase() === filters.region.toLowerCase()) && // Case insensitive
-          (!filters.sector || property.sector.toLowerCase() === filters.sector.toLowerCase()) && // Case insensitive
+          (!filters.locativeFont.length || filters.locativeFont.includes(property.locativeFont)) &&
+          (!filters.propertyCondition.length || filters.propertyCondition.includes(property.propertyCondition)) &&
+          (!filters.region.length || filters.region.includes(property.region)) &&
+          (!filters.sector.length || filters.sector.includes(property.sector)) &&
           (!filters.areaMin || property.supraface >= parseInt(filters.areaMin)) &&
           (!filters.areaMax || property.supraface <= parseInt(filters.areaMax)) &&
           (!filters.priceMin || property.price >= parseFloat(filters.priceMin)) &&
@@ -89,7 +86,6 @@ const Case = () => {
         );
       });
 
-      console.log("Filtered properties:", result);  // Log filtered properties for debugging
       setFilteredProperties(result);
       setLoading(false);  // Stop loading after filtering is complete
     };
@@ -99,22 +95,46 @@ const Case = () => {
 
   // Navigate to the corresponding page when a property type is selected
   const handleTypeChange = (value) => {
+    setType(value);
     router.push(`/proprietati/${value.toLowerCase()}`);
   };
+
+  const locativeFontOptions = [
+    { value: 'Construcţii Noi', label: 'Construcţii Noi' },
+    { value: 'Secundar', label: 'Secundar' }
+  ];
+
+  const propertyConditionOptions = [
+    { value: 'Reparație euro', label: 'Reparație euro' },
+    { value: 'Fără reparație/Variantă albă', label: 'Fără reparație/Variantă albă' }
+  ];
+
+  const regionOptions = [
+    { value: 'Chişinău', label: 'Chişinău' },
+    { value: 'Suburbii', label: 'Suburbii' }
+  ];
+
+  const sectorOptions = filters.region.flatMap(region =>
+    sectorsByRegion[region]?.map(sector => ({
+      value: sector, label: sector
+    })) || []
+  );
+
+  // Tailwind CSS for consistent input styling
+  const unifiedInputStyle = "bg-[#2D2D2D] border border-[#ccc] border-solid p-1 text-white rounded-md w-full md:w-[190px] min-h-[22px]";
 
   return (
     <section className="md:p-8">
       {/* Filters Section */}
       <header className="flex flex-col md:flex-row items-start justify-between w-full gap-4">
-        <div className="flex flex-col items-start justify-between gap-6 ">
+        <div className="flex flex-col items-start justify-between gap-6">
           <h1 className="text-white text-2xl md:text-4xl font-bold">Proprietăți - Case</h1>
-          {/* Dropdowns for various attributes */}
-          <div className="flex flex-wrap gap-4">
-            {/* Property Type Filter */}
-            <select className={unifiedInputStyle}
 
+          {/* Filters */}
+          <div className="flex flex-wrap gap-4">
+            {/* Single-select Type */}
+            <select className={unifiedInputStyle}
               onChange={(e) => {
-                handleFilterChange('type', e.target.value);
                 handleTypeChange(e.target.value);
               }}>
               <option value="Case">Case</option>
@@ -123,71 +143,66 @@ const Case = () => {
               <option value="Terenuri">Terenuri</option>
             </select>
 
-            {/* Property Condition Filter */}
-            <select
-              className={unifiedInputStyle}
+            {/* Multi-select Locative Font */}
+            <Multiselect
+              options={locativeFontOptions}
+              displayValue="label"
+              onSelect={(selectedList) => handleMultiSelectChange('locativeFont', selectedList)}
+              onRemove={(selectedList) => handleMultiSelectChange('locativeFont', selectedList)}
+              placeholder="Fond Locativ"
+              showCheckbox={true}
+              hidePlaceholderAfterSelect={true}
+              style={{
+                chips: { display: 'none' },
+                searchBox: { background: '#2D2D2D', color: '#fff' }
+              }}
+            />
 
-              onChange={(e) => handleFilterChange('propertyCondition', e.target.value)}>
-              <option value="">Stare Imobil</option>
-              <option value="Reparație euro">Reparație euro</option>
-              <option value="Reparație mediu">Reparație mediu</option>
-              <option value="Fără reparație/Variantă albă">Fără reparație/Variantă albă</option>
-            </select>
+            {/* Multi-select Property Condition */}
+            <Multiselect
+              options={propertyConditionOptions}
+              displayValue="label"
+              onSelect={(selectedList) => handleMultiSelectChange('propertyCondition', selectedList)}
+              onRemove={(selectedList) => handleMultiSelectChange('propertyCondition', selectedList)}
+              placeholder="Stare Imobil"
+              showCheckbox={true}
+              hidePlaceholderAfterSelect={true}
+              style={{
+                chips: { display: 'none' },
+                searchBox: { background: '#2D2D2D', color: '#fff' }
+              }}
+            />
 
-            {/* Locative Font Filter */}
-            <select className={unifiedInputStyle}
+            {/* Multi-select Region */}
+            <Multiselect
+              options={regionOptions}
+              displayValue="label"
+              onSelect={(selectedList) => handleMultiSelectChange('region', selectedList)}
+              onRemove={(selectedList) => handleMultiSelectChange('region', selectedList)}
+              placeholder="Regiune"
+              showCheckbox={true}
+              hidePlaceholderAfterSelect={true}
+              style={{
+                chips: { display: 'none' },
+                searchBox: { background: '#2D2D2D', color: '#fff' }
+              }}
+            />
 
-              onChange={(e) => handleFilterChange('locativeFont', e.target.value)}>
-              <option value="">Fond Locativ</option>
-              <option value="Construcţii Noi">Construcţii Noi</option>
-              <option value="Secundar">Secundar</option>
-            </select>
-
-            {/* Region Filter */}
-            <select
-              className={unifiedInputStyle}
-              onChange={(e) => {
-                handleFilterChange('region', e.target.value);
-                handleFilterChange('sector', ''); // Reset sector when region changes
-              }}>
-              <option value="">Selectează Regiune</option>
-              <option value="Chişinău">Chişinău</option>
-              <option value="Suburbii">Suburbii</option>
-            </select>
-
-            {/* Sector Filter */}
-            <select className={unifiedInputStyle}
-
-              value={filters.sector}
-              onChange={(e) => handleFilterChange('sector', e.target.value)}
-              disabled={!filters.region}>
-              <option value="">Selectează Sector</option>
-              {filters.region && sectorsByRegion[filters.region]?.map((sec) => (
-                <option key={sec} value={sec}>{sec}</option>
-              ))}
-            </select>
-
-            {/* Rooms Filter */}
-            <select className={unifiedInputStyle}
-
-              onChange={(e) => handleFilterChange('rooms', e.target.value)}>
-              <option value="">Nr. camere</option>
-              <option value="1">1 Cameră</option>
-              <option value="2">2 Camere</option>
-              <option value="3">3 Camere</option>
-            </select>
-
-            {/* Floors Filter */}
-            <select className={unifiedInputStyle}
-
-              onChange={(e) => handleFilterChange('floors', e.target.value)}>
-              <option value="">Nr. etaje</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-            </select>
+            {/* Multi-select Sector */}
+            <Multiselect
+              options={sectorOptions}
+              displayValue="label"
+              onSelect={(selectedList) => handleMultiSelectChange('sector', selectedList)}
+              onRemove={(selectedList) => handleMultiSelectChange('sector', selectedList)}
+              placeholder="Sector"
+              showCheckbox={true}
+              hidePlaceholderAfterSelect={true}
+              disabled={!filters.region.length} // Disable if no region selected
+              style={{
+                chips: { display: 'none' },
+                searchBox: { background: '#2D2D2D', color: '#fff' }
+              }}
+            />
 
             {/* Surface Area Range */}
             <div className="flex flex-wrap md:flex-row md:flex-nowrap items-center gap-2">
@@ -195,14 +210,14 @@ const Case = () => {
                 type="number"
                 placeholder="Min suprafața (m2)"
                 className={unifiedInputStyle}
-                onChange={(e) => handleFilterChange('areaMin', e.target.value)}
+                onChange={(e) => setFilters(prev => ({ ...prev, areaMin: e.target.value }))}
               />
               <span className="text-gray-400 hidden md:block">-</span>
               <input
                 type="number"
                 placeholder="Max suprafața (m2)"
                 className={unifiedInputStyle}
-                onChange={(e) => handleFilterChange('areaMax', e.target.value)}
+                onChange={(e) => setFilters(prev => ({ ...prev, areaMax: e.target.value }))}
               />
             </div>
 
@@ -212,21 +227,18 @@ const Case = () => {
                 type="number"
                 placeholder="Min preț (€)"
                 className={unifiedInputStyle}
-                onChange={(e) => handleFilterChange('priceMin', e.target.value)}
+                onChange={(e) => setFilters(prev => ({ ...prev, priceMin: e.target.value }))}
               />
               <span className="text-gray-400 hidden md:block">-</span>
               <input
                 type="number"
                 placeholder="Max preț (€)"
                 className={unifiedInputStyle}
-                onChange={(e) => handleFilterChange('priceMax', e.target.value)}
+                onChange={(e) => setFilters(prev => ({ ...prev, priceMax: e.target.value }))}
               />
             </div>
           </div>
-
         </div>
-
-
       </header>
 
       {/* Properties List */}
@@ -241,7 +253,7 @@ const Case = () => {
               <ApartmentCard property={property} key={index} />
             ))
           ) : (
-            <p className="text-white">Nicio casa nu se potrivește cu filtrele selectate.</p>
+            <p className="text-white">Nicio casă nu se potrivește cu filtrele selectate.</p>
           )
         )}
       </div>
