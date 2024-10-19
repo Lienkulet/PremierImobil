@@ -67,7 +67,7 @@ const Footer = () => {
                     </div>
                 </div>
                 <div className="line mt-[60px] mb-[36px]"></div>
-                <div className="flex flex-row items-center justify-between">
+                <div className="flex flex-col md:flex-row items-center justify-between">
                     <div className="flex flex-row items-center justify-center gap-4">
                         <h3 className="text-white font-normal text-base">Urmărește-ne</h3>
                         <Link href='/'>
