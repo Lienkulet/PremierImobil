@@ -21,7 +21,7 @@ const Navbar = () => {
     };
 
     return (
-        <nav className='w-full px-4 md:px-[56px] py-[33px] flex items-center justify-between relative'>
+        <nav className='w-full z-20 px-4 md:px-[56px] py-[33px] bg-transparent flex items-center justify-between relative'>
             {/* Logo */}
             <div className='flex flex-row justify-between items-center w-full md:w-auto'>
                 <Link href='/' className='text-mainOrange font-bold text-2xl' onClick={handleCloseMenu}>

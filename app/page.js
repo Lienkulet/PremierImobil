@@ -14,10 +14,10 @@ export default function Home() {
 
   return (
     <main className="bg-lightGrey flex flex-col gap-8">
-      {/* <HomeHero /> */}
-      {/* <ApartmentSlider /> */}
-      {/* <AgentsHeroSlider /> */}
-      {/* <WorkProcess /> */}
+      <HomeHero />
+      <ApartmentSlider />
+      <AgentsHeroSlider />
+      <WorkProcess />
       <Locations />
       <Welcome />
       <Numbers />
