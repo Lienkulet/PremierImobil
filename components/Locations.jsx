@@ -32,7 +32,7 @@ const ApartmentSlider = () => {
         arrows: false
     };
     return (
-        <section className="py-12 flex flex-col gap-12">
+        <section className="py-12 hidden md:flex flex-col gap-12">
             <h1 className="font-bold text-white text-2xl md:text-5xl text-center">Suntem Disponibili în Multe Locații</h1>
             <div className="slider-container">
                 <Slider {...settingsDesktop}>

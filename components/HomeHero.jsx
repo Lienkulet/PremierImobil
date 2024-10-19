@@ -48,11 +48,14 @@ const HomeHero = () => {
       {/* Mobile-Specific Content */}
       <div className="relative md:hidden flex flex-col">
         {/* Image for Mobile */}
-        <img src="/mobilehome.png" className="w-full m-0 p-0" />
+        <img src="/heroomob.png" className="w-full " />
 
         {/* Buttons placed over the image with adjusted positioning */}
         <div className="absolute inset-x-0 top-16 flex flex-col justify-center items-center z-10">
-          <div className="grid grid-cols-2 gap-5">
+        <h1 className="text-white text-center text-3xl font-bold">
+            Găsiți-vă casa <span className="text-mainOrange">visurilor</span>
+          </h1>
+          <div className="grid grid-cols-2 gap-5 mt-10">
             <Link href='/proprietati/case'
               className="bg-matteBlack duration-300 hover:scale-105 hover:shadow-lg hover:shadow-white h-[150px] w-[150px] flex flex-col justify-center items-center gap-4 rounded-xl transition-transform">
               <Image src='/caselogo.png' alt="case" width={70} height={70} />
@@ -76,14 +79,6 @@ const HomeHero = () => {
           </div>
         </div>
 
-        {/* Call to action below the image */}
-        <div className="bg-mainOrange p-6 flex flex-col gap-4 -mt-[6rem]">
-          <h2 className="text-matteBlack text-3xl font-medium">Găsiți casa <br />perfectă aici.</h2>
-          <p className="text-matteBlack font-light">Găsește-ți cu ușurință locul cu <br />ajutorul nostru.</p>
-          <Link href='/contact' className="text-mainOrange font-medium text-center py-4 bg-matteBlack w-full p-2 rounded-xl">
-            Contactează-ne
-          </Link>
-        </div>
       </div>
     </section>
   )

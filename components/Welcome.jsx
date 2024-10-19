@@ -2,7 +2,7 @@ import Link from "next/link"
 
 const Welcome = () => {
     return (
-        <div className="flex flex-col md:flex-row gap-20 items-center">
+        <div className="hidden md:flex flex-col md:flex-row gap-20 items-center">
             <img src="/bunvenitimgs.png" alt="" className="w-[800px] h-[700px]" />
             <div className="md:mt-32 mt-6 flex flex-col text-center md:text-start justify-center md:items-start items-center  gap-12">
                 <div className="flex flex-row items-center gap-2">
