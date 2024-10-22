@@ -47,7 +47,7 @@ const HomeHero = () => {
 
       {/* Mobile-Specific Content */}
       <div className="relative md:hidden flex flex-col">
-        <img src="/heroomob.png" className="w-full" />
+        <img src="/heroomob.png" className="w-full -mt-[100px] h-[600px]" />
 
         <div className="absolute inset-x-0 top-16 flex flex-col justify-center items-center z-10">
         <h1 className="text-white text-center text-3xl font-bold">
